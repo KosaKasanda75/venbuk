@@ -4,7 +4,7 @@ import styles from "./LoginPortal.module.css";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
-function LoginPortal({ toSignUp }) {
+function LoginPortal({ toSignUp, from }) {
   const [email, setEmail] = useState("jack@mail.com");
   const [password, setPassword] = useState("qwerty");
   const { isAuthenticated, login } = useAuth();
@@ -12,9 +12,10 @@ function LoginPortal({ toSignUp }) {
 
   useEffect(
     function () {
-      if (isAuthenticated) navigate("/", { replace: true });
+      if (from && isAuthenticated) navigate(from, { replace: true });
+      else navigate("/", { replace: true });
     },
-    [isAuthenticated, navigate],
+    [from, isAuthenticated, navigate],
   );
 
   function handleSubmit(e) {
