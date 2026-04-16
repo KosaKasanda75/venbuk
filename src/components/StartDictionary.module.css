@@ -1,0 +1,21 @@
+.container {
+  width: 100%;
+  height: 90%;
+  background-color: orange;
+}
+
+.queryBox {
+  width: 20rem;
+  margin: 4rem auto;
+  text-align: center;
+  background-color: skyblue;
+}
+
+.searchLabel {
+  margin: 1.8rem 0 0.8rem 0;
+}
+
+.inputField {
+  width: 100%;
+  height: 1.8rem;
+}

@@ -1,0 +1,46 @@
+.btn {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  border: none;
+  background-color: blue;
+  padding: 0.8rem;
+}
+
+.addMore {
+  margin-left: auto;
+  margin-bottom: 0.8rem;
+}
+
+.plain {
+  color: #000;
+  background-color: transparent;
+}
+
+.lowkey {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #000;
+  padding: 0.2rem 0.4rem;
+  background-color: transparent;
+}
+
+.central {
+  justify-self: center;
+}
+
+.subtle {
+  color: #000;
+  background-color: #aaa;
+}
+
+.delete {
+  background-color: red;
+  justify-self: center;
+}
+
+.logout {
+  background-color: red;
+  justify-self: end;
+}

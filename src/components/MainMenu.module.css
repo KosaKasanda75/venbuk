@@ -1,0 +1,35 @@
+.menuBox {
+  /* position: absolute;
+  bottom: 0; */
+  width: 100%;
+  background-color: #ccc;
+}
+
+.menuList {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuItem {
+  max-width: 20%;
+  padding: 1rem;
+  /* background-color: greenyellow; */
+}
+
+.icon {
+  height: 3.2rem;
+  width: 3.2rem;
+  transition: all 0.3s;
+}
+
+.icon:active {
+  transform: translateY(0.2rem);
+}
+
+.extraSpace {
+  height: 2rem;
+  width: 100%;
+}

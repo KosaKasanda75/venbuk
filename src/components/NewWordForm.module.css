@@ -1,0 +1,76 @@
+.formBox {
+  line-height: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.formBox div {
+  margin-bottom: 0.8rem;
+}
+
+.formBox div label {
+  margin-right: 0.8rem;
+}
+
+.oneLineField {
+  display: flex;
+  position: relative;
+}
+
+.oneLineTextBox {
+  flex: 1;
+}
+
+.smallerTextBox {
+  width: 95%;
+  height: 2rem;
+}
+
+.largerTextBox {
+  width: 95%;
+  height: 4rem;
+}
+
+.autocompletedTextBox {
+  width: 100%;
+  line-height: 2;
+}
+
+.autocompleteOptions {
+  list-style: none;
+  background-color: #eee;
+  width: 100%;
+  max-height: 10rem;
+  height: 10rem;
+
+  position: absolute;
+  top: 2rem;
+}
+
+.autocompleteOptions li {
+  height: 2rem;
+  width: 100%;
+}
+
+.selectedTags {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.selectedTags li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(139, 0, 139, 0.521);
+}
+
+.tagText {
+  flex: 1;
+}
+
+.tagIcon {
+  height: 1.4rem;
+  width: 1.4rem;
+}

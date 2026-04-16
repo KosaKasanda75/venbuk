@@ -1,0 +1,8 @@
+.articleBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoBox {
+  margin-bottom: 2.4rem;
+}

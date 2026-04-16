@@ -1,0 +1,58 @@
+.settingsBox {
+}
+
+.settingsTitle {
+  text-align: center;
+  margin: 1.2rem 0 2.4rem 0;
+}
+
+.settingsButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.settingsItemList {
+  list-style: none;
+}
+
+.settingsItem {
+  border-top: 0.1rem solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 0.8rem 1.2rem;
+}
+
+.settingsItemList:last-child {
+  border-bottom: 0.1rem solid #000;
+}
+
+.settingsLinks:hover,
+.settingsLinks:active {
+  background-color: #777;
+}
+
+.settingsItemName {
+  font-size: 1.6rem;
+}
+
+.navlink:link,
+.navlink:visited,
+.navlink:hover,
+.navlink:active {
+  text-decoration: none;
+  color: #000;
+}
+
+.settingsItemDescription {
+  font-size: 1rem;
+  color: #777;
+}
+
+.editIcon {
+  height: 1.6rem;
+  width: 1.6rem;
+}

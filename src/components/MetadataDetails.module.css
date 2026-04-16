@@ -1,0 +1,27 @@
+.title {
+  margin-top: 1.2rem;
+}
+
+.formBox {
+  margin-bottom: 1.2rem;
+}
+
+.formSection {
+  margin-bottom: 1.2rem;
+}
+
+.fullLineTextBox {
+  width: 90%;
+}
+
+.largeTextBox {
+  width: 90%;
+  height: 6.4rem;
+}
+
+.buttonBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
