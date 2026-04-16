@@ -12,8 +12,7 @@ function LoginPortal({ toSignUp, from }) {
 
   useEffect(
     function () {
-      if (from && isAuthenticated) navigate(from, { replace: true });
-      else navigate("/", { replace: true });
+      if (isAuthenticated) navigate(from, { replace: true });
     },
     [from, isAuthenticated, navigate],
   );
