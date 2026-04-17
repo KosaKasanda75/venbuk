@@ -1,6 +1,11 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
+import apiFetch from "../helpers/fetchWrapper";
+import { GetOptions, PostOptions } from "../helpers/fetchOptions";
 
 const AuthContext = createContext();
+
+const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "https://www.api.venbuk.com";
 
 const FAKE_USER = {
   name: "Jack",
@@ -12,16 +17,21 @@ const FAKE_USER = {
 const initialState = {
   user: null,
   isAuthenticated: null,
+  isLoading: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "loading":
+      return { ...state, isLoading: true };
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
     case "register":
       return { ...state, user: action.payload, isAuthenticated: true };
     case "logout":
       return { ...state, user: null, isAuthenticated: false };
+    case "verify":
+      return { ...state, user: action.payload, isAuthenticated: true };
     default:
       throw new Error("Unknown action");
   }
@@ -33,22 +43,71 @@ function AuthProvider({ children }) {
     initialState,
   );
 
-  function login(email, password) {
+  async function getUser() {
+    return await apiFetch(`${BASE_URL}/users/me`, { ...GetOptions });
+  }
+
+  useEffect(function () {
+    async function verifyUser() {
+      const res = await getUser();
+      const data = await res.json();
+      console.log(data);
+      // dispatch({ type: "verify", payload: data });
+    }
+    verifyUser();
+  }, []);
+
+  async function login(email, password) {
+    dispatch({ type: "loading" });
     // Fetch request
+    const body = JSON.stringify({ email, password });
+
+    const registerRes = await apiFetch(`${BASE_URL}/auth/login`, {
+      ...PostOptions,
+      body,
+    });
+    const registerData = await registerRes.json();
+    console.log(registerData);
+
+    // const userRes = getUser();
+    // const userData = userRes.json();
+    // console.log(userData);
+
     // const loggedInUser = { email, password };
-    if (email === FAKE_USER.email && password === FAKE_USER.password)
-      dispatch({ type: "login", payload: FAKE_USER });
+    // if (email === FAKE_USER.email && password === FAKE_USER.password)
+
+    // dispatch({ type: "login", payload: userData });
   }
 
-  function register(email, password) {
+  async function register(email, username, password) {
+    dispatch({ type: "loading" });
     // Fetch request
-    const loggedInUser = { email, password };
-    dispatch({ type: "register", payload: loggedInUser });
+    const body = JSON.stringify({ username, email, password });
+
+    const registerRes = await apiFetch(`${BASE_URL}/auth/register`, {
+      ...PostOptions,
+      body,
+    });
+    const registerData = await registerRes.json();
+    console.log(registerData);
+
+    // const userRes = getUser();
+    // const userData = userRes.json();
+    // console.log(userData);
+
+    // dispatch({ type: "register", payload: userData });
   }
 
-  function logout() {
+  async function logout() {
+    dispatch({ type: "loading" });
     // Fetch request
-    dispatch({ type: "logout" });
+    const registerRes = await apiFetch(`${BASE_URL}/auth/logout`, {
+      ...PostOptions,
+    });
+    const registerData = await registerRes.json();
+    console.log(registerData);
+
+    // dispatch({ type: "logout" });
   }
 
   return (
