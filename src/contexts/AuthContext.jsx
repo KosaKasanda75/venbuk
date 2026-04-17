@@ -24,6 +24,8 @@ function reducer(state, action) {
   switch (action.type) {
     case "loading":
       return { ...state, isLoading: true };
+    case "completed":
+      return { ...state, isLoading: false };
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
     case "register":
@@ -38,7 +40,7 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [{ user, isAuthenticated }, dispatch] = useReducer(
+  const [{ user, isAuthenticated, isLoading }, dispatch] = useReducer(
     reducer,
     initialState,
   );
@@ -50,9 +52,20 @@ function AuthProvider({ children }) {
   useEffect(function () {
     async function verifyUser() {
       const res = await getUser();
-      const data = await res.json();
-      console.log(data);
-      // dispatch({ type: "verify", payload: data });
+
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+      if (res.status !== 204) {
+        const data = await res.json();
+        // dispatch({ type: "login", payload: userData });
+        dispatch({ type: "verify", payload: data });
+      }
     }
     verifyUser();
   }, []);
@@ -66,10 +79,27 @@ function AuthProvider({ children }) {
       ...PostOptions,
       body,
     });
-    const registerData = await registerRes.json();
-    console.log(registerData);
+    // const registerData = await registerRes.json();
+    // console.log(registerData);
 
-    // const userRes = getUser();
+    if (!registerRes.ok) {
+      const err = await registerRes.json();
+      console.log(err.detail); // string, or array for validation errors (422)
+      dispatch({ type: "completed" });
+      return;
+    }
+
+    const userRes = getUser();
+    if (!userRes.ok) {
+      const err = await userRes.json();
+      console.log(err.detail); // string, or array for validation errors (422)
+      dispatch({ type: "completed" });
+      return;
+    }
+    if (userRes.status !== 204) {
+      const userData = await userRes.json();
+      dispatch({ type: "login", payload: userData });
+    }
     // const userData = userRes.json();
     // console.log(userData);
 
@@ -88,8 +118,26 @@ function AuthProvider({ children }) {
       ...PostOptions,
       body,
     });
-    const registerData = await registerRes.json();
-    console.log(registerData);
+    // const registerData = await registerRes.json();
+    // console.log(registerData);
+    if (!registerRes.ok) {
+      const err = await registerRes.json();
+      console.log(err.detail); // string, or array for validation errors (422)
+      dispatch({ type: "completed" });
+      return;
+    }
+
+    const userRes = getUser();
+    if (!userRes.ok) {
+      const err = await userRes.json();
+      console.log(err.detail); // string, or array for validation errors (422)
+      dispatch({ type: "completed" });
+      return;
+    }
+    if (userRes.status !== 204) {
+      const userData = await userRes.json();
+      dispatch({ type: "register", payload: userData });
+    }
 
     // const userRes = getUser();
     // const userData = userRes.json();
@@ -104,15 +152,21 @@ function AuthProvider({ children }) {
     const registerRes = await apiFetch(`${BASE_URL}/auth/logout`, {
       ...PostOptions,
     });
-    const registerData = await registerRes.json();
-    console.log(registerData);
+    // const registerData = await registerRes.json();
+    // console.log(registerData);
+    if (!registerRes.ok) {
+      const err = await registerRes.json();
+      console.log(err.detail); // string, or array for validation errors (422)
+      dispatch({ type: "completed" });
+      return;
+    }
 
-    // dispatch({ type: "logout" });
+    dispatch({ type: "logout" });
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, register, logout }}
+      value={{ user, isAuthenticated, isLoading, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>
