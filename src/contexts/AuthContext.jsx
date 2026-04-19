@@ -17,15 +17,15 @@ const FAKE_USER = {
 const initialState = {
   user: null,
   isAuthenticated: null,
-  isLoading: false,
+  authLoading: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "loading":
-      return { ...state, isLoading: true };
+      return { ...state, authLoading: true };
     case "completed":
-      return { ...state, isLoading: false };
+      return { ...state, authLoading: false };
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
     case "register":
@@ -40,7 +40,7 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [{ user, isAuthenticated, isLoading }, dispatch] = useReducer(
+  const [{ user, isAuthenticated, authLoading }, dispatch] = useReducer(
     reducer,
     initialState,
   );
@@ -166,7 +166,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, isLoading, login, register, logout }}
+      value={{ user, isAuthenticated, authLoading, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>

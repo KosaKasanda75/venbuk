@@ -3,17 +3,48 @@ import styles from "./NewWordForm.module.css";
 import Button from "./Button";
 import useDictionary from "../hooks/useDictionary";
 import { PostOptions } from "../helpers/fetchOptions";
+import { useState } from "react";
+import useEnum from "../hooks/useEnum";
 
 function NewWordForm() {
-  const { dictionary } = useDictionary();
-  // ADD STATE
+  const { dictionary, nounClasses, genders, tags } = useDictionary();
+  const { wordClasses } = useEnum();
+  const [spelling, setSpelling] = useState("");
+  const [wordClass, setWordClass] = useState(null);
+  const [definition, setDefinition] = useState("");
+  const [nounClassId, setNounClassId] = useState(null);
+  const [genderId, setGenderId] = useState(null);
+  const [tagQuery, setTagQuery] = useState("");
+  const [tagIds, setTagIds] = useState([]);
+
+  function clearForm() {
+    setSpelling("");
+    setWordClass(null);
+    setDefinition("");
+    setNounClassId(null);
+    setGenderId(null);
+    setTagQuery("");
+    setTagIds([]);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!spelling || !wordClass || !definition) return;
+
+    // Need to add example sentences
+    const word = {
+      spelling,
+      word_class: wordClass,
+      definition,
+      ...(nounClassId && { noun_class_id: nounClassId }),
+      ...(genderId && { gender_id: genderId }),
+      ...(tagIds && { tag_ids: tagIds }),
+    };
+
     const res = await fetch(`/dictionaries/${dictionary.id}/words/`, {
       ...PostOptions,
-      body: JSON.stringify(wordData),
+      body: JSON.stringify(word),
     });
 
     if (!res.ok) {
@@ -23,6 +54,7 @@ function NewWordForm() {
 
     const data = await res.json(); // returns WordRead
     console.log(data);
+    if (!data) return;
 
     // const wordData = {
     //   // Required
@@ -46,7 +78,7 @@ function NewWordForm() {
     //   definition: "To propel oneself upward off the ground.",
     // };
 
-    // EMPTY FORM AFTERWARDS
+    clearForm();
     // MAYBE GO TO WORD RESULT PAGE
   }
 
@@ -59,16 +91,20 @@ function NewWordForm() {
             className={styles.oneLineTextBox}
             type="text"
             id="wordTextInput"
+            value={spelling}
+            onChange={(e) => setSpelling(e.target.value)}
           />
         </div>
 
         <div>
-          <label for="wordDescription">Description</label>
+          <label for="wordDefinition">Definition</label>
           <br />
           <input
             className={styles.largerTextBox}
             type="text"
-            id="wordDescription"
+            id="wordDefinition"
+            value={definition}
+            onChange={(e) => setDefinition(e.target.value)}
           />
         </div>
 
@@ -84,22 +120,51 @@ function NewWordForm() {
 
         <div className={styles.oneLineField}>
           <label for="wordClassSelect">Type</label>
-          <select id="wordClassSelect">
-            <option value={1}>1</option>
+          <select
+            id="wordClassSelect"
+            value={wordClass}
+            onChange={(e) => setWordClass(e.target.value)}
+          >
+            {wordClasses.map((wClass) => (
+              <option key={wClass.id} value={wClass.id}>
+                {wClass.name}
+              </option>
+            ))}
+            {/* <option value={1}>1</option> */}
           </select>
         </div>
 
-        <div className={styles.oneLineField}>
-          <label for="nounClassSelect">Class</label>
-          <select id="nounClassSelect">
-            <option value={1}>1</option>
-          </select>
-        </div>
+        {wordClasses.find((w) => w.id == wordClass)?.name === "noun" && (
+          <div className={styles.oneLineField}>
+            <label for="nounClassSelect">Class</label>
+            <select
+              id="nounClassSelect"
+              value={nounClassId}
+              onChange={(e) => setNounClassId(e.target.value)}
+            >
+              {nounClasses.map((nClass) => (
+                <option key={nClass.id} value={nClass.id}>
+                  {nClass.name}
+                </option>
+              ))}
+              {/* <option value={1}>1</option> */}
+            </select>
+          </div>
+        )}
 
         <div className={styles.oneLineField}>
           <label for="genderSelect">Gender</label>
-          <select id="genderSelect">
-            <option value={1}>1</option>
+          <select
+            id="genderSelect"
+            value={genderId}
+            onChange={(e) => setGenderId(e.target.value)}
+          >
+            {genders.map((gender) => (
+              <option key={gender.id} value={gender.id}>
+                {gender.name}
+              </option>
+            ))}
+            {/* <option value={1}>1</option> */}
           </select>
         </div>
 
@@ -110,11 +175,35 @@ function NewWordForm() {
               className={styles.autocompletedTextBox}
               type="text"
               id="wordTagInput"
+              value={tagQuery}
+              onChange={(e) => setTagQuery(e.target.value)}
             />
-            {/* <ul className={styles.autocompleteOptions}></ul> */}
+            <ul className={styles.autocompleteOptions}>
+              {tags
+                .filter((tag) => tag.name.includes(tagQuery))
+                .map((tag) => (
+                  <li
+                    key={tag.id}
+                    onClick={() => setTagIds((tagList) => [...tagList, tag.id])}
+                  >
+                    {tag.name}
+                  </li>
+                ))}
+            </ul>
           </div>
         </div>
         <ul className={styles.selectedTags}>
+          {tags
+            .filter((obj) => tagIds.includes(obj.id))
+            .map((tag) => (
+              <li key={tag.id}>
+                <p className={styles.tagText}>Tag</p>
+                <RxCross2
+                  className={styles.tagIcon}
+                  onClick={() => tagIds.filter((id) => id != tag.id)}
+                />
+              </li>
+            ))}
           <li>
             <p className={styles.tagText}>Tag</p>
             <RxCross2 className={styles.tagIcon} />

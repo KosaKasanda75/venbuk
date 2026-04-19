@@ -3,72 +3,79 @@ import { useState } from "react";
 import SettingsList from "./SettingsList";
 import SettingsItemMeta from "./SettingsItemMeta";
 import useDictionary from "../hooks/useDictionary";
-// import AddNounClass from "./AddNounClass";
 import AddMetadataItem from "./AddMetadataItem";
 
 const settingsOptions = {
-  title: "Noun Classes",
-  settingsList: ["Human", "Tree", "Tool", "Space", "Concepts"],
+  title: "Tags",
+  settingsList: ["Body", "Greeting", "House", "Family", "Jobs"],
   options: {
     add: true,
     edit: true,
   },
 };
 
-function SettingsNounClasses() {
+const camelToTitle = (text) => {
+  return (
+    text
+      // 1. Insert a space before all caps
+      .replace(/([A-Z])/g, " $1")
+      // 2. Capitalize the first letter
+      .replace(/^./, (str) => str.toUpperCase())
+      // 3. Remove any leading/trailing whitespace
+      .trim()
+  );
+};
+
+function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
   const [editMode, setEditMode] = useState(false);
   const [viewMode, setViewMode] = useState(true);
-  const [nounInfo, setNounInfo] = useState(null);
-  const { nounClasses, createMetadata, updateMetadata, deleteMetadata } =
-    useDictionary();
+  const [metaInfo, setMetaInfo] = useState(null);
+  const { createMetadata, updateMetadata, deleteMetadata } = useDictionary();
 
   function handleAdd() {
     setViewMode(false);
   }
 
-  function handleEdit(nounObj) {
-    setNounInfo(nounObj);
+  function handleEdit(metaObj) {
+    setMetaInfo(metaObj);
     setViewMode(false);
   }
 
   function handleCreate(body) {
-    // Requires a refetch of noun classes
-    createMetadata("nounClasses", body);
+    createMetadata(metadataTitle, body);
     handleCancel();
   }
 
-  function handleUpdate(nounId, body) {
-    // Requires a refetch of noun classes
-    updateMetadata("nounClasses", nounId, body);
+  function handleUpdate(metaId, body) {
+    updateMetadata(metadataTitle, metaId, body);
     handleCancel();
   }
 
-  function handleDelete(nounId) {
-    // Requires a refetch of noun classes
-    deleteMetadata("nounClasses", nounId);
+  function handleDelete(metaId) {
+    deleteMetadata(metadataTitle, metaId);
     handleCancel();
   }
 
   function handleCancel() {
     setViewMode(true);
-    setNounInfo(null);
+    setMetaInfo(null);
   }
 
   return (
     <>
       {viewMode && (
         <SettingsList
-          title={settingsOptions.title}
-          previousPage="Conjugation"
+          title={camelToTitle(metadataTitle)}
+          previousPage={previousPage}
           options={settingsOptions.options}
           editMode={editMode}
           setEditMode={setEditMode}
           toAddPage={handleAdd}
         >
           <ul className={styles.settingsItemList}>
-            {nounClasses.sort().map((item) => (
+            {metaList.sort().map((item) => (
               <SettingsItemMeta
-                key={item}
+                key={item.id}
                 item={item}
                 editMode={editMode}
                 toEditPage={() => handleEdit(item.id)}
@@ -78,18 +85,9 @@ function SettingsNounClasses() {
           </ul>
         </SettingsList>
       )}
-      {/* {!viewMode && (
-        <AddNounClass
-          nounInfo={nounInfo}
-          onCreate={handleCreate}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-          onCancel={handleCancel}
-        />
-      )} */}
       {!viewMode && (
         <AddMetadataItem
-          metaInfo={nounInfo}
+          metaInfo={metaInfo}
           onCreate={handleCreate}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
@@ -100,4 +98,4 @@ function SettingsNounClasses() {
   );
 }
 
-export default SettingsNounClasses;
+export default SettingsMetadata;

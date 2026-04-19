@@ -3,6 +3,9 @@ import { useState } from "react";
 import SettingsList from "./SettingsList";
 import AddDictionary from "./AddDictionary";
 import SettingsItemDictionary from "./SettingsItemDictionary";
+import useDictionary from "../hooks/useDictionary";
+import LoadingContent from "./LoadingContent";
+import { IoMdRefresh } from "react-icons/io";
 
 const settingsOptions = {
   title: "Dictionaries",
@@ -21,64 +24,84 @@ const settingsOptions = {
 function SettingsDictionaries() {
   const [editMode, setEditMode] = useState(false);
   const [viewMode, setViewMode] = useState(true);
+  const [dictionaryInfo, setDictionaryInfo] = useState(null);
+  const {
+    dictionaryList,
+    dictionaryLoading,
+    createDictionary,
+    getDictionaryInfo,
+    getDictionaryList,
+    updateDictionary,
+    deleteDictionary,
+  } = useDictionary();
 
   function handleAdd() {
     setViewMode(false);
   }
 
-  function handleEdit(tagObj) {
+  async function handleEdit(dictionaryId) {
+    const dictionaryObj = await getDictionaryInfo(dictionaryId);
+    setDictionaryInfo(dictionaryObj);
     setViewMode(false);
-    if (!tagObj) return;
   }
 
-  function handleCreate() {
-    // Requires a refetch of dictionaries
+  function handleCreate(body) {
+    createDictionary(body);
+    handleCancel();
   }
 
-  function handleUpdate() {
-    // Requires a refetch of dictionaries
+  function handleUpdate(dictionaryId, body) {
+    updateDictionary(dictionaryId, body);
+    handleCancel();
+  }
+
+  function handleDelete(dictionaryId) {
+    deleteDictionary(dictionaryId);
+    handleCancel();
   }
 
   function handleCancel() {
     setViewMode(true);
-  }
-
-  function handleDelete() {
-    setViewMode(true);
+    setDictionaryInfo(null);
   }
 
   return (
     <>
       {viewMode && (
-        <SettingsList
-          title={settingsOptions.title}
-          previousPage="Settings & Help"
-          options={settingsOptions.options}
-          editMode={editMode}
-          setEditMode={setEditMode}
-          toAddPage={handleAdd}
-        >
-          <ul className={styles.settingsItemList}>
-            {settingsOptions.settingsList.sort().map((item) => (
-              <SettingsItemDictionary
-                key={item}
-                item={item}
-                editMode={editMode}
-                toEditPage={handleEdit}
-                description={true}
-              />
-            ))}
-          </ul>
-        </SettingsList>
+        <>
+          <IoMdRefresh className={styles.icon} onClick={getDictionaryList} />
+          <SettingsList
+            title={settingsOptions.title}
+            previousPage="Settings & Help"
+            options={settingsOptions.options}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            toAddPage={handleAdd}
+          >
+            <ul className={styles.settingsItemList}>
+              {dictionaryList.sort().map((item) => (
+                <SettingsItemDictionary
+                  key={item.id}
+                  item={item}
+                  editMode={editMode}
+                  toEditPage={() => handleEdit(item.id)}
+                  description={true}
+                />
+              ))}
+            </ul>
+          </SettingsList>
+        </>
       )}
       {!viewMode && (
         <AddDictionary
+          dictionaryInfo={dictionaryInfo}
           onCreate={handleCreate}
           onUpdate={handleUpdate}
-          onCancel={handleCancel}
           onDelete={handleDelete}
+          onCancel={handleCancel}
         />
       )}
+      {dictionaryLoading && <LoadingContent />}
     </>
   );
 }

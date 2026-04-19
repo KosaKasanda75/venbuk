@@ -52,6 +52,11 @@
   color: #777;
 }
 
+.icon {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
 .editIcon {
   height: 1.6rem;
   width: 1.6rem;

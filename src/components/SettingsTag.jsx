@@ -1,8 +1,10 @@
 import styles from "./SettingsList.module.css";
 import { useState } from "react";
 import SettingsList from "./SettingsList";
-import AddTag from "./AddTag";
 import SettingsItemMeta from "./SettingsItemMeta";
+import useDictionary from "../hooks/useDictionary";
+// import AddTag from "./AddTag";
+import AddMetadataItem from "./AddMetadataItem";
 
 const settingsOptions = {
   title: "Tags",
@@ -16,31 +18,40 @@ const settingsOptions = {
 function SettingsTag() {
   const [editMode, setEditMode] = useState(false);
   const [viewMode, setViewMode] = useState(true);
+  const [tagInfo, setTagInfo] = useState(null);
+  const { tags, createMetadata, updateMetadata, deleteMetadata } =
+    useDictionary();
 
   function handleAdd() {
     setViewMode(false);
   }
 
   function handleEdit(tagObj) {
+    setTagInfo(tagObj);
     setViewMode(false);
-    if (!tagObj) return;
   }
 
-  function handleCreate() {
+  function handleCreate(body) {
     // Requires a refetch of tags
+    createMetadata("tags", body);
+    handleCancel();
   }
 
-  function handleUpdate() {
+  function handleUpdate(tagId, body) {
     // Requires a refetch of tags
+    updateMetadata("tags", tagId, body);
+    handleCancel();
+  }
+
+  function handleDelete(tagId) {
+    // Requires a refetch of dictionaries
+    deleteMetadata("tags", tagId);
+    handleCancel();
   }
 
   function handleCancel() {
     setViewMode(true);
-  }
-
-  function handleDelete() {
-    // Requires a refetch of dictionaries
-    setViewMode(true);
+    setTagInfo(null);
   }
 
   return (
@@ -55,24 +66,34 @@ function SettingsTag() {
           toAddPage={handleAdd}
         >
           <ul className={styles.settingsItemList}>
-            {settingsOptions.settingsList.sort().map((item) => (
+            {tags.sort().map((item) => (
               <SettingsItemMeta
                 key={item}
                 item={item}
                 editMode={editMode}
-                toEditPage={handleEdit}
+                toEditPage={() => handleEdit(item.id)}
                 description={true}
               />
             ))}
           </ul>
         </SettingsList>
       )}
-      {!viewMode && (
+      {/* {!viewMode && (
         <AddTag
+          tagInfo={tagInfo}
           onCreate={handleCreate}
           onUpdate={handleUpdate}
-          onCancel={handleCancel}
           onDelete={handleDelete}
+          onCancel={handleCancel}
+        />
+      )} */}
+      {!viewMode && (
+        <AddMetadataItem
+          metaInfo={tagInfo}
+          onCreate={handleCreate}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+          onCancel={handleCancel}
         />
       )}
     </>

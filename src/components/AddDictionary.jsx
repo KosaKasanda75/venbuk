@@ -1,6 +1,7 @@
+import { useState } from "react";
 import Button from "./Button";
 import styles from "./MetadataDetails.module.css";
-import RequiredTag from "./RequiredTag";
+import RequiredField from "./RequiredField";
 
 function AddDictionary({
   dictionaryInfo,
@@ -9,6 +10,11 @@ function AddDictionary({
   onCancel,
   onDelete,
 }) {
+  const [name, setName] = useState(dictionaryInfo ? dictionaryInfo.name : "");
+  const [description, setDescription] = useState(
+    dictionaryInfo ? dictionaryInfo.description : "",
+  );
+
   return (
     <div>
       {!dictionaryInfo && <h1>Add Tag</h1>}
@@ -17,33 +23,49 @@ function AddDictionary({
         <div className={styles.formSection}>
           <label>
             Name
-            <RequiredTag />
+            <RequiredField />
           </label>
           <br />
-          <input className={styles.fullLineTextBox} type="text" />
-        </div>
-
-        <div className={styles.formSection}>
-          <label>Language</label>
-          <br />
-          <input className={styles.fullLineTextBox} type="text" />
+          <input
+            className={styles.fullLineTextBox}
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
 
         <div>
           <label>Description</label>
           <br />
-          <input className={styles.largeTextBox} type="text" />
+          <input
+            className={styles.largeTextBox}
+            type="text"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
       </form>
       <div className={styles.buttonBox}>
         <Button type="subtle" onClick={onCancel}>
           Cancel
         </Button>
-        {dictionaryInfo && <Button onClick={onUpdate}>Save Update</Button>}
-        {!dictionaryInfo && <Button onClick={onCreate}>Create</Button>}
+        {dictionaryInfo && (
+          <Button
+            onClick={() => onUpdate(dictionaryInfo.id, { name, description })}
+          >
+            Save Update
+          </Button>
+        )}
+        {!dictionaryInfo && (
+          <Button onClick={() => onCreate({ name, description })}>
+            Create
+          </Button>
+        )}
       </div>
       {dictionaryInfo && (
-        <Button type="delete" onClick={onDelete}>
+        <Button type="delete" onClick={() => onDelete(dictionaryInfo.id)}>
           Delete
         </Button>
       )}

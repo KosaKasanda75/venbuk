@@ -35,90 +35,127 @@ import SettingsTag from "./components/SettingsTag";
 import SettingsDictionaries from "./components/SettingsDictionaries";
 import SettingsConjugation from "./components/SettingsConjugation";
 import SettingsNounClasses from "./components/SettingsNounClasses";
-import { AuthProvider } from "./contexts/AuthContext";
-import { DictionaryProvider } from "./contexts/DictionaryContext";
+// import { AuthProvider } from "./contexts/AuthContext";
+// import { DictionaryProvider } from "./contexts/DictionaryContext";
 import FullPageLoading from "./pages/FullPageLoading";
 import ProtectApp from "./pages/ProtectApp";
 import ProtectDictionary from "./pages/ProtectDictionary";
 import ProtectDictionaryRoute from "./pages/ProtectDictionaryRoute";
+// import { EnumProvider } from "./contexts/EnumContext";
+import useDictionary from "./hooks/useDictionary";
+import SettingsMetadata from "./components/SettingsMetadata";
 
 function App() {
+  const { nounClasses, genders, tags, tenses } = useDictionary();
   return (
-    <AuthProvider>
-      <DictionaryProvider>
-        <BrowserRouter>
-          <Suspense fallback={<FullPageLoading />}>
-            <Routes>
-              <Route element={<ProtectApp />}>
-                <Route index element={<Navigate replace to="search" />} />
-                <Route
-                  path="add-entry"
-                  element={
-                    <ProtectDictionary>
-                      <NewEntry />
-                    </ProtectDictionary>
-                  }
-                >
-                  <Route index element={<Navigate replace to="word" />} />
-                  <Route path="word" element={<NewWordForm />} />
-                  <Route path="honorific" element={<NewHonorificForm />} />
-                  <Route path="expression" element={<NewExpressionForm />} />
-                  <Route path="conjugation" element={<NewConjugationForm />} />
-                </Route>
+    <BrowserRouter>
+      <Suspense fallback={<FullPageLoading />}>
+        <Routes>
+          <Route element={<ProtectApp />}>
+            <Route index element={<Navigate replace to="search" />} />
+            <Route
+              path="add-entry"
+              element={
+                <ProtectDictionary>
+                  <NewEntry />
+                </ProtectDictionary>
+              }
+            >
+              <Route index element={<Navigate replace to="word" />} />
+              <Route path="word" element={<NewWordForm />} />
+              <Route path="honorific" element={<NewHonorificForm />} />
+              <Route path="expression" element={<NewExpressionForm />} />
+              <Route path="conjugation" element={<NewConjugationForm />} />
+            </Route>
 
+            <Route
+              path="learning"
+              element={
+                <ProtectDictionary>
+                  <Learning />
+                </ProtectDictionary>
+              }
+            />
+
+            <Route
+              path="search"
+              element={
+                <ProtectDictionary>
+                  <Searchpage />
+                </ProtectDictionary>
+              }
+            >
+              <Route index element={<QueryField />} />
+              <Route path="result" element={<WordResult />} />
+              <Route path="results/:id" element={<WordResult />} />
+            </Route>
+
+            <Route path="games" element={<Games />} />
+
+            <Route path="settings" element={<Settings />}>
+              <Route index element={<SettingsHome />} />
+              <Route path="dictionaries" element={<SettingsDictionaries />} />
+              <Route element={<ProtectDictionaryRoute />}>
+                {/* <Route path="tags" element={<SettingsTag />} /> */}
                 <Route
-                  path="learning"
+                  path="tags"
                   element={
-                    <ProtectDictionary>
-                      <Learning />
-                    </ProtectDictionary>
+                    <SettingsMetadata
+                      metadataTitle="tags"
+                      metaList={tags}
+                      previousPage="Settings & Help"
+                    />
                   }
                 />
-
-                <Route
-                  path="search"
-                  element={
-                    <ProtectDictionary>
-                      <Searchpage />
-                    </ProtectDictionary>
-                  }
-                >
-                  <Route index element={<QueryField />} />
-                  <Route path="result" element={<WordResult />} />
-                  <Route path="results/:id" element={<WordResult />} />
-                </Route>
-
-                <Route path="games" element={<Games />} />
-
-                <Route path="settings" element={<Settings />}>
-                  <Route index element={<SettingsHome />} />
+                <Route path="conjugation">
+                  <Route index element={<SettingsConjugation />} />
                   <Route
-                    path="dictionaries"
-                    element={<SettingsDictionaries />}
-                  />
-                  <Route element={<ProtectDictionaryRoute />}>
-                    <Route path="tags" element={<SettingsTag />} />
-                    <Route path="conjugation">
-                      <Route index element={<SettingsConjugation />} />
-                      <Route
-                        path="noun-classes"
-                        element={<SettingsNounClasses />}
+                    path="tenses"
+                    element={
+                      <SettingsMetadata
+                        metadataTitle="tenses"
+                        metaList={tenses}
+                        previousPage="Conjugation"
                       />
-                    </Route>
-                  </Route>
+                    }
+                  />
+                  {/* <Route
+                    path="noun-classes"
+                    element={<SettingsNounClasses />}
+                  /> */}
+                  <Route
+                    path="noun-classes"
+                    element={
+                      <SettingsMetadata
+                        metadataTitle="nounClasses"
+                        metaList={nounClasses}
+                        previousPage="Conjugation"
+                      />
+                    }
+                  />
+                  <Route
+                    path="genders"
+                    element={
+                      <SettingsMetadata
+                        metadataTitle="genders"
+                        metaList={genders}
+                        previousPage="Conjugation"
+                      />
+                    }
+                  />
                 </Route>
-
-                <Route path="account" element={<Account />} />
-                <Route path="new-dictionary" element={<NewDictionary />} />
-                <Route path="*" element={<PageNotFound />} />
               </Route>
-              <Route path="login" element={<Login />} />
-              {/* <Route path="register" element={<Register />} /> */}
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </DictionaryProvider>
-    </AuthProvider>
+            </Route>
+
+            <Route path="account" element={<Account />} />
+            <Route path="new-dictionary" element={<NewDictionary />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+          <Route path="login" element={<Login />} />
+          {/* <Route path="register" element={<Register />} /> */}
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 

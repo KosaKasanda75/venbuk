@@ -3,16 +3,16 @@ import Button from "./Button";
 import styles from "./MetadataDetails.module.css";
 import RequiredField from "./RequiredField";
 
-function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
-  const [name, setName] = useState(nounInfo ? nounInfo.name : "");
+function AddMetadataItem({ metaInfo, onCreate, onUpdate, onCancel, onDelete }) {
+  const [name, setName] = useState(metaInfo ? metaInfo.name : "");
   const [description, setDescription] = useState(
-    nounInfo ? nounInfo.description : "",
+    metaInfo ? metaInfo.description : "",
   );
 
   return (
     <div>
-      {!nounInfo && <h1>Add Noun Class</h1>}
-      {nounInfo && <h1>Edit Noun Class</h1>}
+      {!metaInfo && <h1>Add Tag</h1>}
+      {metaInfo && <h1>Edit Tag</h1>}
       <form className={styles.formBox}>
         <div className={styles.formSection}>
           <label>
@@ -45,19 +45,19 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
         <Button type="subtle" onClick={onCancel}>
           Cancel
         </Button>
-        {nounInfo && (
-          <Button onClick={() => onUpdate(nounInfo.id, { name, description })}>
+        {metaInfo && (
+          <Button onClick={() => onUpdate(metaInfo.id, { name, description })}>
             Save Update
           </Button>
         )}
-        {!nounInfo && (
+        {!metaInfo && (
           <Button onClick={() => onCreate({ name, description })}>
             Create
           </Button>
         )}
       </div>
-      {nounInfo && (
-        <Button type="delete" onClick={() => onDelete(nounInfo.id)}>
+      {metaInfo && (
+        <Button type="delete" onClick={() => onDelete(metaInfo.id)}>
           Delete
         </Button>
       )}
@@ -65,4 +65,4 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
   );
 }
 
-export default AddNounClass;
+export default AddMetadataItem;
