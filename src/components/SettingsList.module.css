@@ -1,4 +1,5 @@
 .settingsBox {
+  list-style: none; /* temporary to remove warnings */
 }
 
 .settingsTitle {

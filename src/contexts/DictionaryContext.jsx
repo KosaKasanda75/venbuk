@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import useAuth from "../hooks/useAuth";
 import apiFetch from "../helpers/fetchWrapper";
 import {
@@ -232,7 +232,7 @@ function DictionaryProvider({ children }) {
     }
   }
 
-  async function getDictionaryList() {
+  const getDictionaryList = useCallback(async function () {
     dispatch({ type: "loading" });
     // Fetch
     const res = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
@@ -251,12 +251,10 @@ function DictionaryProvider({ children }) {
       dispatch({ type: "getAll", payload: data });
     }
 
-    if (!dictionaryList.some((dict) => dict.id === dictionary.id))
-      dispatch({ type: "delete" });
-
     // const theDictionary = [];
     // dispatch({ type: "getAll", payload: theDictionary });
-  }
+    // return data;
+  }, []);
 
   async function getAllMetadata() {
     dispatch({ type: "loading" });
@@ -345,7 +343,15 @@ function DictionaryProvider({ children }) {
     function () {
       if (isAuthenticated) getDictionaryList();
     },
-    [isAuthenticated],
+    [isAuthenticated, getDictionaryList],
+  );
+
+  useEffect(
+    function () {
+      if (!dictionaryList.some((dict) => dict.id === dictionary.id))
+        dispatch({ type: "delete" });
+    },
+    [dictionaryList, dictionary],
   );
 
   async function readMetadata(resource) {
