@@ -86,7 +86,7 @@ function App() {
               }
             >
               <Route index element={<QueryField />} />
-              <Route path="result" element={<WordResult />} />
+              {/* <Route path="result" element={<WordResult />} /> */}
               <Route path="results/:id" element={<WordResult />} />
             </Route>
 

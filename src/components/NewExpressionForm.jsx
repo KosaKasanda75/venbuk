@@ -10,7 +10,7 @@ function NewExpressionForm() {
   return (
     <form className={styles.formBox}>
       <div>
-        <label for="expressionText">Expression</label>
+        <label htmlFor="expressionText">Expression</label>
         <br />
         <textarea
           className={styles.largeTextBox}
@@ -23,7 +23,7 @@ function NewExpressionForm() {
       </div>
 
       <div>
-        <label for="expressionLiteralText">Literal Translation</label>
+        <label htmlFor="expressionLiteralText">Literal Translation</label>
         <br />
         <textarea
           className={styles.largeTextBox}
@@ -36,7 +36,7 @@ function NewExpressionForm() {
       </div>
 
       <div>
-        <label for="expressionMeaning">Meaning</label>
+        <label htmlFor="expressionMeaning">Meaning</label>
         <br />
         <textarea
           className={styles.largeTextBox}

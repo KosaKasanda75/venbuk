@@ -3,28 +3,37 @@ import styles from "./NewWordForm.module.css";
 import Button from "./Button";
 import useDictionary from "../hooks/useDictionary";
 import { PostOptions } from "../helpers/fetchOptions";
+import apiFetch from "../helpers/fetchWrapper";
 import { useState } from "react";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
+
+const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "https://www.api.venbuk.com";
 
 function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();
   const { wordClasses } = useEnum();
   const [spelling, setSpelling] = useState("");
-  const [wordClass, setWordClass] = useState(null);
+  const [wordClass, setWordClass] = useState("unsure");
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
-  const [nounClassId, setNounClassId] = useState(null);
-  const [genderId, setGenderId] = useState(null);
+  const [nounClassId, setNounClassId] = useState(
+    nounClasses?.at(0)?.id || null,
+  );
+  const [genderId, setGenderId] = useState(genders?.at(0)?.id || null);
   const [tagQuery, setTagQuery] = useState("");
   const [tagIds, setTagIds] = useState([]);
+  console.log(wordClasses);
+  console.log(nounClassId);
+  console.log(genderId);
 
   function clearForm() {
     setSpelling("");
-    setWordClass(null);
+    setWordClass("unsure");
     setDefinition("");
-    setNounClassId(null);
-    setGenderId(null);
+    setNounClassId(nounClasses?.at(0)?.id || null);
+    setGenderId(genders?.at(0)?.id || null);
     setTagQuery("");
     setTagIds([]);
   }
@@ -44,10 +53,13 @@ function NewWordForm() {
       ...(tagIds && { tag_ids: tagIds }),
     };
 
-    const res = await fetch(`/dictionaries/${dictionary.id}/words/`, {
-      ...PostOptions,
-      body: JSON.stringify(word),
-    });
+    const res = await apiFetch(
+      `${BASE_URL}/dictionaries/${dictionary.id}/words/`,
+      {
+        ...PostOptions,
+        body: JSON.stringify(word),
+      },
+    );
 
     if (!res.ok) {
       const err = await res.json();
@@ -88,7 +100,7 @@ function NewWordForm() {
     <>
       <form className={styles.formBox} onSubmit={handleSubmit}>
         <div className={styles.oneLineField}>
-          <label for="wordTextInput">Word</label>
+          <label htmlFor="wordTextInput">Word</label>
           <input
             className={styles.oneLineTextBox}
             type="text"
@@ -99,7 +111,7 @@ function NewWordForm() {
         </div>
 
         <div>
-          <label for="wordDefinition">Definition</label>
+          <label htmlFor="wordDefinition">Definition</label>
           <br />
           <textarea
             className={styles.largeTextBox}
@@ -112,7 +124,7 @@ function NewWordForm() {
         </div>
 
         <div>
-          <label for="wordExampleUse">Example Sentence</label>
+          <label htmlFor="wordExampleUse">Example Sentence</label>
           <br />
           <textarea
             className={styles.largeTextBox}
@@ -125,24 +137,30 @@ function NewWordForm() {
         </div>
 
         <div className={styles.oneLineField}>
-          <label for="wordClassSelect">Type</label>
+          <label htmlFor="wordClassSelect">Type</label>
           <select
             id="wordClassSelect"
             value={wordClass}
             onChange={(e) => setWordClass(e.target.value)}
           >
-            {wordClasses.map((wClass) => (
-              <option key={wClass.id} value={wClass.id}>
-                {wClass.name}
-              </option>
-            ))}
+            {[...wordClasses]
+              .sort((a, b) => {
+                if (a.toLowerCase() === "unsure") return -1;
+                if (b.toLowerCase() === "unsure") return 1;
+                return a.localeCompare(b);
+              })
+              .map((wClass) => (
+                <option key={wClass} value={wClass}>
+                  {wClass}
+                </option>
+              ))}
             {/* <option value={1}>1</option> */}
           </select>
         </div>
 
-        {wordClasses.find((w) => w.id == wordClass)?.name === "noun" && (
+        {nounClassId && wordClass.toLowerCase() === "noun" && (
           <div className={styles.oneLineField}>
-            <label for="nounClassSelect">Class</label>
+            <label htmlFor="nounClassSelect">Class</label>
             <select
               id="nounClassSelect"
               value={nounClassId}
@@ -157,25 +175,43 @@ function NewWordForm() {
             </select>
           </div>
         )}
+        {!nounClassId && wordClass.toLowerCase() === "noun" && (
+          <div className={styles.oneLineField}>
+            <label htmlFor="nounClassSelect">Class</label>
+            <select id="nounClassSelect">
+              <option value={1}>No Noun Classes Defined</option>
+            </select>
+          </div>
+        )}
+
+        {genderId && (
+          <div className={styles.oneLineField}>
+            <label htmlFor="genderSelect">Gender</label>
+            <select
+              id="genderSelect"
+              value={genderId}
+              onChange={(e) => setGenderId(e.target.value)}
+            >
+              {genders.map((gender) => (
+                <option key={gender.id} value={gender.id}>
+                  {gender.name}
+                </option>
+              ))}
+              {/* <option value={1}>1</option> */}
+            </select>
+          </div>
+        )}
+        {!genderId && (
+          <div className={styles.oneLineField}>
+            <label htmlFor="genderSelect">Gender</label>
+            <select id="genderSelect">
+              <option value={1}>No Genders Defined</option>
+            </select>
+          </div>
+        )}
 
         <div className={styles.oneLineField}>
-          <label for="genderSelect">Gender</label>
-          <select
-            id="genderSelect"
-            value={genderId}
-            onChange={(e) => setGenderId(e.target.value)}
-          >
-            {genders.map((gender) => (
-              <option key={gender.id} value={gender.id}>
-                {gender.name}
-              </option>
-            ))}
-            {/* <option value={1}>1</option> */}
-          </select>
-        </div>
-
-        <div className={styles.oneLineField}>
-          <label for="wordTagInput">Tags</label>
+          <label htmlFor="wordTagInput">Tags</label>
           <div className={styles.oneLineTextBox}>
             <input
               className={styles.autocompletedTextBox}
@@ -216,7 +252,7 @@ function NewWordForm() {
           </li>
         </ul>
       </form>
-      <Button type="central" onCLick={handleSubmit}>
+      <Button type="central" onClick={handleSubmit}>
         Create
       </Button>
     </>

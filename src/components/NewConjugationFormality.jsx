@@ -12,7 +12,7 @@ function NewConjugationFormality({ btnType }) {
       </div>
 
       <div>
-        <label for="rootWordText">Conjugated Word</label>
+        <label htmlFor="rootWordText">Conjugated Word</label>
         <br />
         <input
           className={styles.smallerTextBox}

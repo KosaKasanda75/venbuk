@@ -15,7 +15,7 @@ function QueryField() {
   const { dictionary } = useDictionary();
 
   async function findMatchingWords() {
-    if (query.length < 3) return;
+    // if (query.length < 3) return;
 
     const res = await apiFetch(
       `${BASE_URL}/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(query)}`,
@@ -23,8 +23,8 @@ function QueryField() {
     );
     if (!res.ok) {
       const err = await res.json();
-      // throw new Error(err.detail ?? `HTTP ${res.status}`);
       console.log(err.detail ?? `HTTP ${res.status}`);
+      return;
     }
 
     const data = await res.json(); // array of words, sorted alphabetically
@@ -34,7 +34,7 @@ function QueryField() {
   return (
     <div className={styles.container}>
       <form className={styles.queryBox}>
-        <label className={styles.searchLabel} for="searchText">
+        <label className={styles.searchLabel} htmlFor="searchText">
           Search
         </label>
         <input
@@ -54,13 +54,14 @@ function QueryField() {
           {suggestedWords.map((word) => (
             <li
               className={styles.suggestedResult}
-              onClick={() => navigate(`/search/result/${word.id}`)}
+              onClick={() => navigate(`/search/results/${word.id}`)}
             >
               <p className={styles.suggestedWord}>
                 <em>{word.spelling}</em>
               </p>
               <p className={styles.suggestedDefinition}>
-                {word.word_class}:{word.definition}
+                <strong>{word.word_class}: </strong>
+                {word.definition}
               </p>
             </li>
           ))}

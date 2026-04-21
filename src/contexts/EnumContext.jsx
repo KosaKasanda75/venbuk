@@ -11,14 +11,16 @@ const BASE_URL = "http://localhost:8000";
 const camelToSnakeCase = (str) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
+const storedEnums = JSON.parse(localStorage.getItem("venbuk_enums") || "null");
+
 const initialState = {
-  memberRoles: [],
-  wordClasses: [],
-  placements: [],
-  regularities: [],
-  pluralities: [],
-  persons: [],
-  formalities: [],
+  memberRoles: storedEnums?.memberRoles ?? [],
+  wordClasses: storedEnums?.wordClasses ?? [],
+  placements: storedEnums?.placements ?? [],
+  regularities: storedEnums?.regularities ?? [],
+  pluralities: storedEnums?.pluralities ?? [],
+  persons: storedEnums?.persons ?? [],
+  formalities: storedEnums?.formalities ?? [],
   enumsLoading: false,
 };
 
@@ -75,11 +77,18 @@ function EnumProvider({ children }) {
   ] = useReducer(reducer, initialState);
   const { isAuthenticated } = useAuth();
 
+  useEffect(() => {
+    localStorage.setItem(
+      "venbuk_enums",
+      JSON.stringify({ memberRoles, wordClasses, placements, regularities, pluralities, persons, formalities }),
+    );
+  }, [memberRoles, wordClasses, placements, regularities, pluralities, persons, formalities]);
+
   async function setupEnums() {
     dispatch({ type: "loading" });
 
     try {
-      const res = apiFetch(`${BASE_URL}/enums`, GetOptions);
+      const res = await apiFetch(`${BASE_URL}/enums`, GetOptions);
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Enums not found`);
@@ -111,7 +120,7 @@ function EnumProvider({ children }) {
         dispatch({ type: "completed" });
         throw new Error(`Enum not found: ${enumName}`);
       }
-      const data = res.json();
+      const data = await res.json();
 
       dispatch({ type: enumName, payload: data });
     } catch (fetchError) {

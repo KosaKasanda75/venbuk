@@ -30,8 +30,8 @@ function WordResult() {
         if (!res.ok) {
           const err = await res.json();
           setLoading(false);
-          // throw new Error(err.detail ?? `HTTP ${res.status}`);
           console.error(err.detail ?? `HTTP ${res.status}`);
+          return;
         }
         const data = await res.json();
         setData(data);

@@ -33,7 +33,7 @@
 
 .autocompletedTextBox {
   width: 100%;
-  line-height: 2;
+  /* line-height: 2; */
 }
 
 .autocompleteOptions {
@@ -41,7 +41,7 @@
   background-color: #eee;
   width: 100%;
   max-height: 10rem;
-  height: 10rem;
+  /* height: 10rem; */
 
   position: absolute;
   top: 2rem;

@@ -6,6 +6,7 @@
   border: none;
   background-color: blue;
   padding: 0.8rem;
+  cursor: pointer;
 }
 
 .addMore {

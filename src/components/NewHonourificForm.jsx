@@ -9,7 +9,7 @@ function NewHonorificForm() {
   return (
     <form className={styles.formBox}>
       <div className={styles.oneLineField}>
-        <label for="honorificTextInput">Honorific</label>
+        <label htmlFor="honorificTextInput">Honorific</label>
         <input
           className={styles.oneLineTextBox}
           type="text"
@@ -18,14 +18,14 @@ function NewHonorificForm() {
       </div>
 
       <div className={styles.oneLineField}>
-        <label for="honorificPositionSelect">Placement</label>
+        <label htmlFor="honorificPositionSelect">Placement</label>
         <select id="honorificPositionSelect">
           <option value={1}>1</option>
         </select>
       </div>
 
       <div>
-        <label for="honorificDescription">Significance</label>
+        <label htmlFor="honorificDescription">Significance</label>
         <br />
         <textarea
           className={styles.largeTextBox}
@@ -38,7 +38,7 @@ function NewHonorificForm() {
       </div>
 
       <div>
-        <label for="honorificExampleUse">Example Use</label>
+        <label htmlFor="honorificExampleUse">Example Use</label>
         <br />
         <textarea
           className={styles.largeTextBox}

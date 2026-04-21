@@ -5,7 +5,7 @@ function NewConjugationForm() {
   return (
     <form className={styles.formBox}>
       <div>
-        <label for="rootWordText">Root Word/Infinitve</label>
+        <label htmlFor="rootWordText">Root Word/Infinitve</label>
         <br />
         <input
           className={styles.smallerTextBox}
@@ -15,7 +15,7 @@ function NewConjugationForm() {
       </div>
 
       <div className={styles.oneLineField}>
-        <label for="identifierType">Identifier</label>
+        <label htmlFor="identifierType">Identifier</label>
         <select id="identifierType">
           <option value={1}>1</option>
         </select>

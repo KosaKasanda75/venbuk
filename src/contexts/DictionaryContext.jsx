@@ -17,14 +17,25 @@ const BASE_URL = "http://localhost:8000";
 const camelToSnakeCase = (str) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
+const storedDictionary = JSON.parse(
+  localStorage.getItem("venbuk_dictionary") || "null",
+);
+const storedNounClasses = JSON.parse(
+  localStorage.getItem("venbuk_nounClasses") || "[]",
+);
+const storedGenders = JSON.parse(
+  localStorage.getItem("venbuk_genders") || "[]",
+);
+const storedTags = JSON.parse(localStorage.getItem("venbuk_tags") || "[]");
+
 const initialState = {
-  dictionary: null,
-  dictionaryExists: false,
+  dictionary: storedDictionary,
+  dictionaryExists: !!storedDictionary,
   dictionaryList: null,
-  isMember: null,
-  nounClasses: [],
-  genders: [],
-  tags: [],
+  isMember: storedDictionary ? true : null,
+  nounClasses: storedNounClasses,
+  genders: storedGenders,
+  tags: storedTags,
   tenses: [],
   dictionaryLoading: false,
 };
@@ -119,6 +130,20 @@ function DictionaryProvider({ children }) {
   ] = useReducer(reducer, initialState);
   const { isAuthenticated } = useAuth();
 
+  useEffect(() => {
+    if (dictionary) {
+      localStorage.setItem("venbuk_dictionary", JSON.stringify(dictionary));
+    } else {
+      localStorage.removeItem("venbuk_dictionary");
+    }
+  }, [dictionary]);
+
+  useEffect(() => {
+    localStorage.setItem("venbuk_nounClasses", JSON.stringify(nounClasses));
+    localStorage.setItem("venbuk_genders", JSON.stringify(genders));
+    localStorage.setItem("venbuk_tags", JSON.stringify(tags));
+  }, [nounClasses, genders, tags]);
+
   async function createDictionary(dictionaryForm) {
     const body = JSON.stringify(dictionaryForm);
 
@@ -186,12 +211,12 @@ function DictionaryProvider({ children }) {
     }
   }
 
-  async function getDictionary() {
+  async function getDictionary(dictionaryId) {
     dispatch({ type: "loading" });
     // Fetch
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}`,
+        `${BASE_URL}/dictionaries/${dictionaryId}`,
         GetOptions,
       );
       // const data = await res.json();
@@ -209,8 +234,7 @@ function DictionaryProvider({ children }) {
         dispatch({ type: "get", payload: data });
       }
 
-      // const theDictionary = dictionaryId;
-      getAllMetadata();
+      getAllMetadata(dictionaryId);
     } catch (fetchError) {
       console.log(fetchError);
     }
@@ -272,12 +296,12 @@ function DictionaryProvider({ children }) {
     }
   }, []);
 
-  async function getAllMetadata() {
+  async function getAllMetadata(dictionaryId) {
     dispatch({ type: "loading" });
 
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}/metadata`,
+        `${BASE_URL}/dictionaries/${dictionaryId}/metadata`,
         GetOptions,
       );
       // const data = await res.json();
@@ -301,6 +325,7 @@ function DictionaryProvider({ children }) {
             tenses: data.tenses,
           },
         });
+        console.log(data);
       }
     } catch (fetchError) {
       console.log(fetchError);
@@ -385,6 +410,14 @@ function DictionaryProvider({ children }) {
     },
     [dictionaryList, dictionary],
   );
+
+  useEffect(() => {
+    if (dictionary) {
+      localStorage.setItem("venbuk_dictionary", JSON.stringify(dictionary));
+    } else {
+      localStorage.removeItem("venbuk_dictionary");
+    }
+  }, [dictionary]);
 
   async function readMetadata(resource) {
     try {
@@ -471,6 +504,12 @@ function DictionaryProvider({ children }) {
       console.log(fetchError);
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("venbuk_nounClasses", JSON.stringify(nounClasses));
+    localStorage.setItem("venbuk_genders", JSON.stringify(genders));
+    localStorage.setItem("venbuk_tags", JSON.stringify(tags));
+  }, [nounClasses, genders, tags]);
 
   return (
     <DictionaryContext.Provider
