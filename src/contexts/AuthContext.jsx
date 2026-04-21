@@ -3,6 +3,7 @@ import apiFetch from "../helpers/fetchWrapper";
 import { GetOptions, PostOptions } from "../helpers/fetchOptions";
 
 const AuthContext = createContext();
+// wrong input field for long text
 
 const BASE_URL = "http://localhost:8000";
 // const BASE_URL = "https://www.api.venbuk.com";
@@ -46,25 +47,29 @@ function AuthProvider({ children }) {
   );
 
   async function getUser() {
-    return await apiFetch(`${BASE_URL}/users/me`, { ...GetOptions });
+    return await fetch(`${BASE_URL}/users/me`, GetOptions);
   }
 
   useEffect(function () {
     async function verifyUser() {
-      const res = await getUser();
+      try {
+        const res = await getUser();
 
-      // const data = await res.json();
-      // console.log(data);
-      if (!res.ok) {
-        const err = await res.json();
-        console.log(err.detail); // string, or array for validation errors (422)
-        dispatch({ type: "completed" });
-        return;
-      }
-      if (res.status !== 204) {
-        const data = await res.json();
-        // dispatch({ type: "login", payload: userData });
-        dispatch({ type: "verify", payload: data });
+        // const data = await res.json();
+        // console.log(data);
+        if (!res.ok) {
+          const err = await res.json();
+          console.log(err.detail); // string, or array for validation errors (422)
+          dispatch({ type: "completed" });
+          return;
+        }
+        if (res.status !== 204) {
+          const data = await res.json();
+          // dispatch({ type: "login", payload: userData });
+          dispatch({ type: "verify", payload: data });
+        }
+      } catch (fetchError) {
+        console.log(fetchError);
       }
     }
     verifyUser();
@@ -72,93 +77,106 @@ function AuthProvider({ children }) {
 
   async function login(email, password) {
     dispatch({ type: "loading" });
-    // Fetch request
-    const body = JSON.stringify({ email, password });
+    try {
+      // Fetch request
+      const body = JSON.stringify({ email, password });
 
-    const registerRes = await apiFetch(`${BASE_URL}/auth/login`, {
-      ...PostOptions,
-      body,
-    });
-    // const registerData = await registerRes.json();
-    // console.log(registerData);
+      const registerRes = await apiFetch(`${BASE_URL}/auth/login`, {
+        ...PostOptions,
+        body,
+      });
+      // const registerData = await registerRes.json();
+      // console.log(registerData);
 
-    if (!registerRes.ok) {
-      const err = await registerRes.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
+      if (!registerRes.ok) {
+        const err = await registerRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+
+      const userRes = await getUser();
+      if (!userRes.ok) {
+        const err = await userRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+      if (userRes.status !== 204) {
+        const userData = await userRes.json();
+        dispatch({ type: "login", payload: userData });
+        return userData;
+      }
+      // const userData = userRes.json();
+      // console.log(userData);
+
+      // const loggedInUser = { email, password };
+      // if (email === FAKE_USER.email && password === FAKE_USER.password)
+
+      // dispatch({ type: "login", payload: userData });
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-
-    const userRes = getUser();
-    if (!userRes.ok) {
-      const err = await userRes.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
-    if (userRes.status !== 204) {
-      const userData = await userRes.json();
-      dispatch({ type: "login", payload: userData });
-    }
-    // const userData = userRes.json();
-    // console.log(userData);
-
-    // const loggedInUser = { email, password };
-    // if (email === FAKE_USER.email && password === FAKE_USER.password)
-
-    // dispatch({ type: "login", payload: userData });
   }
 
   async function register(email, username, password) {
     dispatch({ type: "loading" });
     // Fetch request
-    const body = JSON.stringify({ username, email, password });
+    try {
+      const body = JSON.stringify({ username, email, password });
 
-    const registerRes = await apiFetch(`${BASE_URL}/auth/register`, {
-      ...PostOptions,
-      body,
-    });
-    // const registerData = await registerRes.json();
-    // console.log(registerData);
-    if (!registerRes.ok) {
-      const err = await registerRes.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
+      const registerRes = await apiFetch(`${BASE_URL}/auth/register`, {
+        ...PostOptions,
+        body,
+      });
+      // const registerData = await registerRes.json();
+      // console.log(registerData);
+      if (!registerRes.ok) {
+        const err = await registerRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+
+      const userRes = await getUser();
+      if (!userRes.ok) {
+        const err = await userRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+      if (userRes.status !== 204) {
+        const userData = await userRes.json();
+        dispatch({ type: "register", payload: userData });
+      }
+
+      // const userRes = getUser();
+      // const userData = userRes.json();
+      // console.log(userData);
+
+      // dispatch({ type: "register", payload: userData });
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-
-    const userRes = getUser();
-    if (!userRes.ok) {
-      const err = await userRes.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
-    if (userRes.status !== 204) {
-      const userData = await userRes.json();
-      dispatch({ type: "register", payload: userData });
-    }
-
-    // const userRes = getUser();
-    // const userData = userRes.json();
-    // console.log(userData);
-
-    // dispatch({ type: "register", payload: userData });
   }
 
   async function logout() {
     dispatch({ type: "loading" });
     // Fetch request
-    const registerRes = await apiFetch(`${BASE_URL}/auth/logout`, {
-      ...PostOptions,
-    });
-    // const registerData = await registerRes.json();
-    // console.log(registerData);
-    if (!registerRes.ok) {
-      const err = await registerRes.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
+    try {
+      const registerRes = await apiFetch(`${BASE_URL}/auth/logout`, {
+        ...PostOptions,
+      });
+      // const registerData = await registerRes.json();
+      // console.log(registerData);
+      if (!registerRes.ok) {
+        const err = await registerRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
     }
 
     dispatch({ type: "logout" });

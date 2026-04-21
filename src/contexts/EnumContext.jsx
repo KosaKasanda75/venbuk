@@ -78,14 +78,18 @@ function EnumProvider({ children }) {
   async function setupEnums() {
     dispatch({ type: "loading" });
 
-    const res = apiFetch(`${BASE_URL}/enums`, GetOptions);
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Enums not found`);
-    }
-    const data = await res.json();
+    try {
+      const res = apiFetch(`${BASE_URL}/enums`, GetOptions);
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Enums not found`);
+      }
+      const data = await res.json();
 
-    dispatch({ type: "setup", payload: data });
+      dispatch({ type: "setup", payload: data });
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   useEffect(
@@ -98,17 +102,21 @@ function EnumProvider({ children }) {
   async function getEnum(enumName) {
     dispatch({ type: "loading" });
 
-    const res = await fetch(
-      `${BASE_URL}/enums/${camelToSnakeCase(enumName)}`,
-      GetOptions,
-    );
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Enum not found: ${enumName}`);
-    }
-    const data = res.json();
+    try {
+      const res = await fetch(
+        `${BASE_URL}/enums/${camelToSnakeCase(enumName)}`,
+        GetOptions,
+      );
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Enum not found: ${enumName}`);
+      }
+      const data = res.json();
 
-    dispatch({ type: enumName, payload: data });
+      dispatch({ type: enumName, payload: data });
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   return (

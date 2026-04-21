@@ -5,6 +5,7 @@ import useDictionary from "../hooks/useDictionary";
 import { PostOptions } from "../helpers/fetchOptions";
 import { useState } from "react";
 import useEnum from "../hooks/useEnum";
+import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
 function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();
@@ -12,6 +13,7 @@ function NewWordForm() {
   const [spelling, setSpelling] = useState("");
   const [wordClass, setWordClass] = useState(null);
   const [definition, setDefinition] = useState("");
+  const [example, setExample] = useState("");
   const [nounClassId, setNounClassId] = useState(null);
   const [genderId, setGenderId] = useState(null);
   const [tagQuery, setTagQuery] = useState("");
@@ -99,23 +101,27 @@ function NewWordForm() {
         <div>
           <label for="wordDefinition">Definition</label>
           <br />
-          <input
-            className={styles.largerTextBox}
+          <textarea
+            className={styles.largeTextBox}
             type="text"
             id="wordDefinition"
+            rows={LARGE_TEXT_AREA_ROWS}
             value={definition}
             onChange={(e) => setDefinition(e.target.value)}
-          />
+          ></textarea>
         </div>
 
         <div>
           <label for="wordExampleUse">Example Sentence</label>
           <br />
-          <input
-            className={styles.largerTextBox}
+          <textarea
+            className={styles.largeTextBox}
             type="text"
             id="wordExampleUse"
-          />
+            rows={LARGE_TEXT_AREA_ROWS}
+            value={example}
+            onChange={(e) => setExample(e.target.value)}
+          ></textarea>
         </div>
 
         <div className={styles.oneLineField}>

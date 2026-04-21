@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "./Button";
 import styles from "./MetadataDetails.module.css";
 import RequiredField from "./RequiredField";
+import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
 function AddDictionary({
   dictionaryInfo,
@@ -38,13 +39,14 @@ function AddDictionary({
         <div>
           <label>Description</label>
           <br />
-          <input
+          <textarea
             className={styles.largeTextBox}
             type="text"
             id="description"
+            rows={LARGE_TEXT_AREA_ROWS}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
+          ></textarea>
         </div>
       </form>
       <div className={styles.buttonBox}>

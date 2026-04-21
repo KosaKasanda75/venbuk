@@ -1,0 +1,3 @@
+const LARGE_TEXT_AREA_ROWS = 4;
+
+export { LARGE_TEXT_AREA_ROWS };

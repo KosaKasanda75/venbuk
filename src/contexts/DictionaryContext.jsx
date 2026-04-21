@@ -124,166 +124,186 @@ function DictionaryProvider({ children }) {
 
     dispatch({ type: "loading" });
     // Fetch to create
-    const res = await apiFetch(`${BASE_URL}/dictionaries`, {
-      ...PostOptions,
-      body,
-    });
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
-
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const newDictionary = await res.json();
-
-      // Fetch new list of all dictionaries
-      const resList = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
-      if (!resList.ok) {
-        const err = await resList.json();
+    try {
+      const res = await apiFetch(`${BASE_URL}/dictionaries`, {
+        ...PostOptions,
+        body,
+      });
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
         console.log(err.detail); // string, or array for validation errors (422)
         dispatch({ type: "completed" });
         return;
       }
-      if (resList.status !== 204) {
-        const newDictionaryList = await resList.json();
-        dispatch({
-          type: "create",
-          payload: {
-            newDictionary,
-            newDictionaryList,
-          },
-        });
-      } else {
-        dispatch({
-          type: "create",
-          payload: {
-            newDictionary,
-            newDictionaryList: dictionaryList,
-          },
-        });
+
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const newDictionary = await res.json();
+
+        // Fetch new list of all dictionaries
+        const resList = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
+        if (!resList.ok) {
+          const err = await resList.json();
+          console.log(err.detail); // string, or array for validation errors (422)
+          dispatch({ type: "completed" });
+          return;
+        }
+        if (resList.status !== 204) {
+          const newDictionaryList = await resList.json();
+          dispatch({
+            type: "create",
+            payload: {
+              newDictionary,
+              newDictionaryList,
+            },
+          });
+        } else {
+          dispatch({
+            type: "create",
+            payload: {
+              newDictionary,
+              newDictionaryList: dictionaryList,
+            },
+          });
+        }
       }
+      // const theDictionary = dictionaryForm;
+
+      // const theDictionaryList = dictionaryForm;
+      // dispatch({
+      //   type: "create",
+      //   payload: {
+      //     newDictionary: theDictionary,
+      //     newDictionaryList: theDictionaryList,
+      //   },
+      // });
+
+      // Fetch to get all
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-    // const theDictionary = dictionaryForm;
-
-    // const theDictionaryList = dictionaryForm;
-    // dispatch({
-    //   type: "create",
-    //   payload: {
-    //     newDictionary: theDictionary,
-    //     newDictionaryList: theDictionaryList,
-    //   },
-    // });
-
-    // Fetch to get all
   }
 
   async function getDictionary() {
     dispatch({ type: "loading" });
     // Fetch
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}`,
-      GetOptions,
-    );
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}`,
+        GetOptions,
+      );
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const data = await res.json();
-      dispatch({ type: "get", payload: data });
-    }
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const data = await res.json();
+        dispatch({ type: "get", payload: data });
+      }
 
-    // const theDictionary = dictionaryId;
-    getAllMetadata();
+      // const theDictionary = dictionaryId;
+      getAllMetadata();
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   async function getDictionaryInfo(dictionaryId) {
     dispatch({ type: "loading" });
     // Fetch
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionaryId}`,
-      GetOptions,
-    );
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionaryId}`,
+        GetOptions,
+      );
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const data = await res.json();
-      dispatch({ type: "completed" });
-      return data;
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const data = await res.json();
+        dispatch({ type: "completed" });
+        return data;
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
     }
   }
 
   const getDictionaryList = useCallback(async function () {
     dispatch({ type: "loading" });
     // Fetch
-    const res = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      const res = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const data = await res.json();
-      dispatch({ type: "getAll", payload: data });
-    }
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const data = await res.json();
+        dispatch({ type: "getAll", payload: data });
+      }
 
-    // const theDictionary = [];
-    // dispatch({ type: "getAll", payload: theDictionary });
-    // return data;
+      // const theDictionary = [];
+      // dispatch({ type: "getAll", payload: theDictionary });
+      // return data;
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }, []);
 
   async function getAllMetadata() {
     dispatch({ type: "loading" });
 
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/metadata`,
-      GetOptions,
-    );
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}/metadata`,
+        GetOptions,
+      );
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const data = await res.json();
-      dispatch({
-        type: "getMetadata",
-        payload: {
-          nounClasses: data.noun_classes,
-          genders: data.genders,
-          tags: data.tags,
-          tenses: data.tenses,
-        },
-      });
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const data = await res.json();
+        dispatch({
+          type: "getAllMetadata",
+          payload: {
+            nounClasses: data.noun_classes,
+            genders: data.genders,
+            tags: data.tags,
+            tenses: data.tenses,
+          },
+        });
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
     }
   }
 
@@ -294,49 +314,57 @@ function DictionaryProvider({ children }) {
       language: "",
     });
 
-    dispatch({ type: "loading" });
-    // Fetch to create
-    const res = await apiFetch(`${BASE_URL}/dictionaries/${dictionaryId}`, {
-      ...PutOptions,
-      body,
-    });
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      dispatch({ type: "loading" });
+      // Fetch to create
+      const res = await apiFetch(`${BASE_URL}/dictionaries/${dictionaryId}`, {
+        ...PutOptions,
+        body,
+      });
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
-    if (res.status !== 204) {
-      const data = await res.json();
-      dispatch({ type: "update", payload: data });
-    }
+      // 204 responses (DELETE, login, logout, refresh) have no body — do NOT call res.json()
+      if (res.status !== 204) {
+        const data = await res.json();
+        dispatch({ type: "update", payload: data });
+      }
 
-    // const theDictionary = dictionaryForm;
-    // dispatch({ type: "update", payload: theDictionary });
+      // const theDictionary = dictionaryForm;
+      // dispatch({ type: "update", payload: theDictionary });
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   async function deleteDictionary(dictionaryId) {
     dispatch({ type: "loading" });
     // Fetch
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionaryId}`,
-      DeleteOptions,
-    );
-    // const data = await res.json();
-    // console.log(data);
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail); // string, or array for validation errors (422)
-      dispatch({ type: "completed" });
-      return;
-    }
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionaryId}`,
+        DeleteOptions,
+      );
+      // const data = await res.json();
+      // console.log(data);
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
 
-    dispatch({ type: "delete" });
-    getDictionaryList();
+      dispatch({ type: "delete" });
+      getDictionaryList();
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   useEffect(
@@ -348,80 +376,100 @@ function DictionaryProvider({ children }) {
 
   useEffect(
     function () {
-      if (!dictionaryList.some((dict) => dict.id === dictionary.id))
+      if (
+        dictionary &&
+        dictionaryList &&
+        !dictionaryList?.some((dict) => dict.id === dictionary.id)
+      )
         dispatch({ type: "delete" });
     },
     [dictionaryList, dictionary],
   );
 
   async function readMetadata(resource) {
-    dispatch({ type: "loading" });
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
-      GetOptions,
-    );
+    try {
+      dispatch({ type: "loading" });
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
+        GetOptions,
+      );
 
-    if (res.status === 204) return null;
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Failed to read ${resource} → ${res.status}`);
+      if (res.status === 204) return null;
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Failed to read ${resource} → ${res.status}`);
+      }
+      const data = res.json();
+      console.log(data);
+
+      dispatch({ type: `${resource}Read`, payload: data });
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-    const data = res.json();
-    console.log(data);
-
-    dispatch({ type: `${resource}Read`, payload: data });
   }
 
   async function createMetadata(resource, body) {
-    dispatch({ type: "loading" });
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
-      { ...PostOptions, body: JSON.stringify(body) },
-    );
+    try {
+      dispatch({ type: "loading" });
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
+        { ...PostOptions, body: JSON.stringify(body) },
+      );
 
-    if (res.status === 204) return null;
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Failed to create ${resource} → ${res.status}`);
+      if (res.status === 204) return null;
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Failed to create ${resource} → ${res.status}`);
+      }
+      const data = res.json();
+      console.log(data);
+
+      await readMetadata(resource);
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-    const data = res.json();
-    console.log(data);
-
-    await readMetadata(resource);
   }
 
   async function updateMetadata(resource, itemId, body) {
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
-      { ...PutOptions, body: JSON.stringify(body) },
-    );
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
+        { ...PutOptions, body: JSON.stringify(body) },
+      );
 
-    if (res.status === 204) return null;
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Failed to update ${resource} → ${res.status}`);
+      if (res.status === 204) return null;
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Failed to update ${resource} → ${res.status}`);
+      }
+      const data = res.json();
+      console.log(data);
+
+      await readMetadata(resource);
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-    const data = res.json();
-    console.log(data);
-
-    await readMetadata(resource);
   }
 
   async function deleteMetadata(resource, itemId) {
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
-      DeleteOptions,
-    );
+    try {
+      const res = await apiFetch(
+        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
+        DeleteOptions,
+      );
 
-    if (res.status === 204) return null;
-    if (!res.ok) {
-      dispatch({ type: "completed" });
-      throw new Error(`Failed to delete ${resource} → ${res.status}`);
+      if (res.status === 204) return null;
+      if (!res.ok) {
+        dispatch({ type: "completed" });
+        throw new Error(`Failed to delete ${resource} → ${res.status}`);
+      }
+      // const data = res.json();
+      // console.log(data);
+
+      await readMetadata(resource);
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-    // const data = res.json();
-    // console.log(data);
-
-    await readMetadata(resource);
   }
 
   return (

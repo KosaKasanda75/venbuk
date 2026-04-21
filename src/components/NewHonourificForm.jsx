@@ -1,6 +1,11 @@
+import { useState } from "react";
+import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 import styles from "./NewWordForm.module.css";
 
 function NewHonorificForm() {
+  const [description, setDescription] = useState("");
+  const [example, setExample] = useState("");
+
   return (
     <form className={styles.formBox}>
       <div className={styles.oneLineField}>
@@ -22,21 +27,27 @@ function NewHonorificForm() {
       <div>
         <label for="honorificDescription">Significance</label>
         <br />
-        <input
-          className={styles.largerTextBox}
+        <textarea
+          className={styles.largeTextBox}
           type="text"
           id="honorificDescription"
-        />
+          rows={LARGE_TEXT_AREA_ROWS}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
       </div>
 
       <div>
         <label for="honorificExampleUse">Example Use</label>
         <br />
-        <input
-          className={styles.largerTextBox}
+        <textarea
+          className={styles.largeTextBox}
           type="text"
           id="honorificExampleUse"
-        />
+          rows={LARGE_TEXT_AREA_ROWS}
+          value={example}
+          onChange={(e) => setExample(e.target.value)}
+        ></textarea>
       </div>
     </form>
   );
