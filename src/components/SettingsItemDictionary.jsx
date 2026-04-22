@@ -5,8 +5,7 @@ import useDictionary from "../hooks/useDictionary";
 
 function SettingsItemDictionary({ item, editMode, toEditPage }) {
   const { dictionary, getDictionary } = useDictionary();
-  console.log(item);
-  console.log(dictionary);
+
   return (
     <li className={styles.settingsItem} key={item.id}>
       <div className={styles.settingsItemName}>

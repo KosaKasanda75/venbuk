@@ -3,25 +3,20 @@ import styles from "./SettingsList.module.css";
 
 function SettingsItemMeta({ item, editMode, toEditPage, description }) {
   return (
-    <li className={styles.settingsItem} key={item}>
+    <li className={styles.settingsItem} key={item.id}>
       <div>
         <p className={styles.settingsItemName}>
-          {item.charAt(0).toUpperCase() + item.slice(1)}
+          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
         </p>
         {description && (
           <p className={styles.settingsItemDescription}>
-            This is the associated description of this tag for your info
+            This is the associated description of this tag for your info{" "}
+            {item.description}
           </p>
         )}
       </div>
       {editMode && (
-        <TbPencilMinus
-          className={styles.editIcon}
-          onClick={() => {
-            toEditPage(item);
-            // This function should be editPage(item){1) set some context variable on edit page 2)navigate to appropriate edit page}
-          }}
-        />
+        <TbPencilMinus className={styles.editIcon} onClick={toEditPage} />
       )}
     </li>
   );

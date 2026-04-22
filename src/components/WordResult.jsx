@@ -7,8 +7,8 @@ import apiFetch from "../helpers/fetchWrapper";
 import { GetOptions } from "../helpers/fetchOptions";
 import useDictionary from "../hooks/useDictionary";
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 function WordResult() {
   // const data = useLoaderData();
@@ -24,7 +24,7 @@ function WordResult() {
         setLoading(true);
 
         const res = await apiFetch(
-          `${BASE_URL}/dictionaries/${dictionary.id}/words/${id}`,
+          `${API_URL}/dictionaries/${dictionary.id}/words/${id}`,
           GetOptions,
         );
         if (!res.ok) {

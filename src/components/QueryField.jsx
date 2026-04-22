@@ -5,8 +5,8 @@ import apiFetch from "../helpers/fetchWrapper";
 import useDictionary from "../hooks/useDictionary";
 import { GetOptions } from "../helpers/fetchOptions";
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 function QueryField() {
   const navigate = useNavigate();
@@ -14,58 +14,68 @@ function QueryField() {
   const [suggestedWords, setSuggestedWords] = useState([]);
   const { dictionary } = useDictionary();
 
-  async function findMatchingWords() {
-    // if (query.length < 3) return;
-
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(query)}`,
-      GetOptions,
-    );
-    if (!res.ok) {
-      const err = await res.json();
-      console.log(err.detail ?? `HTTP ${res.status}`);
+  async function findMatchingWords(currentQuery) {
+    if (currentQuery.length < 2) {
+      setSuggestedWords([]);
       return;
     }
 
-    const data = await res.json(); // array of words, sorted alphabetically
-    setSuggestedWords(data);
+    try {
+      const res = await apiFetch(
+        `${API_URL}/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(currentQuery)}`,
+        GetOptions,
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail ?? `HTTP ${res.status}`);
+        return;
+      }
+
+      const data = await res.json(); // array of words, sorted alphabetically
+      setSuggestedWords(data);
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
   }
 
   return (
-    <div className={styles.container}>
-      <form className={styles.queryBox}>
-        <label className={styles.searchLabel} htmlFor="searchText">
-          Search
-        </label>
-        <input
-          type="text"
-          className={styles.inputField}
-          id="searchText"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            findMatchingWords();
-          }}
-        />
-      </form>
+    <>
+      <p className={styles.dictionaryName}>{dictionary.name} Dictionary</p>
+      <div className={styles.container}>
+        <form className={styles.queryBox}>
+          <label className={styles.searchLabel} htmlFor="searchText">
+            Search
+          </label>
+          <input
+            type="text"
+            className={styles.inputField}
+            id="searchText"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              findMatchingWords(e.target.value);
+            }}
+          />
+        </form>
 
-      {suggestedWords && (
-        <ul className={styles.suggestedResults}>
-          {suggestedWords.map((word) => (
-            <li
-              className={styles.suggestedResult}
-              onClick={() => navigate(`/search/results/${word.id}`)}
-            >
-              <p className={styles.suggestedWord}>
-                <em>{word.spelling}</em>
-              </p>
-              <p className={styles.suggestedDefinition}>
-                <strong>{word.word_class}: </strong>
-                {word.definition}
-              </p>
-            </li>
-          ))}
-          {/* <li
+        {suggestedWords && (
+          <ul className={styles.suggestedResults}>
+            {suggestedWords.map((word) => (
+              <li
+                className={styles.suggestedResult}
+                key={word.id}
+                onClick={() => navigate(`/search/results/${word.id}`)}
+              >
+                <p className={styles.suggestedWord}>
+                  <em>{word.spelling}</em>
+                </p>
+                <p className={styles.suggestedDefinition}>
+                  <strong>{word.word_class}: </strong>
+                  {word.definition}
+                </p>
+              </li>
+            ))}
+            {/* <li
           className={styles.suggestedResult}
           onClick={() => navigate("/search/result")}
         >
@@ -74,9 +84,10 @@ function QueryField() {
           </p>
           <p className={styles.suggestedDefinition}>This is a definition</p>
         </li> */}
-        </ul>
-      )}
-    </div>
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
 

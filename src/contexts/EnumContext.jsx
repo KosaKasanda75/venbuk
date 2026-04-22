@@ -5,8 +5,8 @@ import { GetOptions } from "../helpers/fetchOptions";
 
 const EnumContext = createContext();
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 const camelToSnakeCase = (str) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
@@ -80,15 +80,31 @@ function EnumProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(
       "venbuk_enums",
-      JSON.stringify({ memberRoles, wordClasses, placements, regularities, pluralities, persons, formalities }),
+      JSON.stringify({
+        memberRoles,
+        wordClasses,
+        placements,
+        regularities,
+        pluralities,
+        persons,
+        formalities,
+      }),
     );
-  }, [memberRoles, wordClasses, placements, regularities, pluralities, persons, formalities]);
+  }, [
+    memberRoles,
+    wordClasses,
+    placements,
+    regularities,
+    pluralities,
+    persons,
+    formalities,
+  ]);
 
   async function setupEnums() {
     dispatch({ type: "loading" });
 
     try {
-      const res = await apiFetch(`${BASE_URL}/enums`, GetOptions);
+      const res = await apiFetch(`${API_URL}/enums`, GetOptions);
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Enums not found`);
@@ -113,7 +129,7 @@ function EnumProvider({ children }) {
 
     try {
       const res = await fetch(
-        `${BASE_URL}/enums/${camelToSnakeCase(enumName)}`,
+        `${API_URL}/enums/${camelToSnakeCase(enumName)}`,
         GetOptions,
       );
       if (!res.ok) {

@@ -11,11 +11,14 @@ import {
 const DictionaryContext = createContext();
 // TO DO: Create dictionary refresh (check membership updates)
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
-const camelToSnakeCase = (str) =>
-  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+// const camelToSnakeCase = (str) =>
+//   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+
+const camelToUrlCase = (str) =>
+  str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 
 const storedDictionary = JSON.parse(
   localStorage.getItem("venbuk_dictionary") || "null",
@@ -150,7 +153,7 @@ function DictionaryProvider({ children }) {
     dispatch({ type: "loading" });
     // Fetch to create
     try {
-      const res = await apiFetch(`${BASE_URL}/dictionaries`, {
+      const res = await apiFetch(`${API_URL}/dictionaries`, {
         ...PostOptions,
         body,
       });
@@ -168,7 +171,7 @@ function DictionaryProvider({ children }) {
         const newDictionary = await res.json();
 
         // Fetch new list of all dictionaries
-        const resList = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
+        const resList = await apiFetch(`${API_URL}/dictionaries`, GetOptions);
         if (!resList.ok) {
           const err = await resList.json();
           console.log(err.detail); // string, or array for validation errors (422)
@@ -216,7 +219,7 @@ function DictionaryProvider({ children }) {
     // Fetch
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionaryId}`,
+        `${API_URL}/dictionaries/${dictionaryId}`,
         GetOptions,
       );
       // const data = await res.json();
@@ -245,7 +248,7 @@ function DictionaryProvider({ children }) {
     // Fetch
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionaryId}`,
+        `${API_URL}/dictionaries/${dictionaryId}`,
         GetOptions,
       );
       // const data = await res.json();
@@ -272,7 +275,7 @@ function DictionaryProvider({ children }) {
     dispatch({ type: "loading" });
     // Fetch
     try {
-      const res = await apiFetch(`${BASE_URL}/dictionaries`, GetOptions);
+      const res = await apiFetch(`${API_URL}/dictionaries`, GetOptions);
       // const data = await res.json();
       // console.log(data);
       if (!res.ok) {
@@ -301,7 +304,7 @@ function DictionaryProvider({ children }) {
 
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionaryId}/metadata`,
+        `${API_URL}/dictionaries/${dictionaryId}/metadata`,
         GetOptions,
       );
       // const data = await res.json();
@@ -342,7 +345,7 @@ function DictionaryProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       // Fetch to create
-      const res = await apiFetch(`${BASE_URL}/dictionaries/${dictionaryId}`, {
+      const res = await apiFetch(`${API_URL}/dictionaries/${dictionaryId}`, {
         ...PutOptions,
         body,
       });
@@ -373,7 +376,7 @@ function DictionaryProvider({ children }) {
     // Fetch
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionaryId}`,
+        `${API_URL}/dictionaries/${dictionaryId}`,
         DeleteOptions,
       );
       // const data = await res.json();
@@ -401,6 +404,14 @@ function DictionaryProvider({ children }) {
 
   useEffect(
     function () {
+      if (isAuthenticated && dictionary) getAllMetadata(dictionary.id);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isAuthenticated, dictionary?.id],
+  );
+
+  useEffect(
+    function () {
       if (
         dictionary &&
         dictionaryList &&
@@ -423,7 +434,7 @@ function DictionaryProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
+        `${API_URL}/dictionaries/${dictionary.id}/${camelToUrlCase(resource)}`,
         GetOptions,
       );
 
@@ -432,8 +443,7 @@ function DictionaryProvider({ children }) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to read ${resource} → ${res.status}`);
       }
-      const data = res.json();
-      console.log(data);
+      const data = await res.json();
 
       dispatch({ type: `${resource}Read`, payload: data });
     } catch (fetchError) {
@@ -445,7 +455,7 @@ function DictionaryProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}`,
+        `${API_URL}/dictionaries/${dictionary.id}/${camelToUrlCase(resource)}`,
         { ...PostOptions, body: JSON.stringify(body) },
       );
 
@@ -454,10 +464,11 @@ function DictionaryProvider({ children }) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to create ${resource} → ${res.status}`);
       }
-      const data = res.json();
-      console.log(data);
+      const data = await res.json();
 
       await readMetadata(resource);
+
+      return data;
     } catch (fetchError) {
       console.log(fetchError);
     }
@@ -466,7 +477,7 @@ function DictionaryProvider({ children }) {
   async function updateMetadata(resource, itemId, body) {
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
+        `${API_URL}/dictionaries/${dictionary.id}/${camelToUrlCase(resource)}/${itemId}`,
         { ...PutOptions, body: JSON.stringify(body) },
       );
 
@@ -475,10 +486,11 @@ function DictionaryProvider({ children }) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to update ${resource} → ${res.status}`);
       }
-      const data = res.json();
-      console.log(data);
+      const data = await res.json();
 
       await readMetadata(resource);
+
+      return data;
     } catch (fetchError) {
       console.log(fetchError);
     }
@@ -487,7 +499,7 @@ function DictionaryProvider({ children }) {
   async function deleteMetadata(resource, itemId) {
     try {
       const res = await apiFetch(
-        `${BASE_URL}/dictionaries/${dictionary.id}/${camelToSnakeCase(resource)}/${itemId}`,
+        `${API_URL}/dictionaries/${dictionary.id}/${camelToUrlCase(resource)}/${itemId}`,
         DeleteOptions,
       );
 

@@ -4,8 +4,8 @@ import WordResult from "./components/WordResult";
 import apiFetch from "./helpers/fetchWrapper";
 import { GetOptions } from "./helpers/fetchOptions";
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
         element: <WordResult />,
         loader: async ({ params }) => {
           const res = await apiFetch(
-            `${BASE_URL}/dictionaries/words/${params.id}`,
+            `${API_URL}/dictionaries/words/${params.id}`,
             GetOptions,
           );
           if (!res.ok) {

@@ -8,8 +8,8 @@ import { useState } from "react";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();
@@ -24,9 +24,6 @@ function NewWordForm() {
   const [genderId, setGenderId] = useState(genders?.at(0)?.id || null);
   const [tagQuery, setTagQuery] = useState("");
   const [tagIds, setTagIds] = useState([]);
-  console.log(wordClasses);
-  console.log(nounClassId);
-  console.log(genderId);
 
   function clearForm() {
     setSpelling("");
@@ -53,22 +50,25 @@ function NewWordForm() {
       ...(tagIds && { tag_ids: tagIds }),
     };
 
-    const res = await apiFetch(
-      `${BASE_URL}/dictionaries/${dictionary.id}/words/`,
-      {
-        ...PostOptions,
-        body: JSON.stringify(word),
-      },
-    );
+    try {
+      const res = await apiFetch(
+        `${API_URL}/dictionaries/${dictionary.id}/words/`,
+        {
+          ...PostOptions,
+          body: JSON.stringify(word),
+        },
+      );
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail ?? `HTTP ${res.status}`);
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail ?? `HTTP ${res.status}`);
+      }
+
+      const data = await res.json(); // returns WordRead
+      return data;
+    } catch (fetchError) {
+      console.log(fetchError);
     }
-
-    const data = await res.json(); // returns WordRead
-    console.log(data);
-    if (!data) return;
 
     // const wordData = {
     //   // Required
@@ -220,18 +220,25 @@ function NewWordForm() {
               value={tagQuery}
               onChange={(e) => setTagQuery(e.target.value)}
             />
-            <ul className={styles.autocompleteOptions}>
-              {tags
-                .filter((tag) => tag.name.includes(tagQuery))
-                .map((tag) => (
-                  <li
-                    key={tag.id}
-                    onClick={() => setTagIds((tagList) => [...tagList, tag.id])}
-                  >
-                    {tag.name}
-                  </li>
-                ))}
-            </ul>
+            {tagQuery && (
+              <ul className={styles.autocompleteOptions}>
+                {tags
+                  .filter((tag) =>
+                    tag.name.toLowerCase().includes(tagQuery.toLowerCase()),
+                  )
+                  .map((tag) => (
+                    <li
+                      key={tag.id}
+                      onClick={() => {
+                        setTagIds((tagList) => [...tagList, tag.id]);
+                        setTagQuery("");
+                      }}
+                    >
+                      {tag.name}
+                    </li>
+                  ))}
+              </ul>
+            )}
           </div>
         </div>
         <ul className={styles.selectedTags}>
@@ -239,17 +246,19 @@ function NewWordForm() {
             .filter((obj) => tagIds.includes(obj.id))
             .map((tag) => (
               <li key={tag.id}>
-                <p className={styles.tagText}>Tag</p>
+                <p className={styles.tagText}>{tag.name}</p>
                 <RxCross2
                   className={styles.tagIcon}
-                  onClick={() => tagIds.filter((id) => id != tag.id)}
+                  onClick={() =>
+                    setTagIds((ids) => ids.filter((id) => id !== tag.id))
+                  }
                 />
               </li>
             ))}
-          <li>
+          {/* <li>
             <p className={styles.tagText}>Tag</p>
             <RxCross2 className={styles.tagIcon} />
-          </li>
+          </li> */}
         </ul>
       </form>
       <Button type="central" onClick={handleSubmit}>

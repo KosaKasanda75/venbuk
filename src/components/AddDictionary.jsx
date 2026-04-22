@@ -18,8 +18,8 @@ function AddDictionary({
 
   return (
     <div>
-      {!dictionaryInfo && <h1>Add Tag</h1>}
-      {dictionaryInfo && <h1>Edit Tag</h1>}
+      {!dictionaryInfo && <h1>Add Deictionary</h1>}
+      {dictionaryInfo && <h1>Edit Deictionary</h1>}
       <form className={styles.formBox}>
         <div className={styles.formSection}>
           <label>

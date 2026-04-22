@@ -31,6 +31,7 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
   const [viewMode, setViewMode] = useState(true);
   const [metaInfo, setMetaInfo] = useState(null);
   const { createMetadata, updateMetadata, deleteMetadata } = useDictionary();
+  console.log("list", metaList);
 
   function handleAdd() {
     setViewMode(false);
@@ -73,15 +74,17 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
           toAddPage={handleAdd}
         >
           <ul className={styles.settingsItemList}>
-            {metaList.sort().map((item) => (
-              <SettingsItemMeta
-                key={item.id}
-                item={item}
-                editMode={editMode}
-                toEditPage={() => handleEdit(item.id)}
-                description={true}
-              />
-            ))}
+            {metaList
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((item) => (
+                <SettingsItemMeta
+                  key={item.id}
+                  item={item}
+                  editMode={editMode}
+                  toEditPage={() => handleEdit(item)}
+                  description={true}
+                />
+              ))}
           </ul>
         </SettingsList>
       )}

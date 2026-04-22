@@ -5,8 +5,8 @@ import { GetOptions, PostOptions } from "../helpers/fetchOptions";
 const AuthContext = createContext();
 // wrong input field for long text
 
-const BASE_URL = "http://localhost:8000";
-// const BASE_URL = "https://www.api.venbuk.com";
+const API_URL = "http://localhost:8000";
+// const API_URL = "https://www.api.venbuk.com";
 
 const FAKE_USER = {
   name: "Jack",
@@ -47,7 +47,7 @@ function AuthProvider({ children }) {
   );
 
   async function getUser() {
-    return await fetch(`${BASE_URL}/users/me`, GetOptions);
+    return await fetch(`${API_URL}/users/me`, GetOptions);
   }
 
   useEffect(function () {
@@ -81,7 +81,7 @@ function AuthProvider({ children }) {
       // Fetch request
       const body = JSON.stringify({ email, password });
 
-      const registerRes = await apiFetch(`${BASE_URL}/auth/login`, {
+      const registerRes = await apiFetch(`${API_URL}/auth/login`, {
         ...PostOptions,
         body,
       });
@@ -125,7 +125,7 @@ function AuthProvider({ children }) {
     try {
       const body = JSON.stringify({ username, email, password });
 
-      const registerRes = await apiFetch(`${BASE_URL}/auth/register`, {
+      const registerRes = await apiFetch(`${API_URL}/auth/register`, {
         ...PostOptions,
         body,
       });
@@ -164,7 +164,7 @@ function AuthProvider({ children }) {
     dispatch({ type: "loading" });
     // Fetch request
     try {
-      const registerRes = await apiFetch(`${BASE_URL}/auth/logout`, {
+      const registerRes = await apiFetch(`${API_URL}/auth/logout`, {
         ...PostOptions,
       });
       // const registerData = await registerRes.json();
