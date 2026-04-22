@@ -6,10 +6,13 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 function ResgisterPortal({ toLogin, from }) {
-  const [email, setEmail] = useState("jack@mail.com");
-  const [username, setUsername] = useState("coolio");
-  const [password, setPassword] = useState("qwerty");
-  const [password2, setPassword2] = useState("qwerty");
+  // const [email, setEmail] = useState("jack@mail.com");
+  const [email, setEmail] = useState("");
+  // const [username, setUsername] = useState("coolio");
+  const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("qwerty");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const { isAuthenticated, register } = useAuth();
   const navigate = useNavigate();
 

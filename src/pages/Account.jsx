@@ -13,7 +13,7 @@ function Account() {
       <div className={styles.articleBox}>
         <div className={styles.infoBox}>
           <p>
-            <strong>Username:</strong> CoolDude99999 or {user.name}
+            <strong>Username:</strong> CoolDude99999 or {user.username}
           </p>
           <p>
             <strong>Email:</strong> cooldudemail@gmail.com or {user.email}

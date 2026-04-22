@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 function LoginPortal({ toSignUp, from }) {
-  const [email, setEmail] = useState("jack@mail.com");
-  const [password, setPassword] = useState("qwerty");
+  // const [email, setEmail] = useState("jack@mail.com");
+  const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("qwerty");
+  const [password, setPassword] = useState("");
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
