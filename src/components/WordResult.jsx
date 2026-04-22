@@ -8,7 +8,7 @@ import { GetOptions } from "../helpers/fetchOptions";
 import useDictionary from "../hooks/useDictionary";
 
 // const API_URL = "http://localhost:8000";
-const API_URL = "https://www.api.venbuk.com";
+const API_URL = "https://api.venbuk.com";
 
 function WordResult() {
   // const data = useLoaderData();

@@ -12,7 +12,7 @@ const DictionaryContext = createContext();
 // TO DO: Create dictionary refresh (check membership updates)
 
 // const API_URL = "http://localhost:8000";
-const API_URL = "https://www.api.venbuk.com";
+const API_URL = "https://api.venbuk.com";
 
 // const camelToSnakeCase = (str) =>
 //   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);

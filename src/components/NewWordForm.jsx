@@ -8,8 +8,8 @@ import { useState } from "react";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
-const API_URL = "http://localhost:8000";
-// const API_URL = "https://www.api.venbuk.com";
+// const API_URL = "http://localhost:8000";
+const API_URL = "https://api.venbuk.com";
 
 function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();

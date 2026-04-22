@@ -5,7 +5,7 @@ import apiFetch from "./helpers/fetchWrapper";
 import { GetOptions } from "./helpers/fetchOptions";
 
 const API_URL = "http://localhost:8000";
-// const API_URL = "https://www.api.venbuk.com";
+// const API_URL = "https://api.venbuk.com";
 
 export const router = createBrowserRouter([
   {

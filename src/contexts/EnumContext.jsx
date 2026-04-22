@@ -6,7 +6,7 @@ import { GetOptions } from "../helpers/fetchOptions";
 const EnumContext = createContext();
 
 // const API_URL = "http://localhost:8000";
-const API_URL = "https://www.api.venbuk.com";
+const API_URL = "https://api.venbuk.com";
 
 const camelToSnakeCase = (str) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);

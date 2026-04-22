@@ -5,8 +5,8 @@ import apiFetch from "../helpers/fetchWrapper";
 import useDictionary from "../hooks/useDictionary";
 import { GetOptions } from "../helpers/fetchOptions";
 
-const API_URL = "http://localhost:8000";
-// const API_URL = "https://www.api.venbuk.com";
+// const API_URL = "http://localhost:8000";
+const API_URL = "https://api.venbuk.com";
 
 function QueryField() {
   const navigate = useNavigate();

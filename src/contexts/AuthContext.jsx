@@ -5,8 +5,8 @@ import { GetOptions, PostOptions } from "../helpers/fetchOptions";
 const AuthContext = createContext();
 // wrong input field for long text
 
-const API_URL = "http://localhost:8000";
-// const API_URL = "https://www.api.venbuk.com";
+// const API_URL = "http://localhost:8000";
+const API_URL = "https://api.venbuk.com";
 
 const FAKE_USER = {
   name: "Jack",
