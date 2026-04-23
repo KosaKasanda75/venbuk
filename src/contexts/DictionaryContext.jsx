@@ -11,8 +11,8 @@ import {
 const DictionaryContext = createContext();
 // TO DO: Create dictionary refresh (check membership updates)
 
-// const API_URL = "http://localhost:8000";
-const API_URL = "https://api.venbuk.com";
+const API_URL = "http://localhost:8001";
+// const API_URL = "https://api.venbuk.com";
 
 // const camelToSnakeCase = (str) =>
 //   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
@@ -328,7 +328,7 @@ function DictionaryProvider({ children }) {
             tenses: data.tenses,
           },
         });
-        console.log(data);
+        // console.log(data);
       }
     } catch (fetchError) {
       console.log(fetchError);

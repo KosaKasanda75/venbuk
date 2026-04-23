@@ -1,25 +1,37 @@
 import { TbPencilMinus } from "react-icons/tb";
 import styles from "./WordInfo.module.css";
+import useDictionary from "../hooks/useDictionary";
 
 function WordInfo({ word }) {
+  const { nounClasses, genders } = useDictionary();
+  console.log(word);
+
   return (
     <div className={styles.wordBox}>
       {word && <p>Filler</p>}
       <div className={styles.wordTop}>
-        <h2>
-          {word.word_class} {word.noun_class ? `- ${word.noun_class}` : ""}
-        </h2>
+        {word.word_class !== "unsure" && (
+          <h2>
+            {word.word_class}{" "}
+            {word.noun_class_id
+              ? `- ${nounClasses.find((n) => n.id === word.noun_class_id)?.name}`
+              : ""}
+          </h2>
+        )}
         <TbPencilMinus className={styles.editIcon} />
       </div>
-      <h3>Gender</h3>
+      {word.pronunciation && <p>{word.pronunciation}</p>}
+      {word.gender_id && (
+        <h3>{genders.find((g) => g.id === word.gender_id)?.name}</h3>
+      )}
       <p>{word.definition}</p>
-      <p>{word.examples}</p>
+      <p>{word.examples}</p> {/* This is an array */}
       {word.tags && (
         <div className={styles.tagsSection}>
-          <p>&larr;</p>
+          {/* <p>&larr;</p> */}
           <ul className={styles.tagList}>
             {word.tags.map((tag) => (
-              <li key={tag}>{tag}</li>
+              <li key={tag.id}>{tag.name}</li>
             ))}
             {/* I NEED TO RESOLVE METADATA ID'S LIKE NOUN CLASS */}
             {/* <li>Tag 1</li>
@@ -33,7 +45,7 @@ function WordInfo({ word }) {
             <li>Tag 9</li>
             <li>Tag 10</li> */}
           </ul>
-          <p>&rarr;</p>
+          {/* <p>&rarr;</p> */}
         </div>
       )}
     </div>

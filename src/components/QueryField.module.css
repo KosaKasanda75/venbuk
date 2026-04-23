@@ -1,3 +1,12 @@
+.wrapper {
+  /* display: grid; */
+  position: relative;
+}
+
+.foreground {
+  position: relative;
+}
+
 .dictionaryName {
   font-weight: 600;
   font-size: 1.6rem;
@@ -8,6 +17,11 @@
   width: 100%;
   height: 90%;
   background-color: orange;
+}
+
+.randomResults {
+  width: 100%;
+  height: 100%;
 }
 
 .queryBox {
@@ -27,15 +41,44 @@
   /* font-size: 1.6rem; */
 }
 
-.suggestedResults {
+.suggestedResults,
+.randomResults {
   list-style: none;
+}
+
+/* .randomResults,
+.foreground {
+  grid-row: 1;
+  grid-column: 1;
+} */
+
+.randomResults {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.randomResult {
+  border: 0.1rem solid #000;
+  border-bottom: none;
+  padding: 0.4rem 1.6rem;
+
+  /* cursor: pointer; */
 }
 
 .suggestedResult {
   border: 0.1rem solid #000;
+  border-bottom: none;
   padding: 0.4rem 0.8rem;
 
   cursor: pointer;
+}
+
+.randomResults li:last-child,
+.suggestedResults li:last-child {
+  border-bottom: 0.1rem solid #000;
 }
 
 .suggestedWord {

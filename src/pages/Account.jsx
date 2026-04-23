@@ -13,10 +13,10 @@ function Account() {
       <div className={styles.articleBox}>
         <div className={styles.infoBox}>
           <p>
-            <strong>Username:</strong> CoolDude99999 or {user.username}
+            <strong>Username:</strong> {user.username}
           </p>
           <p>
-            <strong>Email:</strong> cooldudemail@gmail.com or {user.email}
+            <strong>Email:</strong> {user.email ?? ""}
           </p>
         </div>
         <Button type="logout" onClick={logout}>

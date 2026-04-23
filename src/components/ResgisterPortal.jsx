@@ -26,7 +26,8 @@ function ResgisterPortal({ toLogin, from }) {
   function handleSubmit(e) {
     e.preventDefault();
     samePassword();
-    if (email && username && password) register(email, username, password);
+    if (email && username && password)
+      register(email.toLowerCase(), username.toLowerCase(), password);
   }
 
   function samePassword() {

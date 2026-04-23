@@ -23,11 +23,12 @@
   max-width: 90%;
   display: flex;
   gap: 0.8rem;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   white-space: nowrap;
 }
 
 .tagList li {
+  display: inline;
   padding: 0.2rem;
   background-color: #aaa;
   white-space: nowrap;

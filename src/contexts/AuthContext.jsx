@@ -5,8 +5,10 @@ import { GetOptions, PostOptions } from "../helpers/fetchOptions";
 const AuthContext = createContext();
 // wrong input field for long text
 
-// const API_URL = "http://localhost:8000";
-const API_URL = "https://api.venbuk.com";
+const API_URL = "http://localhost:8001";
+// const API_URL = "https://api.venbuk.com";
+
+const AUTH_CACHE_KEY = "authUser";
 
 const FAKE_USER = {
   name: "Jack",
@@ -52,20 +54,24 @@ function AuthProvider({ children }) {
 
   useEffect(function () {
     async function verifyUser() {
+      const cached = localStorage.getItem(AUTH_CACHE_KEY);
+      if (cached) {
+        dispatch({ type: "verify", payload: JSON.parse(cached) });
+      }
+
       try {
         const res = await getUser();
-
-        // const data = await res.json();
-        // console.log(data);
         if (!res.ok) {
-          const err = await res.json();
-          console.log(err.detail); // string, or array for validation errors (422)
-          dispatch({ type: "completed" });
+          localStorage.removeItem(AUTH_CACHE_KEY);
+          dispatch({ type: "logout" });
           return;
         }
         if (res.status !== 204) {
           const data = await res.json();
-          // dispatch({ type: "login", payload: userData });
+          localStorage.setItem(
+            AUTH_CACHE_KEY,
+            JSON.stringify({ id: data.id, username: data.username }),
+          );
           dispatch({ type: "verify", payload: data });
         }
       } catch (fetchError) {
@@ -104,6 +110,10 @@ function AuthProvider({ children }) {
       }
       if (userRes.status !== 204) {
         const userData = await userRes.json();
+        localStorage.setItem(
+          AUTH_CACHE_KEY,
+          JSON.stringify({ id: userData.id, username: userData.username }),
+        );
         dispatch({ type: "login", payload: userData });
         return userData;
       }
@@ -147,6 +157,10 @@ function AuthProvider({ children }) {
       }
       if (userRes.status !== 204) {
         const userData = await userRes.json();
+        localStorage.setItem(
+          AUTH_CACHE_KEY,
+          JSON.stringify({ id: userData.id, username: userData.username }),
+        );
         dispatch({ type: "register", payload: userData });
       }
 
@@ -179,6 +193,7 @@ function AuthProvider({ children }) {
       console.log(fetchError);
     }
 
+    localStorage.removeItem(AUTH_CACHE_KEY);
     dispatch({ type: "logout" });
   }
 

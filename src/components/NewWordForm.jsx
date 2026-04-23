@@ -8,13 +8,14 @@ import { useState } from "react";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
-// const API_URL = "http://localhost:8000";
-const API_URL = "https://api.venbuk.com";
+const API_URL = "http://localhost:8001";
+// const API_URL = "https://api.venbuk.com";
 
 function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();
   const { wordClasses } = useEnum();
   const [spelling, setSpelling] = useState("");
+  const [pronunciation, setPronunciation] = useState("");
   const [wordClass, setWordClass] = useState("unsure");
   const [definition, setDefinition] = useState("");
   const [example, setExample] = useState("");
@@ -27,6 +28,7 @@ function NewWordForm() {
 
   function clearForm() {
     setSpelling("");
+    setPronunciation("");
     setWordClass("unsure");
     setDefinition("");
     setNounClassId(nounClasses?.at(0)?.id || null);
@@ -42,13 +44,16 @@ function NewWordForm() {
 
     // Need to add example sentences
     const word = {
-      spelling,
+      spelling: spelling.toLowerCase(),
       word_class: wordClass,
       definition,
-      ...(nounClassId && { noun_class_id: nounClassId }),
+      ...(pronunciation && { pronunciation: pronunciation }),
+      ...(wordClass === "noun" && nounClassId && { noun_class_id: nounClassId }),
       ...(genderId && { gender_id: genderId }),
       ...(tagIds && { tag_ids: tagIds }),
     };
+
+    console.log(word);
 
     try {
       const res = await apiFetch(
@@ -107,6 +112,17 @@ function NewWordForm() {
             id="wordTextInput"
             value={spelling}
             onChange={(e) => setSpelling(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.oneLineField}>
+          <label htmlFor="wordPronunciation">Pronunciation</label>
+          <input
+            className={styles.oneLineTextBox}
+            type="text"
+            id="wordPronunciation"
+            value={pronunciation}
+            onChange={(e) => setPronunciation(e.target.value)}
           />
         </div>
 

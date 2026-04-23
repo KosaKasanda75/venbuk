@@ -1,19 +1,21 @@
 import styles from "./WordResult.module.css";
 import BackButton from "./BackButton";
 import WordInfo from "./WordInfo";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiFetch from "../helpers/fetchWrapper";
 import { GetOptions } from "../helpers/fetchOptions";
 import useDictionary from "../hooks/useDictionary";
+import LoadingContent from "./LoadingContent";
 
-// const API_URL = "http://localhost:8000";
-const API_URL = "https://api.venbuk.com";
+const API_URL = "http://localhost:8001";
+// const API_URL = "https://api.venbuk.com";
 
 function WordResult() {
   // const data = useLoaderData();
   // console.log(data);
-  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const searchWord = searchParams.get("word");
   const { dictionary } = useDictionary();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ function WordResult() {
         setLoading(true);
 
         const res = await apiFetch(
-          `${API_URL}/dictionaries/${dictionary.id}/words/${id}`,
+          `${API_URL}/dictionaries/${dictionary.id}/words/spelling?q=${searchWord}`,
           GetOptions,
         );
         if (!res.ok) {
@@ -39,20 +41,22 @@ function WordResult() {
       }
       lookUpWord();
     },
-    [id, dictionary],
-  ); // important: refetch if id changes
+    [searchWord, dictionary],
+  ); // important: refetch if word changes
 
   return (
     <div className={styles.container}>
       <BackButton />
-      {data && (
+      {data && !loading && (
         <>
-          <h1>Word</h1>
-          <WordInfo word={data} />
+          <h1>{searchWord}</h1>
+          {!Array.isArray(data) && <WordInfo word={data} />}
+          {Array.isArray(data) &&
+            data.map((word) => <WordInfo key={word.id} word={word} />)}
         </>
       )}
-      {!data && <p>No data found</p>}
-      {loading && <p>Loading...</p>}
+      {loading && <LoadingContent />}
+      {!data && !loading && <p>{searchWord} not found</p>}
     </div>
   );
 }
