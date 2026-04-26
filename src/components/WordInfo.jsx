@@ -1,9 +1,11 @@
 import { TbPencilMinus } from "react-icons/tb";
 import styles from "./WordInfo.module.css";
 import useDictionary from "../hooks/useDictionary";
+import { useNavigate } from "react-router-dom";
 
 function WordInfo({ word }) {
   const { nounClasses, genders } = useDictionary();
+  const navigate = useNavigate();
   console.log(word);
 
   return (
@@ -18,7 +20,10 @@ function WordInfo({ word }) {
               : ""}
           </h2>
         )}
-        <TbPencilMinus className={styles.editIcon} />
+        <TbPencilMinus
+          className={styles.editIcon}
+          onClick={() => navigate("/add-entry/word", { state: { existingWord: word } })}
+        />
       </div>
       {word.pronunciation && <p>{word.pronunciation}</p>}
       {word.gender_id && (

@@ -52,8 +52,8 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
     handleCancel();
   }
 
-  function handleDelete(metaId) {
-    deleteMetadata(metadataTitle, metaId);
+  async function handleDelete(metaId) {
+    await deleteMetadata(metadataTitle, metaId);
     handleCancel();
   }
 

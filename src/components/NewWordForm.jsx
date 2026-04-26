@@ -2,9 +2,14 @@ import { RxCross2 } from "react-icons/rx";
 import styles from "./NewWordForm.module.css";
 import Button from "./Button";
 import useDictionary from "../hooks/useDictionary";
-import { PostOptions } from "../helpers/fetchOptions";
+import {
+  DeleteOptions,
+  PostOptions,
+  PutOptions,
+} from "../helpers/fetchOptions";
 import apiFetch from "../helpers/fetchWrapper";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
@@ -12,19 +17,29 @@ const API_URL = "http://localhost:8001";
 // const API_URL = "https://api.venbuk.com";
 
 function NewWordForm() {
+  const { state } = useLocation();
+  const existingWord = state?.existingWord ?? {};
+  const isEditing = Boolean(existingWord.id);
+  const navigate = useNavigate();
   const { dictionary, nounClasses, genders, tags } = useDictionary();
   const { wordClasses } = useEnum();
-  const [spelling, setSpelling] = useState("");
-  const [pronunciation, setPronunciation] = useState("");
-  const [wordClass, setWordClass] = useState("unsure");
-  const [definition, setDefinition] = useState("");
+  const [spelling, setSpelling] = useState(existingWord.spelling || "");
+  const [pronunciation, setPronunciation] = useState(
+    existingWord.pronunciation || "",
+  );
+  const [wordClass, setWordClass] = useState(
+    existingWord.word_class || "unsure",
+  );
+  const [definition, setDefinition] = useState(existingWord.definition || "");
   const [example, setExample] = useState("");
   const [nounClassId, setNounClassId] = useState(
-    nounClasses?.at(0)?.id || null,
+    existingWord.noun_class_id || nounClasses?.at(0)?.id || null,
   );
-  const [genderId, setGenderId] = useState(genders?.at(0)?.id || null);
+  const [genderId, setGenderId] = useState(
+    existingWord.gender_id || genders?.at(0)?.id || null,
+  );
   const [tagQuery, setTagQuery] = useState("");
-  const [tagIds, setTagIds] = useState([]);
+  const [tagIds, setTagIds] = useState(existingWord.tag_ids || []);
 
   function clearForm() {
     setSpelling("");
@@ -48,28 +63,35 @@ function NewWordForm() {
       word_class: wordClass,
       definition,
       ...(pronunciation && { pronunciation: pronunciation }),
-      ...(wordClass === "noun" && nounClassId && { noun_class_id: nounClassId }),
+      ...(wordClass === "noun" &&
+        nounClassId && { noun_class_id: nounClassId }),
       ...(genderId && { gender_id: genderId }),
       ...(tagIds && { tag_ids: tagIds }),
     };
 
     console.log(word);
 
+    const url = isEditing
+      ? `${API_URL}/dictionaries/${dictionary.id}/words/${existingWord.id}`
+      : `${API_URL}/dictionaries/${dictionary.id}/words/`;
+    const fetchOptions = isEditing ? PutOptions : PostOptions;
+
     try {
-      const res = await apiFetch(
-        `${API_URL}/dictionaries/${dictionary.id}/words/`,
-        {
-          ...PostOptions,
-          body: JSON.stringify(word),
-        },
-      );
+      const res = await apiFetch(url, {
+        ...fetchOptions,
+        body: JSON.stringify(word),
+      });
 
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.detail ?? `HTTP ${res.status}`);
       }
 
-      const data = await res.json(); // returns WordRead
+      const data = await res.json();
+      if (isEditing) {
+        navigate(-1);
+        return;
+      }
       return data;
     } catch (fetchError) {
       console.log(fetchError);
@@ -99,6 +121,24 @@ function NewWordForm() {
 
     clearForm();
     // MAYBE GO TO WORD RESULT PAGE
+  }
+
+  async function handleDelete() {
+    try {
+      const res = await apiFetch(
+        `${API_URL}/dictionaries/${dictionary.id}/words/${existingWord.id}`,
+        DeleteOptions,
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail ?? `HTTP ${res.status}`);
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
+    clearForm();
+    navigate(-1);
   }
 
   return (
@@ -278,8 +318,13 @@ function NewWordForm() {
         </ul>
       </form>
       <Button type="central" onClick={handleSubmit}>
-        Create
+        {isEditing ? "Update" : "Create"}
       </Button>
+      {isEditing && (
+        <Button type="central" onClick={handleDelete}>
+          Delete
+        </Button>
+      )}
     </>
   );
 }

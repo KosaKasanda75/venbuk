@@ -438,7 +438,6 @@ function DictionaryProvider({ children }) {
         GetOptions,
       );
 
-      if (res.status === 204) return null;
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to read ${resource} → ${res.status}`);
@@ -459,7 +458,6 @@ function DictionaryProvider({ children }) {
         { ...PostOptions, body: JSON.stringify(body) },
       );
 
-      if (res.status === 204) return null;
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to create ${resource} → ${res.status}`);
@@ -481,7 +479,6 @@ function DictionaryProvider({ children }) {
         { ...PutOptions, body: JSON.stringify(body) },
       );
 
-      if (res.status === 204) return null;
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to update ${resource} → ${res.status}`);
@@ -503,13 +500,10 @@ function DictionaryProvider({ children }) {
         DeleteOptions,
       );
 
-      if (res.status === 204) return null;
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Failed to delete ${resource} → ${res.status}`);
       }
-      // const data = res.json();
-      // console.log(data);
 
       await readMetadata(resource);
     } catch (fetchError) {
