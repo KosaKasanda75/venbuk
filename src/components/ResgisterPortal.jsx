@@ -3,11 +3,14 @@ import BackButton from "./BackButton";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import validator from "validator";
 import useAuth from "../hooks/useAuth";
+import InputField from "./InputField";
 
 function ResgisterPortal({ toLogin, from }) {
   // const [email, setEmail] = useState("jack@mail.com");
   const [email, setEmail] = useState("");
+  const [wrongEmail, setWrongEmail] = useState(false);
   // const [username, setUsername] = useState("coolio");
   const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("qwerty");
@@ -25,6 +28,10 @@ function ResgisterPortal({ toLogin, from }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!validator.isEmail(email)) {
+      setEmail("");
+      return;
+    }
     samePassword();
     if (email && username && password)
       register(email.toLowerCase(), username.toLowerCase(), password);
@@ -54,6 +61,12 @@ function ResgisterPortal({ toLogin, from }) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          <InputField
+            name="email"
+            state={email}
+            setState={setEmail}
+            isWrong={wrongEmail}
+          />
           <div>
             <label className={styles.formLabel}>Username</label>
             <input
