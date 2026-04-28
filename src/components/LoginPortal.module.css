@@ -3,6 +3,7 @@
   /* height: 25rem; */
   max-width: 50rem;
   max-height: 50rem;
+  border-radius: 0.8rem;
   background-color: orange;
 }
 
@@ -10,7 +11,7 @@
   width: 15rem;
   display: flex;
   flex-direction: column;
-  margin: 4rem auto;
+  margin: 0.4rem auto 4rem auto;
   background-color: skyblue;
 }
 

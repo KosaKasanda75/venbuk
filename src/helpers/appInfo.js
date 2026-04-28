@@ -1,5 +1,5 @@
 const AppDescription =
-  "Venbuk is an app designed to help you learn a language by involving you in the process of discovery. Unlike the other apps that focus on telling you about the language, this app works by having you log all the new words you learn. This allows you to take an active role in understanding the the details of the language. This app is suitable for you whether you want to simply write down words you learn or add details that help you understand the underlying structure, syntax and ideas behind the language";
+  "Venbuk is an app designed to help you learn a language by involving you in the process of discovery. Unlike the other apps that focus on telling you about the language, this app works by having you log all the new words you learn. This allows you to take an active role in understanding the the details of the language. This app is suitable for you whether you want to simply write down words you learn or add details that help you understand the underlying structure, syntax and ideas behind the language.";
 
 const Features = [
   {
