@@ -2,6 +2,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024">
   <defs>
     <style>
+      @font-face {
+        font-family: 'Mitr';
+        src: url('./Mitr-SemiBold.ttf') format('truetype');
+        font-weight: 600;
+      }
+
       .cls-1 {
         stroke: #392673;
       }
@@ -23,7 +29,7 @@
 
       .cls-4 {
         fill: #5952ab;
-        font-family: Mitr-SemiBold, Mitr;
+        font-family: 'Mitr', sans-serif;
         font-size: 196px;
         font-weight: 600;
       }
