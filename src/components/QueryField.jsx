@@ -5,9 +5,6 @@ import apiFetch from "../helpers/fetchWrapper";
 import useDictionary from "../hooks/useDictionary";
 import { GetOptions } from "../helpers/fetchOptions";
 
-const API_URL = "http://localhost:8001";
-// const API_URL = "https://api.venbuk.com";
-
 const RANDOM_WORD_LIST = "RandomWords";
 
 function QueryField() {
@@ -22,7 +19,7 @@ function QueryField() {
       async function getRandomWords() {
         try {
           const res = await apiFetch(
-            `${API_URL}/dictionaries/${dictionary.id}/words`,
+            `/dictionaries/${dictionary.id}/words`,
             GetOptions,
           );
           if (!res.ok) {
@@ -65,7 +62,7 @@ function QueryField() {
 
     try {
       const res = await apiFetch(
-        `${API_URL}/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(currentQuery)}`,
+        `/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(currentQuery)}`,
         GetOptions,
       );
       if (!res.ok) {

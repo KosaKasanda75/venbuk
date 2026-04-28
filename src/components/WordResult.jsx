@@ -8,9 +8,6 @@ import { GetOptions } from "../helpers/fetchOptions";
 import useDictionary from "../hooks/useDictionary";
 import LoadingContent from "./LoadingContent";
 
-const API_URL = "http://localhost:8001";
-// const API_URL = "https://api.venbuk.com";
-
 function WordResult() {
   // const data = useLoaderData();
   // console.log(data);
@@ -26,7 +23,7 @@ function WordResult() {
         setLoading(true);
 
         const res = await apiFetch(
-          `${API_URL}/dictionaries/${dictionary.id}/words/spelling?q=${searchWord}`,
+          `/dictionaries/${dictionary.id}/words/spelling?q=${searchWord}`,
           GetOptions,
         );
         if (!res.ok) {

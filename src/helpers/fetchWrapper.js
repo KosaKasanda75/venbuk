@@ -1,4 +1,8 @@
-async function apiFetch(url, options = {}) {
+const API_URL = "http://localhost:8001";
+// const API_URL = "https://api.venbuk.com";
+
+async function apiFetch(path, options = {}) {
+  const url = `${API_URL}${path}`;
   try {
     let res = await fetch(url, { ...options, credentials: "include" });
 

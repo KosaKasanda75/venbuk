@@ -3,12 +3,14 @@ import Button from "./Button";
 import styles from "./LoginPortal.module.css";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import InputField from "./InputField";
 
 function LoginPortal({ toSignUp, from }) {
   const [email, setEmail] = useState("jack@mail.com");
   // const [email, setEmail] = useState("");
   const [password, setPassword] = useState("qwerty");
   // const [password, setPassword] = useState("");
+  const [authFailure, setAuthFailure] = useState(false);
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
@@ -19,9 +21,13 @@ function LoginPortal({ toSignUp, from }) {
     [from, isAuthenticated, navigate],
   );
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (email && password) login(email.toLowerCase(), password);
+    if (email && password) {
+      const user = await login(email.toLowerCase(), password);
+      if (!user) setAuthFailure(true);
+      else setAuthFailure(false);
+    }
   }
 
   return (
@@ -29,7 +35,7 @@ function LoginPortal({ toSignUp, from }) {
       <div className={styles.queryBox}>
         <h1 className={styles.searchLabel}>Welcome</h1>
         <form className={styles.formBox} onSubmit={handleSubmit}>
-          <div>
+          {/* <div>
             <label className={styles.formLabel}>Email</label>
             <input
               type="text"
@@ -38,8 +44,9 @@ function LoginPortal({ toSignUp, from }) {
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
-          </div>
-          <div>
+          </div> */}
+          <InputField name="email" state={email} setState={setEmail} />
+          {/* <div>
             <label className={styles.formLabel}>Password</label>
             <input
               type="password"
@@ -47,14 +54,25 @@ function LoginPortal({ toSignUp, from }) {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
-            <div className={styles.registerBox}>
-              {/* <NavLink to="/register" className={styles.registerBtn}>
+          </div> */}
+          <InputField
+            name="password"
+            type="password"
+            state={password}
+            setState={setPassword}
+          />
+          {authFailure && (
+            <p className={styles.invalid}>
+              The email and/or password are incoreect
+            </p>
+          )}
+          <div className={styles.registerBox}>
+            {/* <NavLink to="/register" className={styles.registerBtn}>
                 Sign Up?
               </NavLink> */}
-              <Button type="lowkey" onClick={toSignUp}>
-                Sign Up?
-              </Button>
-            </div>
+            <Button type="lowkey" onClick={toSignUp}>
+              Sign Up?
+            </Button>
           </div>
         </form>
         <Button type="central" onClick={handleSubmit}>

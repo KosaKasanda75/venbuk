@@ -1,17 +1,53 @@
-import styles from "InputField.modules.css";
+import { useState } from "react";
+import styles from "./InputField.module.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function InputField({ name, state, setState, isWrong }) {
+function InputField({
+  name,
+  type = "text",
+  state,
+  setState,
+  onValidate,
+  isWrong,
+  isWrongMsg,
+}) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  function handleChange(e) {
+    setState(e.target.value);
+    onValidate();
+  }
+
+  const resolvedType = type === "password" && showPassword ? "text" : type;
+
   return (
     <div>
-      <label className={styles.formLabel}>{name}</label>
-      <input
-        type="text"
-        className={styles.inputField}
-        id={name}
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
-      {isWrong && <p>Not a valid {state}.</p>}
+      <label className={styles.formLabel}>
+        {name.at(0).toUpperCase() + name.slice(1)}
+      </label>
+      <div className={styles.inputWrapper}>
+        <input
+          type={resolvedType}
+          className={styles.inputField}
+          id={name}
+          value={state}
+          onChange={(e) => handleChange(e)}
+        />
+        {type === "password" && (
+          <button
+            type="button"
+            className={styles.toggleBtn}
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? (
+              <FaEyeSlash className={styles.eyeIcon} />
+            ) : (
+              <FaEye className={styles.eyeIcon} />
+            )}
+          </button>
+        )}
+      </div>
+      {isWrong && <p className={styles.invalidMessage}>{isWrongMsg}</p>}
     </div>
   );
 }

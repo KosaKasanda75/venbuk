@@ -13,9 +13,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
-const API_URL = "http://localhost:8001";
-// const API_URL = "https://api.venbuk.com";
-
 function NewWordForm() {
   const { state } = useLocation();
   const existingWord = state?.existingWord ?? {};
@@ -72,8 +69,8 @@ function NewWordForm() {
     console.log(word);
 
     const url = isEditing
-      ? `${API_URL}/dictionaries/${dictionary.id}/words/${existingWord.id}`
-      : `${API_URL}/dictionaries/${dictionary.id}/words/`;
+      ? `/dictionaries/${dictionary.id}/words/${existingWord.id}`
+      : `/dictionaries/${dictionary.id}/words/`;
     const fetchOptions = isEditing ? PutOptions : PostOptions;
 
     try {
@@ -126,7 +123,7 @@ function NewWordForm() {
   async function handleDelete() {
     try {
       const res = await apiFetch(
-        `${API_URL}/dictionaries/${dictionary.id}/words/${existingWord.id}`,
+        `/dictionaries/${dictionary.id}/words/${existingWord.id}`,
         DeleteOptions,
       );
 

@@ -5,9 +5,6 @@ import { GetOptions } from "../helpers/fetchOptions";
 
 const EnumContext = createContext();
 
-const API_URL = "http://localhost:8001";
-// const API_URL = "https://api.venbuk.com";
-
 const camelToSnakeCase = (str) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
@@ -104,7 +101,7 @@ function EnumProvider({ children }) {
     dispatch({ type: "loading" });
 
     try {
-      const res = await apiFetch(`${API_URL}/enums`, GetOptions);
+      const res = await apiFetch(`/enums`, GetOptions);
       if (!res.ok) {
         dispatch({ type: "completed" });
         throw new Error(`Enums not found`);
@@ -128,8 +125,8 @@ function EnumProvider({ children }) {
     dispatch({ type: "loading" });
 
     try {
-      const res = await fetch(
-        `${API_URL}/enums/${camelToSnakeCase(enumName)}`,
+      const res = await apiFetch(
+        `/enums/${camelToSnakeCase(enumName)}`,
         GetOptions,
       );
       if (!res.ok) {
