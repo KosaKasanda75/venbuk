@@ -199,6 +199,9 @@ function ResgisterPortal({ toLogin, from }) {
             isWrongMsg={"Passwords must match"}
           />
         </form>
+        <a href="/privacy-policy.html" className="websiteLink" target="_blank" rel="noopener noreferrer">
+          Our Privacy Policy
+        </a>
         <Button type="central" onClick={handleSubmit}>
           Register
         </Button>
