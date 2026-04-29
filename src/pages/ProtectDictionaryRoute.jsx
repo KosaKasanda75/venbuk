@@ -7,7 +7,7 @@ function ProtectDictionaryRoute() {
   return dictionaryExists ? (
     <Outlet />
   ) : (
-    <Navigate to="/new-dictionary" replace />
+    <Navigate to="/settings/dictionaries" replace />
   );
 }
 

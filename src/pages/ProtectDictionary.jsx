@@ -8,7 +8,8 @@ function ProtectDictionary({ children }) {
 
   useEffect(
     function () {
-      if (!dictionaryExists) navigate("/new-dictionary", { replace: true });
+      if (!dictionaryExists)
+        navigate("/settings/dictionaries", { replace: true });
     },
     [dictionaryExists, navigate],
   );

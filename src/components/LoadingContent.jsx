@@ -1,7 +1,13 @@
+import styles from "./LoadingContent.module.css";
+import MainLogo from "./MainLogo";
+
 function LoadingContent() {
   return (
-    <div>
-      <h1>Stuff is loading...</h1>
+    <div className={styles.wrapper}>
+      <div className={styles.spin}>
+        <MainLogo />
+      </div>
+      <h2>Loading...</h2>
     </div>
   );
 }

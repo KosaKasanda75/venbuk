@@ -1,12 +1,15 @@
-import {
-  BookOpenIcon,
-  Cog8ToothIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import styles from "./MainMenu.module.css";
-import { IoGameControllerOutline } from "react-icons/io5";
+import {
+  HiBookOpen,
+  HiCog6Tooth,
+  HiOutlineBookOpen,
+  HiOutlineCog6Tooth,
+  HiOutlinePencilSquare,
+  HiPencilSquare,
+} from "react-icons/hi2";
+import { PiMagnifyingGlassBold, PiMagnifyingGlassFill } from "react-icons/pi";
+import { IoGameController, IoGameControllerOutline } from "react-icons/io5";
 
 function MainMenu() {
   return (
@@ -14,31 +17,61 @@ function MainMenu() {
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
           <NavLink to="/add-entry">
-            <PencilSquareIcon className={styles.icon} />
+            {({ isActive }) =>
+              isActive ? (
+                <HiPencilSquare className={styles.selectedIcon} />
+              ) : (
+                <HiOutlinePencilSquare className={styles.icon} />
+              )
+            }
           </NavLink>
         </li>
         {/* <li className={styles.menuItem}>
           <NavLink to="/learning">
-            <BookOpenIcon className={styles.icon} />
+            {({ isActive }) =>
+              isActive ? (
+                <HiBookOpen className={styles.selectedIcon} />
+              ) : (
+                <HiOutlineBookOpen className={styles.icon} />
+              )
+            }
           </NavLink>
         </li> */}
         <li className={styles.menuItem}>
           <NavLink to="/search">
-            <MagnifyingGlassIcon className={styles.icon} />
+            {({ isActive }) =>
+              isActive ? (
+                <PiMagnifyingGlassFill className={styles.selectedIcon} />
+              ) : (
+                <PiMagnifyingGlassBold className={styles.icon} />
+              )
+            }
           </NavLink>
         </li>
         {/* <li className={styles.menuItem}>
           <NavLink to="/games">
-            <IoGameControllerOutline className={styles.icon} />
+            {({ isActive }) =>
+              isActive ? (
+                <IoGameController className={styles.selectedIcon} />
+              ) : (
+                <IoGameControllerOutline className={styles.icon} />
+              )
+            }
           </NavLink>
         </li> */}
         <li className={styles.menuItem}>
           <NavLink to="/settings">
-            <Cog8ToothIcon className={styles.icon} />
+            {({ isActive }) =>
+              isActive ? (
+                <HiCog6Tooth className={styles.selectedIcon} />
+              ) : (
+                <HiOutlineCog6Tooth className={styles.icon} />
+              )
+            }
           </NavLink>
         </li>
       </ul>
-      <div className={styles.extraSpace}></div>
+      {/* <div className={styles.extraSpace}></div> */}
     </div>
   );
 }

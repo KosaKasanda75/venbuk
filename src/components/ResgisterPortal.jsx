@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import InputField from "./InputField";
 import apiFetch from "../helpers/fetchWrapper";
 import { GetOptions } from "../helpers/fetchOptions";
+import NamedLogo from "./NamedLogo";
 
 function ResgisterPortal({ toLogin, from }) {
   // const [email, setEmail] = useState("jack@mail.com");
@@ -138,8 +139,11 @@ function ResgisterPortal({ toLogin, from }) {
   }
 
   return (
-    <div className={styles.container}>
-      <BackButton override={toLogin} />
+    <div className={styles.containerRegister}>
+      <div className={styles.logoBackBox}>
+        <BackButton override={toLogin} />
+        <NamedLogo />
+      </div>
       <div className={styles.queryBox}>
         <h1 className={styles.searchLabel}>Welcome</h1>
         <form className={styles.formBox} onSubmit={handleSubmit}>
@@ -199,7 +203,12 @@ function ResgisterPortal({ toLogin, from }) {
             isWrongMsg={"Passwords must match"}
           />
         </form>
-        <a href="/privacy-policy.html" className="websiteLink" target="_blank" rel="noopener noreferrer">
+        <a
+          href="/privacy-policy.html"
+          className={`websiteLink ${styles.policyLink}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Our Privacy Policy
         </a>
         <Button type="central" onClick={handleSubmit}>

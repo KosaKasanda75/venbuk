@@ -21,7 +21,7 @@ function Login() {
   }
 
   return (
-    <PageContent menu={<MainMenu />}>
+    <PageContent type="login">
       <div className={styles.portalBox}>
         {!isNewUser && <LoginPortal toSignUp={toSignUpPage} from={from} />}
         {isNewUser && <ResgisterPortal toLogin={toLoginPage} from={from} />}

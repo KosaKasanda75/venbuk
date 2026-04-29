@@ -1,6 +1,7 @@
 .wrapper {
   /* display: grid; */
   position: relative;
+  margin: 0 auto;
 }
 
 .foreground {
@@ -8,15 +9,18 @@
 }
 
 .dictionaryName {
+  display: block;
   font-weight: 600;
   font-size: 1.6rem;
   text-align: right;
+  color: inherit;
+  text-decoration: none;
 }
 
 .container {
   width: 100%;
-  height: 90%;
-  background-color: orange;
+  max-height: 90%;
+  /* background-color: orange; */
 }
 
 .randomResults {
@@ -26,14 +30,18 @@
 
 .queryBox {
   width: 15rem;
-  margin: 4rem auto;
   text-align: center;
-  background-color: skyblue;
+  border-radius: 0.8rem;
+  padding: 0.8rem;
+  margin: 4rem auto;
+  background-color: var(--blue-accent);
 }
 
 .searchLabel {
-  font-size: 2.4rem;
-  /* margin-bottom: 2.4rem; */
+  font-family: "M PLUS 1 Code", "Beiruti", "Asap Condensed", sans-serif;
+  text-align: center;
+  font-size: 3.125rem;
+  margin-bottom: 2.4rem;
 }
 
 .inputField {

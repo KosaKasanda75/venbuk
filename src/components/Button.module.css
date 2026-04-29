@@ -1,10 +1,10 @@
 .btn {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-contrast);
   white-space: nowrap;
   border: none;
-  background-color: blue;
+  background-color: var(--purple-contrast);
   padding: 0.8rem;
   cursor: pointer;
 }
@@ -15,14 +15,14 @@
 }
 
 .plain {
-  color: #000;
+  color: var(--text-primary);
   background-color: transparent;
 }
 
 .lowkey {
   font-size: 0.8rem;
   font-weight: 400;
-  color: #000;
+  color: var(--text-primary);
   padding: 0.2rem 0.4rem;
   background-color: transparent;
 }
@@ -32,16 +32,16 @@
 }
 
 .subtle {
-  color: #000;
-  background-color: #aaa;
+  color: var(--text-primary);
+  background-color: var(--purple-accent);
 }
 
 .delete {
-  background-color: red;
+  background-color: var(--red);
   justify-self: center;
 }
 
 .logout {
-  background-color: red;
+  background-color: var(--red);
   justify-self: end;
 }

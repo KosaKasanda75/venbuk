@@ -1,0 +1,26 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 33%;
+  gap: 1.6rem;
+}
+
+.spin {
+  animation: rock 3.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes rock {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

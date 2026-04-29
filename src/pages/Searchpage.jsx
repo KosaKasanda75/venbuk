@@ -4,7 +4,7 @@ import PageContent from "../components/PageContent";
 
 function Searchpage() {
   return (
-    <PageContent menu={<MainMenu />}>
+    <PageContent menu={<MainMenu />} type="search">
       <Outlet />
     </PageContent>
   );

@@ -2,9 +2,72 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon@1x.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon@1x.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy – Venbuk</title>
     <style>
+      :root {
+        /* PRIMARY */
+        --purple-primary: #ac58ff;
+        --purple-faded: #f7eeff;
+        --purple-accent: #d6acff;
+        --purple-medium: #783eb3;
+        --purple-contrast: #301c5e;
+        --purple-gradient-start: #501a82;
+        --purple-gradient-end: #5952ab;
+
+        /* ACCENT */
+        --blue: #0075ff;
+        --blue-faded: #e6f1ff;
+        --blue-accent: #80baff;
+        --blue-medium: #0052b3;
+        --blue-contrast: #00234d;
+
+        --grey-accent: #e0e1e9;
+        --grey-medium: #86878c;
+        --grey-contrast: #434446;
+        --black: #161717;
+
+        --text-primary: #08060d;
+        --text-secondary: #6b6375;
+        --text-contrast: #ffffff;
+
+        --bg: #ffffff;
+        --red: #f03e3e;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* PRIMARY */
+          --purple-primary: #8e49ff; /* Dark Mode */
+          --purple-faded: #11091a;
+          --purple-accent: #301c5e;
+          --purple-medium: #783eb3;
+          --purple-contrast: #d6acff;
+          --purple-gradient-start: #501a82;
+          --purple-gradient-end: #5952ab;
+
+          /* ACCENT */
+          --blue: #2476d7; /* Dark Mode */
+          --blue-faded: #000c1a;
+          --blue-accent: #00234d;
+          --blue-medium: #0052b3;
+          --blue-contrast: #80baff;
+
+          --grey-accent: #29292b; /* Dark Mode */
+          --grey-medium: #86878c;
+          --grey-contrast: #f6f6f8;
+          --black: #161717;
+
+          --text-primary: #ffffff;
+          --text-secondary: #6b6375;
+          --text-contrast: #08060d;
+
+          --bg: #16171d;
+          --red: #fa5252;
+        }
+      }
       *,
       *::before,
       *::after {
@@ -17,8 +80,8 @@
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 16px;
         line-height: 1.75;
-        color: #1a1a1a;
-        background: #fff;
+        color: var(--text-primary);
+        background: var(--bg);
         max-width: 760px;
         margin: 0 auto;
         padding: 48px 24px 80px;
@@ -29,7 +92,7 @@
         margin-bottom: 8px;
       }
       .meta {
-        color: #666;
+        color: var(--text-secondary);
         font-size: 0.9rem;
         margin-bottom: 40px;
       }
@@ -45,15 +108,15 @@
         margin-bottom: 14px;
       }
       a {
-        color: #2563eb;
+        color: var(--blue-contrast);
         text-decoration: none;
       }
       a:hover {
         text-decoration: underline;
       }
       .highlight {
-        background: #f0f4ff;
-        border-left: 4px solid #2563eb;
+        background: var(--purple-faded);
+        border-left: 4px solid var(--purple-primary);
         padding: 14px 18px;
         border-radius: 4px;
         margin-bottom: 28px;
@@ -62,9 +125,9 @@
       footer {
         margin-top: 60px;
         padding-top: 24px;
-        border-top: 1px solid #e5e5e5;
+        border-top: 1px solid var(--text-contrast);
         font-size: 0.85rem;
-        color: #888;
+        color: var(--text-secondary);
       }
     </style>
   </head>

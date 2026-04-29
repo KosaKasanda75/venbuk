@@ -1,4 +1,51 @@
+/* 
+
+FONT SIZES (in px)
+10.24 | 12.8 | 16 | 20 | 25 | 31.25 | 39.06 | 48.83 | 61.04 | 76.3 | 95.37 | 119.21 | 149.02 
+
+SPACING
+2 | 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64 | 80 | 96 | 128
+
+*/
+
 :root {
+  /* PRIMARY */
+  --purple-primary: #ac58ff;
+  --purple-faded: #f7eeff;
+  --purple-accent: #d6acff;
+  --purple-medium: #783eb3;
+  --purple-contrast: #301c5e;
+  --purple-gradient-start: #501a82;
+  --purple-gradient-end: #5952ab;
+
+  /* ACCENT */
+  --blue: #0075ff;
+  --blue-faded: #e6f1ff;
+  --blue-accent: #80baff;
+  --blue-medium: #0052b3;
+  --blue-contrast: #00234d;
+
+  --grey-accent: #e0e1e9;
+  --grey-medium: #86878c;
+  --grey-contrast: #434446;
+  --black: #161717;
+
+  --text-primary: #08060d;
+  --text-secondary: #6b6375;
+  --text-contrast: #ffffff;
+
+  --bg: #ffffff;
+  --red: #f03e3e;
+
+  --font-size: 1.28rem;
+  --font-size-h1: 3.125rem;
+  --font-size-h2: 2.5rem;
+  --font-size-h3: 2rem;
+  --font-size-h4: 1.6rem;
+  --font-size-small: 1.024rem;
+
+  /* ======================================== */
+
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -30,16 +77,37 @@
   }
 }
 
-/* @font-face {
-  font-family: 'MyFont';
-  src: url('/fonts/myfont.woff2') format('woff2'),
-       url('/fonts/myfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-} */
-
 @media (prefers-color-scheme: dark) {
   :root {
+    /* PRIMARY */
+    --purple-primary: #8e49ff; /* Dark Mode */
+    --purple-faded: #11091a;
+    --purple-accent: #301c5e;
+    --purple-medium: #783eb3;
+    --purple-contrast: #d6acff;
+    --purple-gradient-start: #501a82;
+    --purple-gradient-end: #5952ab;
+
+    /* ACCENT */
+    --blue: #2476d7; /* Dark Mode */
+    --blue-faded: #000c1a;
+    --blue-accent: #00234d;
+    --blue-medium: #0052b3;
+    --blue-contrast: #80baff;
+
+    --grey-accent: #29292b; /* Dark Mode */
+    --grey-medium: #86878c;
+    --grey-contrast: #f6f6f8;
+    --black: #161717;
+
+    --text-primary: #ffffff;
+    --text-secondary: #6b6375;
+    --text-contrast: #08060d;
+
+    --bg: #16171d;
+    --red: #fa5252;
+
+    /* ======================================== */
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
@@ -53,9 +121,9 @@
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
 
-  /* #social .button-icon {
+  #social .button-icon {
     filter: invert(1) brightness(2);
-  } */
+  }
 }
 
 *,
@@ -72,14 +140,16 @@ html {
 }
 
 body {
-  color: #000;
-  /* font-family: 'MyFont', sans-serif; */
+  color: var(--text-primary);
+  font-family: "Beiruti", "Asap Condensed", "Baloo Da 2", sans-serif;
+  font-size: var(--font-size);
+  background-color: var(--bg);
 }
 
 input,
 textarea,
 select {
-  font-size: 1.6rem;
+  font-size: var(--font-size);
 }
 
 html,
@@ -99,14 +169,28 @@ html {
   position: relative;
   height: 100%;
   width: 100%;
+  max-width: 50rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
+.loginBg {
+  background: linear-gradient(
+    0deg,
+    var(--purple-gradient-start) 50%,
+    var(--purple-gradient-end) 100%
+  );
+}
+
+.searchBg {
+  background-color: var(--purple-faded);
+}
+
 .inactiveTop {
-  height: 6%;
-  background-color: yellow;
+  height: 8%;
+  /* background-color: yellow; */
 }
 
 .activeBox {
@@ -115,7 +199,7 @@ html {
   overflow-x: hidden;
   padding: 0.8rem;
   position: relative;
-  background-color: pink;
+  /* background-color: pink; */
 }
 
 #root {
@@ -148,18 +232,19 @@ code {
 } */
 
 h1 {
+  font-family: "M PLUS 1 Code", "Beiruti", "Asap Condensed", sans-serif;
   text-align: center;
   margin-bottom: 2.4rem;
 }
 
 .required {
-  color: red;
+  color: var(--red);
 }
 
 .websiteLink:link,
 .websiteLink:visited {
   text-decoration: none;
-  color: green;
+  color: var(--blue-contrast);
 }
 
 .websiteLink:hover,

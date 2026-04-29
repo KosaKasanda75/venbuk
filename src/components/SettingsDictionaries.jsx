@@ -79,7 +79,7 @@ function SettingsDictionaries() {
             toAddPage={handleAdd}
           >
             <ul className={styles.settingsItemList}>
-              {dictionaryList.sort().map((item) => (
+              {dictionaryList?.sort().map((item) => (
                 <SettingsItemDictionary
                   key={item.id}
                   item={item}

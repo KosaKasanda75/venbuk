@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./QueryField.module.css";
 import { useEffect, useState } from "react";
 import apiFetch from "../helpers/fetchWrapper";
@@ -42,6 +42,8 @@ function QueryField() {
         setRandomWords(words);
       }
 
+      if (!dictionary) return;
+
       const storedWords = JSON.stringify(
         localStorage.getItem(RANDOM_WORD_LIST),
       );
@@ -55,7 +57,7 @@ function QueryField() {
   );
 
   async function findMatchingWords(currentQuery) {
-    if (currentQuery.length < 2) {
+    if (!dictionary || currentQuery.length < 2) {
       setSuggestedWords([]);
       return;
     }
@@ -98,7 +100,10 @@ function QueryField() {
       )}
 
       <div className={styles.foreground}>
-        <p className={styles.dictionaryName}>{dictionary.name} Dictionary</p>
+        <NavLink to="/settings/dictionaries" className={styles.dictionaryName}>
+          {dictionary.name} Dictionary
+        </NavLink>
+        {/* <p className={styles.dictionaryName}>{dictionary.name} Dictionary</p> */}
         <div className={styles.container}>
           <form className={styles.queryBox}>
             <label className={styles.searchLabel} htmlFor="searchText">

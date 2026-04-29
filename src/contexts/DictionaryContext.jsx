@@ -193,7 +193,7 @@ function DictionaryProvider({ children }) {
             },
           });
         }
-      }
+      } else dispatch({ type: "completed" });
       // const theDictionary = dictionaryForm;
 
       // const theDictionaryList = dictionaryForm;
@@ -207,6 +207,7 @@ function DictionaryProvider({ children }) {
 
       // Fetch to get all
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -215,10 +216,7 @@ function DictionaryProvider({ children }) {
     dispatch({ type: "loading" });
     // Fetch
     try {
-      const res = await apiFetch(
-        `/dictionaries/${dictionaryId}`,
-        GetOptions,
-      );
+      const res = await apiFetch(`/dictionaries/${dictionaryId}`, GetOptions);
       // const data = await res.json();
       // console.log(data);
       if (!res.ok) {
@@ -232,10 +230,11 @@ function DictionaryProvider({ children }) {
       if (res.status !== 204) {
         const data = await res.json();
         dispatch({ type: "get", payload: data });
-      }
+      } else dispatch({ type: "completed" });
 
       getAllMetadata(dictionaryId);
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -244,10 +243,7 @@ function DictionaryProvider({ children }) {
     dispatch({ type: "loading" });
     // Fetch
     try {
-      const res = await apiFetch(
-        `/dictionaries/${dictionaryId}`,
-        GetOptions,
-      );
+      const res = await apiFetch(`/dictionaries/${dictionaryId}`, GetOptions);
       // const data = await res.json();
       // console.log(data);
       if (!res.ok) {
@@ -262,8 +258,9 @@ function DictionaryProvider({ children }) {
         const data = await res.json();
         dispatch({ type: "completed" });
         return data;
-      }
+      } else dispatch({ type: "completed" });
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -286,12 +283,13 @@ function DictionaryProvider({ children }) {
       if (res.status !== 204) {
         const data = await res.json();
         dispatch({ type: "getAll", payload: data });
-      }
+      } else dispatch({ type: "completed" });
 
       // const theDictionary = [];
       // dispatch({ type: "getAll", payload: theDictionary });
       // return data;
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }, []);
@@ -326,8 +324,9 @@ function DictionaryProvider({ children }) {
           },
         });
         // console.log(data);
-      }
+      } else dispatch({ type: "completed" });
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -359,11 +358,12 @@ function DictionaryProvider({ children }) {
       if (res.status !== 204) {
         const data = await res.json();
         dispatch({ type: "update", payload: data });
-      }
+      } else dispatch({ type: "completed" });
 
       // const theDictionary = dictionaryForm;
       // dispatch({ type: "update", payload: theDictionary });
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -388,6 +388,7 @@ function DictionaryProvider({ children }) {
       dispatch({ type: "delete" });
       getDictionaryList();
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -443,6 +444,7 @@ function DictionaryProvider({ children }) {
 
       dispatch({ type: `${resource}Read`, payload: data });
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -465,6 +467,7 @@ function DictionaryProvider({ children }) {
 
       return data;
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -486,6 +489,7 @@ function DictionaryProvider({ children }) {
 
       return data;
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
@@ -504,6 +508,7 @@ function DictionaryProvider({ children }) {
 
       await readMetadata(resource);
     } catch (fetchError) {
+      dispatch({ type: "completed" });
       console.log(fetchError);
     }
   }
