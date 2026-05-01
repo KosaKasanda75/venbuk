@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./Button";
+import Confirm from "./Confirm";
 import styles from "./MetadataDetails.module.css";
 import RequiredField from "./RequiredField";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
@@ -9,6 +10,7 @@ function AddMetadataItem({ metaInfo, onCreate, onUpdate, onCancel, onDelete }) {
   const [description, setDescription] = useState(
     metaInfo ? metaInfo.description : "",
   );
+  const [showConfirm, setShowConfirm] = useState(false);
 
   return (
     <div>
@@ -59,9 +61,16 @@ function AddMetadataItem({ metaInfo, onCreate, onUpdate, onCancel, onDelete }) {
         )}
       </div>
       {metaInfo && (
-        <Button type="delete" onClick={() => onDelete(metaInfo.id)}>
+        <Button type="delete" onClick={() => setShowConfirm(true)}>
           Delete
         </Button>
+      )}
+      {showConfirm && (
+        <Confirm
+          message="Are you sure you want to delete this item?"
+          onConfirm={() => onDelete(metaInfo.id)}
+          onCancel={() => setShowConfirm(false)}
+        />
       )}
     </div>
   );

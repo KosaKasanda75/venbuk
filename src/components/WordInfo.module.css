@@ -3,7 +3,7 @@
   margin: 0 1.2rem 2.4rem 1.2rem;
 }
 
-.wordTop {
+.wordTopSection {
   display: flex;
   align-items: flex-end;
 }
@@ -12,6 +12,17 @@
   height: 2.4rem;
   width: 2.4rem;
   margin-left: auto;
+}
+
+.defintion {
+}
+
+.exampleSentenceList {
+  list-style: none;
+}
+
+.exampleSentence {
+  color: var(--text-secondary);
 }
 
 .tagsSection {

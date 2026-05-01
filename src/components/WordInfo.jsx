@@ -4,14 +4,14 @@ import useDictionary from "../hooks/useDictionary";
 import { useNavigate } from "react-router-dom";
 
 function WordInfo({ word }) {
-  const { nounClasses, genders } = useDictionary();
+  const { nounClasses, genders, memberRole } = useDictionary();
   const navigate = useNavigate();
   console.log(word);
 
   return (
     <div className={styles.wordBox}>
       {word && <p>Filler</p>}
-      <div className={styles.wordTop}>
+      <div className={styles.wordTopSection}>
         {word.word_class !== "unsure" && (
           <h2>
             {word.word_class}{" "}
@@ -20,17 +20,29 @@ function WordInfo({ word }) {
               : ""}
           </h2>
         )}
-        <TbPencilMinus
-          className={styles.editIcon}
-          onClick={() => navigate("/add-entry/word", { state: { existingWord: word } })}
-        />
+        {memberRole !== "viewer" && (
+          <TbPencilMinus
+            className={styles.editIcon}
+            onClick={() =>
+              navigate("/add-entry/word", { state: { existingWord: word } })
+            }
+          />
+        )}
       </div>
       {word.pronunciation && <p>{word.pronunciation}</p>}
       {word.gender_id && (
         <h3>{genders.find((g) => g.id === word.gender_id)?.name}</h3>
       )}
-      <p>{word.definition}</p>
-      <p>{word.examples}</p> {/* This is an array */}
+      <p className={styles.defintion}>{word.definition}</p>
+      {word.examples && (
+        <ul className={styles.exampleSentenceList}>
+          {word.examples.map((ex) => (
+            <li key={ex.id} className={styles.exampleSentence}>
+              {ex.example}
+            </li>
+          ))}
+        </ul>
+      )}
       {word.tags && (
         <div className={styles.tagsSection}>
           {/* <p>&larr;</p> */}

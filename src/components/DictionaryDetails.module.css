@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.createdAt {
+  font-size: var(--font-size-small); /* Change? */
+  color: var(--text-secondary);
+}
+
+.name {
+  margin: 0;
+}
+
+.description {
+  color: var(--text-secondary);
+}
+
+.section {
+  margin-top: 0.4rem;
+}
+
+.sectionLabel {
+  font-size: var(--font-size-small); /* Change? */
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.memberList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.memberRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.username {
+  flex: 1;
+}
+
+.role {
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+  background-color: var(--accent-bg); /* Change Colour */
+  border: 1px solid var(--accent-border); /* Change Colour */
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.3rem;
+}

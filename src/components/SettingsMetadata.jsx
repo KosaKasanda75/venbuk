@@ -5,14 +5,14 @@ import SettingsItemMeta from "./SettingsItemMeta";
 import useDictionary from "../hooks/useDictionary";
 import AddMetadataItem from "./AddMetadataItem";
 
-const settingsOptions = {
-  title: "Tags",
-  settingsList: ["Body", "Greeting", "House", "Family", "Jobs"],
-  options: {
-    add: true,
-    edit: true,
-  },
-};
+// const settingsOptions = {
+//   title: "Tags",
+//   settingsList: ["Body", "Greeting", "House", "Family", "Jobs"],
+//   options: {
+//     add: true,
+//     edit: true,
+//   },
+// };
 
 const camelToTitle = (text) => {
   return (
@@ -30,7 +30,9 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
   const [editMode, setEditMode] = useState(false);
   const [viewMode, setViewMode] = useState(true);
   const [metaInfo, setMetaInfo] = useState(null);
-  const { createMetadata, updateMetadata, deleteMetadata } = useDictionary();
+  const { createMetadata, updateMetadata, deleteMetadata, memberRole } =
+    useDictionary();
+  const canEdit = memberRole !== "viewer";
   console.log("list", metaList);
 
   function handleAdd() {
@@ -68,7 +70,7 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
         <SettingsList
           title={camelToTitle(metadataTitle)}
           previousPage={previousPage}
-          options={settingsOptions.options}
+          options={{ add: canEdit, edit: canEdit }}
           editMode={editMode}
           setEditMode={setEditMode}
           toAddPage={handleAdd}

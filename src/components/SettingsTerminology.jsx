@@ -3,16 +3,16 @@ import SettingsList from "./SettingsList";
 import styles from "./SettingsList.module.css";
 
 const settingsOptions = {
-  title: "Conjugation",
-  // settingsList: ["identifiers", "tenses", "noun classes", "genders"],
-  settingsList: ["tenses", "noun classes", "genders"],
+  title: "Terminology",
+  //   settingsList: ["word classes", "honorifics", "noun classes", "tenses"],
+  settingsList: ["word classes", "noun classes", "tenses"],
   options: {
     add: false,
     edit: false,
   },
 };
 
-function SettingsConjugation() {
+function SettingsTerminology() {
   return (
     <SettingsList
       title={settingsOptions.title}
@@ -29,4 +29,4 @@ function SettingsConjugation() {
   );
 }
 
-export default SettingsConjugation;
+export default SettingsTerminology;

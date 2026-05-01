@@ -40,6 +40,14 @@
   font-size: 1.6rem;
 }
 
+.settingsItemLink {
+  cursor: pointer;
+}
+
+.settingsItemLink:hover {
+  color: var(--accent); /* Change Colour */
+}
+
 .navlink:link,
 .navlink:visited,
 .navlink:hover,

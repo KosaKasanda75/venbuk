@@ -22,6 +22,7 @@ const Login = lazy(() => import("./pages/Login"));
 // const Register = lazy(() => import("./pages/Register"));
 const Account = lazy(() => import("./pages/Account"));
 const NewDictionary = lazy(() => import("./pages/NewDictionary"));
+const Dictionary = lazy(() => import("./pages/Dictionary"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 import NewWordForm from "./components/NewWordForm";
@@ -41,9 +42,18 @@ import FullPageLoading from "./pages/FullPageLoading";
 import ProtectApp from "./pages/ProtectApp";
 import ProtectDictionary from "./pages/ProtectDictionary";
 import ProtectDictionaryRoute from "./pages/ProtectDictionaryRoute";
+import ProtectEditorRoute from "./pages/ProtectEditorRoute";
 // import { EnumProvider } from "./contexts/EnumContext";
 import useDictionary from "./hooks/useDictionary";
 import SettingsMetadata from "./components/SettingsMetadata";
+import SettingsTerminology from "./components/SettingsTerminology";
+import TerminologyDisplay from "./components/TerminologyDisplay";
+import {
+  NounClassDefinition,
+  TensesDefintion,
+  WordClassDefinitions,
+} from "./helpers/appInfo";
+import AppInfo from "./components/AppInfo";
 
 function App() {
   const { nounClasses, genders, tags, tenses } = useDictionary();
@@ -57,15 +67,17 @@ function App() {
               path="add-entry"
               element={
                 <ProtectDictionary>
-                  <NewEntry />
+                  <ProtectEditorRoute>
+                    <NewEntry />
+                  </ProtectEditorRoute>
                 </ProtectDictionary>
               }
             >
               <Route index element={<Navigate replace to="word" />} />
               <Route path="word" element={<NewWordForm />} />
-              <Route path="honorific" element={<NewHonorificForm />} />
+              {/* <Route path="honorific" element={<NewHonorificForm />} />
               <Route path="expression" element={<NewExpressionForm />} />
-              <Route path="conjugation" element={<NewConjugationForm />} />
+              <Route path="conjugation" element={<NewConjugationForm />} /> */}
             </Route>
 
             <Route
@@ -119,10 +131,6 @@ function App() {
                       />
                     }
                   />
-                  {/* <Route
-                    path="noun-classes"
-                    element={<SettingsNounClasses />}
-                  /> */}
                   <Route
                     path="noun-classes"
                     element={
@@ -145,10 +153,46 @@ function App() {
                   />
                 </Route>
               </Route>
+              <Route path="terminology">
+                <Route index element={<SettingsTerminology />} />
+                <Route
+                  path="word-classes"
+                  element={
+                    <TerminologyDisplay
+                      title="Word Classes"
+                      explainer={WordClassDefinitions}
+                      previousPage="Terminology"
+                    />
+                  }
+                />
+                <Route
+                  path="noun-classes"
+                  element={
+                    <TerminologyDisplay
+                      title="Noun Classes"
+                      explainer={NounClassDefinition}
+                      previousPage="Terminology"
+                    />
+                  }
+                />
+                <Route
+                  path="tenses"
+                  element={
+                    <TerminologyDisplay
+                      title="Tenses"
+                      explainer={TensesDefintion}
+                      previousPage="Terminology"
+                    />
+                  }
+                />
+              </Route>
             </Route>
+
+            <Route path="app-info" element={<AppInfo />} />
 
             <Route path="account" element={<Account />} />
             <Route path="new-dictionary" element={<NewDictionary />} />
+            <Route path="dictionaries/:id" element={<Dictionary />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
           <Route path="login" element={<Login />} />

@@ -32,7 +32,6 @@ const initialState = {
   dictionary: storedDictionary,
   dictionaryExists: !!storedDictionary,
   dictionaryList: null,
-  isMember: storedDictionary ? true : null,
   nounClasses: storedNounClasses,
   genders: storedGenders,
   tags: storedTags,
@@ -52,7 +51,6 @@ function reducer(state, action) {
         dictionary: action.payload.newDictionary,
         dictionaryExists: true,
         dictionaryList: action.payload.newDictionaryList,
-        isMember: true,
         dictionaryLoading: false,
       };
     case "get":
@@ -60,7 +58,6 @@ function reducer(state, action) {
         ...state,
         dictionary: action.payload,
         dictionaryExists: true,
-        isMember: true,
         dictionaryLoading: false,
       };
     case "getAll":
@@ -81,8 +78,8 @@ function reducer(state, action) {
         ...state,
         dictionary: null,
         dictionaryExists: false,
-        isMember: null,
         nounClasses: [],
+        genders: [],
         tags: [],
         tenses: [],
         dictionaryLoading: false,
@@ -119,7 +116,6 @@ function DictionaryProvider({ children }) {
       dictionary,
       dictionaryExists,
       dictionaryList,
-      isMember,
       nounClasses,
       genders,
       tags,
@@ -128,7 +124,10 @@ function DictionaryProvider({ children }) {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+
+  const memberRole =
+    dictionary?.members?.find((m) => m.user_id === user?.id)?.role ?? null;
 
   useEffect(() => {
     if (dictionary) {
@@ -193,6 +192,7 @@ function DictionaryProvider({ children }) {
             },
           });
         }
+        return newDictionary;
       } else dispatch({ type: "completed" });
       // const theDictionary = dictionaryForm;
 
@@ -335,7 +335,6 @@ function DictionaryProvider({ children }) {
     const body = JSON.stringify({
       name: dictionaryForm.name,
       description: dictionaryForm.description,
-      language: "",
     });
 
     try {
@@ -370,17 +369,31 @@ function DictionaryProvider({ children }) {
 
   async function deleteDictionary(dictionaryId) {
     dispatch({ type: "loading" });
-    // Fetch
     try {
+      const nonOwnerMembers = (dictionary.members ?? []).filter(
+        (m) => m.role !== "owner",
+      );
+      const recipient =
+        nonOwnerMembers.find((m) => m.role === "editor") ?? nonOwnerMembers[0];
+
+      if (recipient) {
+        const { success } = await transferOwnership(
+          dictionaryId,
+          recipient.user_id,
+        );
+        if (!success) {
+          dispatch({ type: "completed" });
+          return;
+        }
+      }
+
       const res = await apiFetch(
         `/dictionaries/${dictionaryId}`,
         DeleteOptions,
       );
-      // const data = await res.json();
-      // console.log(data);
       if (!res.ok) {
         const err = await res.json();
-        console.log(err.detail); // string, or array for validation errors (422)
+        console.log(err.detail);
         dispatch({ type: "completed" });
         return;
       }
@@ -390,6 +403,77 @@ function DictionaryProvider({ children }) {
     } catch (fetchError) {
       dispatch({ type: "completed" });
       console.log(fetchError);
+    }
+  }
+
+  async function inviteMembers(dictId, members) {
+    try {
+      await Promise.all(
+        members.map((member) =>
+          apiFetch(`/dictionaries/${dictId}/members`, {
+            ...PostOptions,
+            body: JSON.stringify({
+              user_id: member.user_id,
+              role: member.role,
+            }),
+          }),
+        ),
+      );
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
+  }
+
+  async function updateMemberRole(dictId, userId, role) {
+    try {
+      const res = await apiFetch(`/dictionaries/${dictId}/members/${userId}`, {
+        ...PutOptions,
+        body: JSON.stringify({ role }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail);
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
+  }
+
+  async function removeMember(dictId, userId) {
+    try {
+      const res = await apiFetch(
+        `/dictionaries/${dictId}/members/${userId}`,
+        DeleteOptions,
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail);
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
+    }
+  }
+
+  async function transferOwnership(dictId, userId) {
+    try {
+      const res = await apiFetch(
+        `/dictionaries/${dictId}/members/${userId}/transfer-ownership`,
+        PostOptions,
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.detail);
+        return { success: false, member: null };
+      }
+
+      const member = await res.json();
+      return { success: true, member };
+    } catch (fetchError) {
+      console.log(fetchError);
+      return { success: false, member: null };
     }
   }
 
@@ -419,14 +503,6 @@ function DictionaryProvider({ children }) {
     },
     [dictionaryList, dictionary],
   );
-
-  useEffect(() => {
-    if (dictionary) {
-      localStorage.setItem("venbuk_dictionary", JSON.stringify(dictionary));
-    } else {
-      localStorage.removeItem("venbuk_dictionary");
-    }
-  }, [dictionary]);
 
   async function readMetadata(resource) {
     try {
@@ -513,19 +589,13 @@ function DictionaryProvider({ children }) {
     }
   }
 
-  useEffect(() => {
-    localStorage.setItem("venbuk_nounClasses", JSON.stringify(nounClasses));
-    localStorage.setItem("venbuk_genders", JSON.stringify(genders));
-    localStorage.setItem("venbuk_tags", JSON.stringify(tags));
-  }, [nounClasses, genders, tags]);
-
   return (
     <DictionaryContext.Provider
       value={{
         dictionary,
         dictionaryExists,
         dictionaryList,
-        isMember,
+        memberRole,
         nounClasses,
         genders,
         tags,
@@ -540,6 +610,9 @@ function DictionaryProvider({ children }) {
         createMetadata,
         updateMetadata,
         deleteMetadata,
+        inviteMembers,
+        updateMemberRole,
+        removeMember,
       }}
     >
       {children}

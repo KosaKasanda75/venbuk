@@ -68,11 +68,13 @@
 
 .registerBox {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.registerBox button {
+/* .registerBox button {
   margin-left: auto;
-}
+} */
 
 .policyLink {
   margin-bottom: 1.2rem;

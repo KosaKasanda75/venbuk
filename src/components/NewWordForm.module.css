@@ -75,3 +75,35 @@
   width: 1.4rem;
   cursor: pointer;
 }
+
+.exampleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.exampleRow textarea {
+  flex: 1;
+}
+
+.addExampleBtn {
+  margin-top: 0.4rem;
+  cursor: pointer;
+}
+
+.infoIcon {
+  cursor: pointer;
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}

@@ -1,6 +1,9 @@
 import { RxCross2 } from "react-icons/rx";
+import { IoInformationCircleOutline } from "react-icons/io5";
 import styles from "./NewWordForm.module.css";
 import Button from "./Button";
+import Confirm from "./Confirm";
+import TerminologyModal from "./TerminologyModal";
 import useDictionary from "../hooks/useDictionary";
 import {
   DeleteOptions,
@@ -12,6 +15,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useEnum from "../hooks/useEnum";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
+import { WordClassDefinitions, NounClassDefinition } from "../helpers/appInfo";
 
 function NewWordForm() {
   const { state } = useLocation();
@@ -28,7 +32,9 @@ function NewWordForm() {
     existingWord.word_class || "unsure",
   );
   const [definition, setDefinition] = useState(existingWord.definition || "");
-  const [example, setExample] = useState("");
+  const [examples, setExamples] = useState(
+    existingWord.examples?.map((e) => e.example) ?? [""],
+  );
   const [nounClassId, setNounClassId] = useState(
     existingWord.noun_class_id || nounClasses?.at(0)?.id || null,
   );
@@ -37,6 +43,8 @@ function NewWordForm() {
   );
   const [tagQuery, setTagQuery] = useState("");
   const [tagIds, setTagIds] = useState(existingWord.tag_ids || []);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [modal, setModal] = useState(null);
 
   function clearForm() {
     setSpelling("");
@@ -47,6 +55,35 @@ function NewWordForm() {
     setGenderId(genders?.at(0)?.id || null);
     setTagQuery("");
     setTagIds([]);
+    setExamples([""]);
+  }
+
+  function addExample() {
+    setExamples((prev) => [...prev, ""]);
+  }
+
+  function handleWordClassInfo() {
+    if (wordClass.toLowerCase() !== "unsure") {
+      const match = WordClassDefinitions.find(
+        (def) => def.name.toLowerCase() === wordClass.toLowerCase(),
+      );
+      match
+        ? setModal({ title: match.name, explainer: match })
+        : setModal({ title: "Word Classes", explainer: WordClassDefinitions });
+    } else {
+      setModal({ title: "Word Classes", explainer: WordClassDefinitions });
+    }
+  }
+
+  function updateExample(index, value) {
+    setExamples((prev) => prev.map((ex, i) => (i === index ? value : ex)));
+  }
+
+  function removeExample(index) {
+    setExamples((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      return next.length === 0 ? [""] : next;
+    });
   }
 
   async function handleSubmit(e) {
@@ -85,39 +122,39 @@ function NewWordForm() {
       }
 
       const data = await res.json();
+      const wordId = isEditing ? existingWord.id : data.id;
+
+      if (isEditing && existingWord.examples?.length > 0) {
+        await Promise.all(
+          existingWord.examples.map((ex) =>
+            apiFetch(
+              `/dictionaries/${dictionary.id}/words/${wordId}/examples/${ex.id}`,
+              DeleteOptions,
+            ),
+          ),
+        );
+      }
+
+      const nonEmptyExamples = examples.filter((ex) => ex.trim());
+      if (nonEmptyExamples.length > 0) {
+        await apiFetch(
+          `/dictionaries/${dictionary.id}/words/${wordId}/examples`,
+          {
+            ...PostOptions,
+            body: JSON.stringify({ example: nonEmptyExamples }),
+          },
+        );
+      }
+
       if (isEditing) {
         navigate(-1);
         return;
       }
-      return data;
     } catch (fetchError) {
       console.log(fetchError);
     }
 
-    // const wordData = {
-    //   // Required
-    //   spelling: "amani",
-    //   word_class: "noun",
-    //   definition: "A state of harmony and absence of conflict.",
-
-    //   // Optional
-    //   summary_definition: "peace",
-    //   noun_class_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6", // only if word_class is "noun"
-    //   gender_id: "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
-    //   tag_ids: [
-    //     "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    //     "deadbeef-dead-beef-dead-beefdeadbeef",
-    //   ],
-    // };
-
-    // const wordData = {
-    //   spelling: "kuruka",
-    //   word_class: "verb",
-    //   definition: "To propel oneself upward off the ground.",
-    // };
-
     clearForm();
-    // MAYBE GO TO WORD RESULT PAGE
   }
 
   async function handleDelete() {
@@ -177,20 +214,38 @@ function NewWordForm() {
         </div>
 
         <div>
-          <label htmlFor="wordExampleUse">Example Sentence</label>
-          <br />
-          <textarea
-            className={styles.largeTextBox}
-            type="text"
-            id="wordExampleUse"
-            rows={LARGE_TEXT_AREA_ROWS}
-            value={example}
-            onChange={(e) => setExample(e.target.value)}
-          ></textarea>
+          <label>Example Sentences</label>
+          {examples.map((ex, i) => (
+            <div key={i} className={styles.exampleRow}>
+              <textarea
+                className={styles.largeTextBox}
+                rows={LARGE_TEXT_AREA_ROWS}
+                value={ex}
+                onChange={(e) => updateExample(i, e.target.value)}
+              />
+              <RxCross2
+                className={styles.tagIcon}
+                onClick={() => removeExample(i)}
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            className={styles.addExampleBtn}
+            onClick={addExample}
+          >
+            + Add Example
+          </button>
         </div>
 
         <div className={styles.oneLineField}>
-          <label htmlFor="wordClassSelect">Type</label>
+          <label htmlFor="wordClassSelect">
+            Type{" "}
+            <IoInformationCircleOutline
+              className={styles.infoIcon}
+              onClick={handleWordClassInfo}
+            />
+          </label>
           <select
             id="wordClassSelect"
             value={wordClass}
@@ -213,7 +268,18 @@ function NewWordForm() {
 
         {nounClassId && wordClass.toLowerCase() === "noun" && (
           <div className={styles.oneLineField}>
-            <label htmlFor="nounClassSelect">Class</label>
+            <label htmlFor="nounClassSelect">
+              Class{" "}
+              <IoInformationCircleOutline
+                className={styles.infoIcon}
+                onClick={() =>
+                  setModal({
+                    title: "Noun Classes",
+                    explainer: NounClassDefinition,
+                  })
+                }
+              />
+            </label>
             <select
               id="nounClassSelect"
               value={nounClassId}
@@ -230,7 +296,18 @@ function NewWordForm() {
         )}
         {!nounClassId && wordClass.toLowerCase() === "noun" && (
           <div className={styles.oneLineField}>
-            <label htmlFor="nounClassSelect">Class</label>
+            <label htmlFor="nounClassSelect">
+              Class{" "}
+              <IoInformationCircleOutline
+                className={styles.infoIcon}
+                onClick={() =>
+                  setModal({
+                    title: "Noun Classes",
+                    explainer: NounClassDefinition,
+                  })
+                }
+              />
+            </label>
             <select id="nounClassSelect">
               <option value={1}>No Noun Classes Defined</option>
             </select>
@@ -318,9 +395,27 @@ function NewWordForm() {
         {isEditing ? "Update" : "Create"}
       </Button>
       {isEditing && (
-        <Button type="central" onClick={handleDelete}>
+        <Button type="central" onClick={() => setShowConfirm(true)}>
           Delete
         </Button>
+      )}
+      {showConfirm && (
+        <Confirm
+          message="Are you sure you want to delete this word?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
+      {modal && (
+        <div className={styles.modalOverlay} onClick={() => setModal(null)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <TerminologyModal
+              title={modal.title}
+              explainer={modal.explainer}
+              onClose={() => setModal(null)}
+            />
+          </div>
+        </div>
       )}
     </>
   );

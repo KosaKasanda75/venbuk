@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styles from "./MainMenu.module.css";
+import useDictionary from "../hooks/useDictionary";
 import {
   HiBookOpen,
   HiCog6Tooth,
@@ -12,20 +13,23 @@ import { PiMagnifyingGlassBold, PiMagnifyingGlassFill } from "react-icons/pi";
 import { IoGameController, IoGameControllerOutline } from "react-icons/io5";
 
 function MainMenu() {
+  const { memberRole } = useDictionary();
   return (
     <div className={styles.menuBox}>
       <ul className={styles.menuList}>
-        <li className={styles.menuItem}>
-          <NavLink to="/add-entry">
-            {({ isActive }) =>
-              isActive ? (
-                <HiPencilSquare className={styles.selectedIcon} />
-              ) : (
-                <HiOutlinePencilSquare className={styles.icon} />
-              )
-            }
-          </NavLink>
-        </li>
+        {memberRole !== "viewer" && (
+          <li className={styles.menuItem}>
+            <NavLink to="/add-entry">
+              {({ isActive }) =>
+                isActive ? (
+                  <HiPencilSquare className={styles.selectedIcon} />
+                ) : (
+                  <HiOutlinePencilSquare className={styles.icon} />
+                )
+              }
+            </NavLink>
+          </li>
+        )}
         {/* <li className={styles.menuItem}>
           <NavLink to="/learning">
             {({ isActive }) =>

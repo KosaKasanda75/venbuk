@@ -6,3 +6,11 @@
 .infoBox {
   margin-bottom: 2.4rem;
 }
+
+.userInfo {
+}
+
+.joinDate {
+  color: var(--text-secondary);
+  text-align: right;
+}

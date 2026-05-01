@@ -53,6 +53,9 @@ function LoginPortal({ toSignUp, from }) {
           )}
           <div className={styles.registerBox}>
             <Button type="lowkey" onClick={toSignUp}>
+              Forgot Password
+            </Button>
+            <Button type="lowkey" onClick={toSignUp}>
               Sign Up?
             </Button>
           </div>

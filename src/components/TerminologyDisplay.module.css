@@ -1,0 +1,12 @@
+.terminologyBox {
+  list-style: none; /* temporary to remove warnings */
+}
+
+.terminologyTitle {
+  text-align: center;
+  margin: 1.2rem 0 2.4rem 0;
+}
+
+.termTitle {
+  font-weight: 600;
+}

@@ -13,7 +13,7 @@ const settingsOptions = {
   options: {
     links: false,
     add: true,
-    edit: true,
+    edit: false,
     description: false,
     activeBtn: true,
     editPage: null,
@@ -22,47 +22,28 @@ const settingsOptions = {
 };
 
 function SettingsDictionaries() {
-  const [editMode, setEditMode] = useState(false);
   const [viewMode, setViewMode] = useState(true);
-  const [dictionaryInfo, setDictionaryInfo] = useState(null);
   const {
     dictionaryList,
     dictionaryLoading,
     createDictionary,
-    getDictionaryInfo,
     getDictionaryList,
-    updateDictionary,
-    deleteDictionary,
+    inviteMembers,
   } = useDictionary();
 
   function handleAdd() {
     setViewMode(false);
   }
 
-  async function handleEdit(dictionaryId) {
-    const dictionaryObj = await getDictionaryInfo(dictionaryId);
-    setDictionaryInfo(dictionaryObj);
-    setViewMode(false);
-  }
-
-  function handleCreate(body) {
-    createDictionary(body);
-    handleCancel();
-  }
-
-  function handleUpdate(dictionaryId, body) {
-    updateDictionary(dictionaryId, body);
-    handleCancel();
-  }
-
-  function handleDelete(dictionaryId) {
-    deleteDictionary(dictionaryId);
+  async function handleCreate(body, members) {
+    const newDictionary = await createDictionary(body);
+    if (newDictionary && members.length > 0)
+      await inviteMembers(newDictionary.id, members);
     handleCancel();
   }
 
   function handleCancel() {
     setViewMode(true);
-    setDictionaryInfo(null);
   }
 
   return (
@@ -74,8 +55,6 @@ function SettingsDictionaries() {
             title={settingsOptions.title}
             previousPage="Settings & Help"
             options={settingsOptions.options}
-            editMode={editMode}
-            setEditMode={setEditMode}
             toAddPage={handleAdd}
           >
             <ul className={styles.settingsItemList}>
@@ -83,9 +62,6 @@ function SettingsDictionaries() {
                 <SettingsItemDictionary
                   key={item.id}
                   item={item}
-                  editMode={editMode}
-                  toEditPage={() => handleEdit(item.id)}
-                  description={true}
                 />
               ))}
             </ul>
@@ -94,10 +70,7 @@ function SettingsDictionaries() {
       )}
       {!viewMode && (
         <AddDictionary
-          dictionaryInfo={dictionaryInfo}
           onCreate={handleCreate}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
           onCancel={handleCancel}
         />
       )}

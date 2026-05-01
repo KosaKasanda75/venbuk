@@ -25,3 +25,55 @@
   justify-content: space-between;
   margin-bottom: 1.2rem;
 }
+
+.autocompleteWrapper {
+  position: relative;
+  width: 90%;
+}
+
+.autocompleteOptions {
+  list-style: none;
+  background-color: #eee;
+  width: 100%;
+  max-height: 10rem;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  z-index: 10;
+}
+
+.autocompleteOptions li {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.4rem;
+  cursor: pointer;
+}
+
+.autocompleteOptions li:hover {
+  background-color: #ddd;
+}
+
+.memberList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.memberRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.memberUsername {
+  flex: 1;
+}
+
+.removeIcon {
+  height: 1.4rem;
+  width: 1.4rem;
+  cursor: pointer;
+}
