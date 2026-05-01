@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPencilMinus } from "react-icons/tb";
+import styles from "./Dictionary.module.css";
 import MainMenu from "../components/MainMenu";
 import PageContent from "../components/PageContent";
 import DictionaryDetails from "../components/DictionaryDetails";
 import AddDictionary from "../components/AddDictionary";
 import useDictionary from "../hooks/useDictionary";
+import BackButton from "../components/BackButton";
 
 function Dictionary() {
   const { id } = useParams();
@@ -74,9 +76,12 @@ function Dictionary() {
       {!dictionaryInfo && <p>Loading...</p>}
       {dictionaryInfo && !isEditing && (
         <>
-          {memberRole !== "viewer" && (
-            <TbPencilMinus onClick={() => setIsEditing(true)} />
-          )}
+          <div className={styles.topButtonBox}>
+            <BackButton />
+            {memberRole !== "viewer" && (
+              <TbPencilMinus onClick={() => setIsEditing(true)} />
+            )}
+          </div>
           <DictionaryDetails dictionaryInfo={dictionaryInfo} />
         </>
       )}

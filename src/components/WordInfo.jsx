@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 function WordInfo({ word }) {
   const { nounClasses, genders, memberRole } = useDictionary();
   const navigate = useNavigate();
-  console.log(word);
+  // console.log(word);
 
   return (
     <div className={styles.wordBox}>
-      {word && <p>Filler</p>}
+      {/* {word && <p>Filler</p>} */}
       <div className={styles.wordTopSection}>
         {word.word_class !== "unsure" && (
           <h2>

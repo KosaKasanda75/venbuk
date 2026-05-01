@@ -1,5 +1,6 @@
 .terminologyBox {
   list-style: none; /* temporary to remove warnings */
+  overflow: scroll;
 }
 
 .terminologyTitle {
@@ -7,6 +8,27 @@
   margin: 1.2rem 0 2.4rem 0;
 }
 
+.overviewBox {
+  margin-bottom: 1.2rem;
+}
+
+.termBox {
+  margin: 0.8rem 0;
+}
+
 .termTitle {
   font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.meaning {
+  margin-bottom: 0.4rem;
+}
+
+.examples {
+  margin-bottom: 0.4rem;
+}
+
+.note {
+  margin-bottom: 0.4rem;
 }

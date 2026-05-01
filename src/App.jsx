@@ -186,9 +186,8 @@ function App() {
                   }
                 />
               </Route>
+              <Route path="app-info" element={<AppInfo />} />
             </Route>
-
-            <Route path="app-info" element={<AppInfo />} />
 
             <Route path="account" element={<Account />} />
             <Route path="new-dictionary" element={<NewDictionary />} />
