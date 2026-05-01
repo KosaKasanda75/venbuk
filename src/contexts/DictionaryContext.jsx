@@ -239,7 +239,7 @@ function DictionaryProvider({ children }) {
     }
   }
 
-  async function getDictionaryInfo(dictionaryId) {
+  const getDictionaryInfo = useCallback(async function getDictionaryInfo(dictionaryId) {
     dispatch({ type: "loading" });
     // Fetch
     try {
@@ -263,7 +263,7 @@ function DictionaryProvider({ children }) {
       dispatch({ type: "completed" });
       console.log(fetchError);
     }
-  }
+  }, []);
 
   const getDictionaryList = useCallback(async function () {
     dispatch({ type: "loading" });

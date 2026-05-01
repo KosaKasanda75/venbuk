@@ -9,6 +9,7 @@ import InputField from "./InputField";
 import apiFetch from "../helpers/fetchWrapper";
 import { GetOptions } from "../helpers/fetchOptions";
 import NamedLogo from "./NamedLogo";
+// import { RxCross2 } from "react-icons/rx";
 
 function ResgisterPortal({ toLogin, from }) {
   // const [email, setEmail] = useState("jack@mail.com");
@@ -167,20 +168,19 @@ function ResgisterPortal({ toLogin, from }) {
           <div>
             <h3>Passwords should:</h3>
             <ul className={styles.passwordInfo}>
-              <li className={`${shortPassword && styles.invalid}`}>
+              <li
+                className={`${styles.reqText} ${shortPassword && styles.invalid}`}
+              >
                 Be 8 to 20 characters long{" "}
-                {shortPassword && <span>&cross;</span>}
               </li>
               <li className={`${noUpperCase && styles.invalid}`}>
                 Include at least one upper case letter{" "}
-                {noUpperCase && <span>&cross;</span>}
               </li>
               <li className={`${noLowerCase && styles.invalid}`}>
                 Include at least one lower case letter{" "}
-                {noLowerCase && <span>&cross;</span>}
               </li>
               <li className={`${noNumber && styles.invalid}`}>
-                Include at least one number {noNumber && <span>&cross;</span>}
+                Include at least one number{" "}
               </li>
             </ul>
           </div>
