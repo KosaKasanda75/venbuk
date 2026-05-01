@@ -124,7 +124,7 @@ function DictionaryProvider({ children }) {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, authVerifying, user } = useAuth();
 
   const memberRole =
     dictionary?.members?.find((m) => m.user_id === user?.id)?.role ?? null;
@@ -479,17 +479,17 @@ function DictionaryProvider({ children }) {
 
   useEffect(
     function () {
-      if (isAuthenticated) getDictionaryList();
+      if (isAuthenticated && !authVerifying) getDictionaryList();
     },
-    [isAuthenticated, getDictionaryList],
+    [isAuthenticated, authVerifying, getDictionaryList],
   );
 
   useEffect(
     function () {
-      if (isAuthenticated && dictionary) getAllMetadata(dictionary.id);
+      if (isAuthenticated && !authVerifying && dictionary) getAllMetadata(dictionary.id);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isAuthenticated, dictionary?.id],
+    [isAuthenticated, authVerifying, dictionary?.id],
   );
 
   useEffect(

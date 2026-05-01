@@ -15,7 +15,7 @@ function InputField({
 
   function handleChange(e) {
     setState(e.target.value);
-    onValidate();
+    onValidate?.();
   }
 
   const resolvedType = type === "password" && showPassword ? "text" : type;

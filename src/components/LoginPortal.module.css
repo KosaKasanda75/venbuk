@@ -92,3 +92,28 @@
   color: blue;
   text-decoration: none;
 }
+
+/* tablets and smaller */
+@media (max-width: 768px) {
+  .container,
+  .containerRegister {
+    width: 70%;
+    max-width: 100%;
+  }
+
+  .queryBox {
+    width: 80%;
+  }
+}
+
+/* phones */
+@media (max-width: 480px) {
+  .container,
+  .containerRegister {
+    width: 100%;
+    /* border-radius: 0; */
+  }
+  .queryBox {
+    width: 90%;
+  }
+}

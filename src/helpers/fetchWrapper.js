@@ -1,5 +1,6 @@
-const API_URL = "http://localhost:8001";
-// const API_URL = "https://api.venbuk.com";
+const API_URL = import.meta.env.VITE_API_URL ?? "";
+
+let refreshPromise = null;
 
 async function apiFetch(path, options = {}) {
   const url = `${API_URL}${path}`;
@@ -7,19 +8,27 @@ async function apiFetch(path, options = {}) {
     let res = await fetch(url, { ...options, credentials: "include" });
 
     if (res.status === 401) {
-      // Access token expired ? try to refresh silently
-      const refreshRes = await fetch("/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!refreshRes.ok) {
-        // Refresh token also expired ? send user to login
-        window.location.href = "/login";
-        return;
+      // Deduplicate concurrent refresh attempts — only one refresh at a time
+      if (!refreshPromise) {
+        refreshPromise = fetch(`${API_URL}/auth/refresh`, {
+          method: "POST",
+          credentials: "include",
+        }).finally(() => {
+          refreshPromise = null;
+        });
       }
 
-      // New access token cookie is set ? retry the original request
+      const refreshRes = await refreshPromise;
+
+      if (!refreshRes.ok) {
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+        // Return the original 401, not the refresh endpoint's response
+        return res;
+      }
+
+      // New access token cookie is set — retry the original request
       res = await fetch(url, { ...options, credentials: "include" });
     }
 

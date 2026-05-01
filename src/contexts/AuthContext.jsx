@@ -18,6 +18,7 @@ const initialState = {
   user: null,
   isAuthenticated: null,
   authLoading: false,
+  authVerifying: true,
 };
 
 function reducer(state, action) {
@@ -27,20 +28,22 @@ function reducer(state, action) {
     case "completed":
       return { ...state, authLoading: false };
     case "login":
-      return { ...state, user: action.payload, isAuthenticated: true };
+      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
     case "register":
-      return { ...state, user: action.payload, isAuthenticated: true };
+      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
     case "logout":
-      return { ...state, user: null, isAuthenticated: false };
-    case "verify":
-      return { ...state, user: action.payload, isAuthenticated: true };
+      return { ...state, user: null, isAuthenticated: false, authVerifying: false };
+    case "verifyDone":
+      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
+    case "verifyFailed":
+      return { ...state, user: null, isAuthenticated: false, authVerifying: false };
     default:
       throw new Error("Unknown action");
   }
 }
 
 function AuthProvider({ children }) {
-  const [{ user, isAuthenticated, authLoading }, dispatch] = useReducer(
+  const [{ user, isAuthenticated, authLoading, authVerifying }, dispatch] = useReducer(
     reducer,
     initialState,
   );
@@ -51,16 +54,11 @@ function AuthProvider({ children }) {
 
   useEffect(function () {
     async function verifyUser() {
-      const cached = localStorage.getItem(AUTH_CACHE_KEY);
-      if (cached) {
-        dispatch({ type: "verify", payload: JSON.parse(cached) });
-      }
-
       try {
         const res = await getUser();
         if (!res.ok) {
           localStorage.removeItem(AUTH_CACHE_KEY);
-          dispatch({ type: "logout" });
+          dispatch({ type: "verifyFailed" });
           return;
         }
         if (res.status !== 204) {
@@ -69,10 +67,11 @@ function AuthProvider({ children }) {
             AUTH_CACHE_KEY,
             JSON.stringify({ id: data.id, username: data.username }),
           );
-          dispatch({ type: "verify", payload: data });
+          dispatch({ type: "verifyDone", payload: data });
         }
       } catch (fetchError) {
         console.log(fetchError);
+        dispatch({ type: "verifyFailed" });
       }
     }
     verifyUser();
@@ -197,7 +196,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, authLoading, login, register, logout }}
+      value={{ user, isAuthenticated, authLoading, authVerifying, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>

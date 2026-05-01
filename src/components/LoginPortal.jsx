@@ -8,10 +8,10 @@ import MainLogo from "./MainLogo";
 import NamedLogo from "./NamedLogo";
 
 function LoginPortal({ toSignUp, from }) {
-  const [email, setEmail] = useState("jack@mail.com");
-  // const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("qwerty");
-  // const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("jack@mail.com");
+  const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("qwerty");
+  const [password, setPassword] = useState("");
   const [authFailure, setAuthFailure] = useState(false);
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
@@ -48,13 +48,11 @@ function LoginPortal({ toSignUp, from }) {
           />
           {authFailure && (
             <p className={styles.invalid}>
-              The email and/or password are incoreect
+              The email and/or password are incorrect
             </p>
           )}
           <div className={styles.registerBox}>
-            <Button type="lowkey" onClick={toSignUp}>
-              Forgot Password
-            </Button>
+            <Button type="lowkey">{/* Forgot Password */}</Button>
             <Button type="lowkey" onClick={toSignUp}>
               Sign Up?
             </Button>
