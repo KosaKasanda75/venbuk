@@ -1,6 +1,7 @@
 .terminologyBox {
   list-style: none; /* temporary to remove warnings */
-  overflow: scroll;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .terminologyTitle {
@@ -9,11 +10,11 @@
 }
 
 .overviewBox {
-  margin-bottom: 1.2rem;
+  margin-bottom: 3.6rem;
 }
 
 .termBox {
-  margin: 0.8rem 0;
+  margin: 0.8rem 0 1.6rem 0;
 }
 
 .termTitle {
