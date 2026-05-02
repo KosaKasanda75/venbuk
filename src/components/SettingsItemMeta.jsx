@@ -6,11 +6,13 @@ function SettingsItemMeta({ item, editMode, toEditPage, description }) {
     <li className={styles.settingsItem} key={item.id}>
       <div>
         <p className={styles.settingsItemName}>
-          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}{" "}
-          {item.concord && `   ||   ${item.concord}`}
+          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
         </p>
         {description && (
-          <p className={styles.settingsItemDescription}>{item.description}</p>
+          <p className={styles.settingsItemDescription}>
+            {item.concord && <strong>{item.concord}: </strong>}
+            {item.description}
+          </p>
         )}
       </div>
       {editMode && (

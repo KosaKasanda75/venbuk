@@ -42,6 +42,6 @@
 }
 
 .logout {
-  background-color: var(--red);
+  background-color: transparent;
   justify-self: end;
 }
