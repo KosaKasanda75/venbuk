@@ -41,7 +41,7 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
             type="text"
             id="concord"
             value={concord}
-            onChange={(e) => setConcord(e.target.value)}
+            onChange={(e) => setConcord(e.target.value.toLowerCase())}
           />
         </div>
 

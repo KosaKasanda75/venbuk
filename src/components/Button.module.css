@@ -42,6 +42,8 @@
 }
 
 .logout {
+  color: var(--text-primary);
+  border: 0.2rem solid var(--text-primary);
   background-color: transparent;
   justify-self: end;
 }
