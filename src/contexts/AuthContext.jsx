@@ -1,6 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
 import apiFetch from "../helpers/fetchWrapper";
-import { GetOptions, PostOptions } from "../helpers/fetchOptions";
+import {
+  DeleteOptions,
+  GetOptions,
+  PostOptions,
+} from "../helpers/fetchOptions";
 
 const AuthContext = createContext();
 // wrong input field for long text
@@ -28,25 +32,55 @@ function reducer(state, action) {
     case "completed":
       return { ...state, authLoading: false };
     case "login":
-      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        authVerifying: false,
+      };
     case "register":
-      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        authVerifying: false,
+      };
     case "logout":
-      return { ...state, user: null, isAuthenticated: false, authVerifying: false };
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        authVerifying: false,
+      };
+    case "delete":
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        authVerifying: false,
+      };
     case "verifyDone":
-      return { ...state, user: action.payload, isAuthenticated: true, authVerifying: false };
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        authVerifying: false,
+      };
     case "verifyFailed":
-      return { ...state, user: null, isAuthenticated: false, authVerifying: false };
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        authVerifying: false,
+      };
     default:
       throw new Error("Unknown action");
   }
 }
 
 function AuthProvider({ children }) {
-  const [{ user, isAuthenticated, authLoading, authVerifying }, dispatch] = useReducer(
-    reducer,
-    initialState,
-  );
+  const [{ user, isAuthenticated, authLoading, authVerifying }, dispatch] =
+    useReducer(reducer, initialState);
 
   async function getUser() {
     return await apiFetch(`/users/me`, GetOptions);
@@ -194,9 +228,41 @@ function AuthProvider({ children }) {
     dispatch({ type: "logout" });
   }
 
+  async function deleteAccount() {
+    dispatch({ type: "loading" });
+    // Fetch request
+    try {
+      const registerRes = await apiFetch(`/users/me`, DeleteOptions);
+      // const registerData = await registerRes.json();
+      // console.log(registerData);
+      if (!registerRes.ok) {
+        const err = await registerRes.json();
+        console.log(err.detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+    } catch (fetchError) {
+      console.log(fetchError);
+      dispatch({ type: "completed" });
+      return;
+    }
+
+    localStorage.removeItem(AUTH_CACHE_KEY);
+    dispatch({ type: "delete" });
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, authLoading, authVerifying, login, register, logout }}
+      value={{
+        user,
+        isAuthenticated,
+        authLoading,
+        authVerifying,
+        login,
+        register,
+        logout,
+        deleteAccount,
+      }}
     >
       {children}
     </AuthContext.Provider>

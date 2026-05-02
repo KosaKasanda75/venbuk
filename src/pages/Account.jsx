@@ -1,11 +1,14 @@
 import styles from "./Account.module.css";
 import BackButton from "../components/BackButton";
 import Button from "../components/Button";
+import Confirm from "../components/Confirm";
 import PageContent from "../components/PageContent";
 import useAuth from "../hooks/useAuth";
+import { useState } from "react";
 
 function Account() {
-  const { logout, user } = useAuth();
+  const { logout, deleteAccount, user } = useAuth();
+  const [showConfirm, setShowConfirm] = useState(false);
   const createdAt = new Date(user.created_at).toLocaleDateString(undefined, {
     year: "numeric",
     month: "long",
@@ -31,7 +34,17 @@ function Account() {
         <Button type="logout" onClick={logout}>
           Logout
         </Button>
+        <Button type="delete" onClick={() => setShowConfirm(true)}>
+          Delete Account
+        </Button>
       </div>
+      {showConfirm && (
+        <Confirm
+          message="Are you sure you want to delete your account? This cannot be undone. (All your dictionaries will be passed on or deleted)"
+          onConfirm={deleteAccount}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </PageContent>
   );
 }

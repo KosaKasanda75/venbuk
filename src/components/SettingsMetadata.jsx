@@ -4,6 +4,7 @@ import SettingsList from "./SettingsList";
 import SettingsItemMeta from "./SettingsItemMeta";
 import useDictionary from "../hooks/useDictionary";
 import AddMetadataItem from "./AddMetadataItem";
+import AddNounClass from "./AddNounClass";
 
 // const settingsOptions = {
 //   title: "Tags",
@@ -13,6 +14,8 @@ import AddMetadataItem from "./AddMetadataItem";
 //     edit: true,
 //   },
 // };
+
+const NOUN_CLASSES = "nounClasses";
 
 const camelToTitle = (text) => {
   return (
@@ -90,8 +93,17 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
           </ul>
         </SettingsList>
       )}
-      {!viewMode && (
+      {!viewMode && metadataTitle !== NOUN_CLASSES && (
         <AddMetadataItem
+          metaInfo={metaInfo}
+          onCreate={handleCreate}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+          onCancel={handleCancel}
+        />
+      )}
+      {!viewMode && metadataTitle === NOUN_CLASSES && (
+        <AddNounClass
           metaInfo={metaInfo}
           onCreate={handleCreate}
           onUpdate={handleUpdate}

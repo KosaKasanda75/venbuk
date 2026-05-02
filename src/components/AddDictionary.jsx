@@ -56,7 +56,11 @@ function AddDictionary({
     if (members.some((m) => m.user_id === user.id)) return;
     setMembers((prev) => [
       ...prev,
-      { user_id: user.id, username: user.username, role: memberRoles?.[0] ?? "" },
+      {
+        user_id: user.id,
+        username: user.username,
+        role: memberRoles?.[0] ?? "",
+      },
     ]);
     setMemberQuery("");
   }
@@ -73,8 +77,8 @@ function AddDictionary({
 
   return (
     <div>
-      {!dictionaryInfo && <h1>Add Deictionary</h1>}
-      {dictionaryInfo && <h1>Edit Deictionary</h1>}
+      {!dictionaryInfo && <h1>Add Dictionary</h1>}
+      {dictionaryInfo && <h1>Edit Dictionary</h1>}
       <form className={styles.formBox}>
         <div className={styles.formSection}>
           <label>
@@ -117,9 +121,7 @@ function AddDictionary({
             {memberQuery && usernameList.length > 0 && (
               <ul className={styles.autocompleteOptions}>
                 {usernameList
-                  .filter(
-                    (u) => !members.some((m) => m.user_id === u.id),
-                  )
+                  .filter((u) => !members.some((m) => m.user_id === u.id))
                   .map((u) => (
                     <li key={u.id} onClick={() => addMember(u)}>
                       {u.username}
@@ -160,14 +162,25 @@ function AddDictionary({
         {dictionaryInfo && (
           <Button
             onClick={() =>
-              onUpdate(dictionaryInfo.id, { name, description }, members.map(({ user_id, role }) => ({ user_id, role })))
+              onUpdate(
+                dictionaryInfo.id,
+                { name, description },
+                members.map(({ user_id, role }) => ({ user_id, role })),
+              )
             }
           >
             Save Update
           </Button>
         )}
         {!dictionaryInfo && (
-          <Button onClick={() => onCreate({ name, description }, members.map(({ user_id, role }) => ({ user_id, role })))}>
+          <Button
+            onClick={() =>
+              onCreate(
+                { name, description },
+                members.map(({ user_id, role }) => ({ user_id, role })),
+              )
+            }
+          >
             Create
           </Button>
         )}

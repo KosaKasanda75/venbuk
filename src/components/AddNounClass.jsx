@@ -1,14 +1,17 @@
 import { useState } from "react";
 import Button from "./Button";
+import Confirm from "./Confirm";
 import styles from "./MetadataDetails.module.css";
 import RequiredField from "./RequiredField";
 import { LARGE_TEXT_AREA_ROWS } from "../helpers/constants";
 
 function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
   const [name, setName] = useState(nounInfo ? nounInfo.name : "");
+  const [concord, setConcord] = useState(nounInfo ? nounInfo.concord : "");
   const [description, setDescription] = useState(
     nounInfo ? nounInfo.description : "",
   );
+  const [showConfirm, setShowConfirm] = useState(false);
 
   return (
     <div>
@@ -27,6 +30,18 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.formSection}>
+          <label>Concord</label>
+          <br />
+          <input
+            className={styles.fullLineTextBox}
+            type="text"
+            id="concord"
+            value={concord}
+            onChange={(e) => setConcord(e.target.value)}
           />
         </div>
 
@@ -59,9 +74,16 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
         )}
       </div>
       {nounInfo && (
-        <Button type="delete" onClick={() => onDelete(nounInfo.id)}>
+        <Button type="delete" onClick={() => setShowConfirm(true)}>
           Delete
         </Button>
+      )}
+      {showConfirm && (
+        <Confirm
+          message="Are you sure you want to delete this noun class?"
+          onConfirm={() => onDelete(nounInfo.id)}
+          onCancel={() => setShowConfirm(false)}
+        />
       )}
     </div>
   );

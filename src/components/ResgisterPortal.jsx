@@ -19,7 +19,7 @@ function ResgisterPortal({ toLogin, from }) {
   const [username, setUsername] = useState("");
   const [wrongUsername, setWrongUsername] = useState(false);
   const [usernameMsg, setUsernameMsg] = useState("");
-  const [usernameList, setUsernameList] = useState([]);
+  // const [usernameList, setUsernameList] = useState([]);
   // const [password, setPassword] = useState("qwerty");
   const [password, setPassword] = useState("");
   const [wrongPassword, setWrongPassword] = useState(false);
@@ -39,33 +39,35 @@ function ResgisterPortal({ toLogin, from }) {
     [from, isAuthenticated, navigate],
   );
 
-  useEffect(
-    function () {
-      async function getUsernames() {
-        try {
-          const res = await apiFetch(
-            `/users/usernames?q=${username}`,
-            GetOptions,
-          );
+  // useEffect(
+  //   function () {
+  //     async function getUsernames() {
+  //       try {
+  //         const res = await apiFetch(
+  //           `/users/usernames?q=${username}`,
+  //           GetOptions,
+  //         );
 
-          if (!res.ok) {
-            return;
-          }
+  //         if (!res.ok) {
+  //           return;
+  //         }
 
-          const data = await res.json();
-          setUsernameList(data);
-        } catch (fetchError) {
-          console.log(fetchError);
-        }
-      }
-      getUsernames();
-    },
-    [username],
-  );
+  //         const data = await res.json();
+  //         setUsernameList(data);
+  //       } catch (fetchError) {
+  //         console.log(fetchError);
+  //       }
+  //     }
+  //     getUsernames();
+  //   },
+  //   [username],
+  // );
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!validateEmail()) return;
+    if (!validUsername()) return;
+    if (!validPassword()) return;
     checkSamePassword();
     if (email && username && password)
       register(email.toLowerCase(), username.toLowerCase(), password);
@@ -79,56 +81,82 @@ function ResgisterPortal({ toLogin, from }) {
     return true;
   }
 
-  async function validUsername() {
-    if (username.length < 4) {
+  async function validUsername(currentUsername) {
+    if (currentUsername.length < 4) {
       setWrongUsername(true);
       setUsernameMsg("Username is too short");
-      return;
+      return false;
     }
-    if (username.length > 15) {
+    if (currentUsername.length > 15) {
       setWrongUsername(true);
       setUsernameMsg("Username is too long");
-      return;
+      return false;
     }
-    if (/[^a-zA-Z0-9_]/.test(username)) {
+    if (/[^a-zA-Z0-9_]/.test(currentUsername)) {
       setWrongUsername(true);
       setUsernameMsg("Username cannot contain special characters");
-      return;
+      return false;
     }
-    if (usernameList.some((u) => u.username === username)) {
+    if (!(await usernameIsAvailable(currentUsername))) {
       setWrongUsername(true);
       setUsernameMsg("Username has been taken");
-      return;
+      return false;
     }
     setWrongUsername(false);
+    return true;
   }
 
-  function validPassword() {
-    if (password.length < 8 || password.length > 20) {
+  async function usernameIsAvailable(user_name) {
+    try {
+      const res = await apiFetch(
+        `/users/check-username?username=${user_name}`,
+        GetOptions,
+      );
+
+      if (res.status === 429) {
+        // throw new Error("Too many requests, slow down");
+        return true;
+      }
+      if (!res.ok) {
+        // throw new Error("Unexpected error");
+        return true;
+      }
+
+      const { available } = await res.json();
+      return available;
+    } catch (fetchError) {
+      console.log(fetchError);
+      return true;
+    }
+  }
+
+  function validPassword(_password) {
+    if (_password.length < 8 || _password.length > 20) {
       setWrongPassword(true);
       setShortPassword(true);
-      return;
+      return false;
     } else setShortPassword(false);
 
-    if (!/[A-Z]/.test(password)) {
+    if (!/[A-Z]/.test(_password)) {
       setWrongPassword(true);
       setNoUpperCase(true);
-      return;
+      return false;
     } else setNoUpperCase(false);
 
-    if (!/[a-z]/.test(password)) {
+    if (!/[a-z]/.test(_password)) {
       setWrongPassword(true);
       setNoLowerCase(true);
-      return;
+      return false;
     } else setNoLowerCase(false);
 
-    if (!/[0-9]/.test(password)) {
+    if (!/[0-9]/.test(_password)) {
       setWrongPassword(true);
       setNoNumber(true);
-      return;
+      return false;
     } else setNoNumber(false);
 
     setWrongPassword(false);
+    return true;
   }
 
   function checkSamePassword() {
