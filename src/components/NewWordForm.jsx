@@ -70,7 +70,7 @@ function NewWordForm() {
       );
       console.log(match);
       match
-        ? setModal({ title: match.name, explainer: match })
+        ? setModal({ title: match.name, explainer: [match] })
         : setModal({ title: "Word Classes", explainer: WordClassDefinitions });
     } else {
       setModal({ title: "Word Classes", explainer: WordClassDefinitions });

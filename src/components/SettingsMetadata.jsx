@@ -104,7 +104,7 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
       )}
       {!viewMode && metadataTitle === NOUN_CLASSES && (
         <AddNounClass
-          metaInfo={metaInfo}
+          nounInfo={metaInfo}
           onCreate={handleCreate}
           onUpdate={handleUpdate}
           onDelete={handleDelete}
