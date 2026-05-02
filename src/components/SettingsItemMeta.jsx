@@ -2,6 +2,7 @@ import { TbPencilMinus } from "react-icons/tb";
 import styles from "./SettingsList.module.css";
 
 function SettingsItemMeta({ item, editMode, toEditPage, description }) {
+  console.log(item);
   return (
     <li className={styles.settingsItem} key={item.id}>
       <div>
