@@ -7,7 +7,7 @@ function SettingsItemMeta({ item, editMode, toEditPage, description }) {
       <div>
         <p className={styles.settingsItemName}>
           {item.name.charAt(0).toUpperCase() + item.name.slice(1)}{" "}
-          {item.concord && ` || ${item.concord}`}
+          {item.concord && `   ||   ${item.concord}`}
         </p>
         {description && (
           <p className={styles.settingsItemDescription}>{item.description}</p>

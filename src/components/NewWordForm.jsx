@@ -68,7 +68,6 @@ function NewWordForm() {
         (def) =>
           def.name.toLowerCase().slice(0, -1) === wordClass.toLowerCase(),
       );
-      console.log(match);
       match
         ? setModal({ title: match.name, explainer: [match] })
         : setModal({ title: "Word Classes", explainer: WordClassDefinitions });
@@ -104,8 +103,6 @@ function NewWordForm() {
       ...(genderId && { gender_id: genderId }),
       ...(tagIds && { tag_ids: tagIds }),
     };
-
-    console.log(word);
 
     const url = isEditing
       ? `/dictionaries/${dictionary.id}/words/${existingWord.id}`

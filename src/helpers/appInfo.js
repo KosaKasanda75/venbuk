@@ -73,7 +73,7 @@ const WordClassDefinitions = [
     name: "Articles",
     meaning: "Specify nouns",
     examples: "the, a, this, some",
-    note: "They are also known as 'Determiners' and are not universal. Many languages (like Russian or Chinese) do not use articles like the or a",
+    note: "They are also known as 'Determiners' and are not universal. Many languages (like Russian or Chinese) do not use articles like 'the' or 'a'",
   },
   {
     name: "Prepositions",
