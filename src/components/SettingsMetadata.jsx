@@ -36,7 +36,7 @@ function SettingsMetadata({ metadataTitle, metaList, previousPage }) {
   const { createMetadata, updateMetadata, deleteMetadata, memberRole } =
     useDictionary();
   const canEdit = memberRole !== "viewer";
-  console.log("list", metaList);
+  // console.log("list", metaList);
 
   function handleAdd() {
     setViewMode(false);
