@@ -65,8 +65,10 @@ function NewWordForm() {
   function handleWordClassInfo() {
     if (wordClass.toLowerCase() !== "unsure") {
       const match = WordClassDefinitions.find(
-        (def) => def.name.toLowerCase() === wordClass.toLowerCase(),
+        (def) =>
+          def.name.toLowerCase().slice(0, -1) === wordClass.toLowerCase(),
       );
+      console.log(match);
       match
         ? setModal({ title: match.name, explainer: match })
         : setModal({ title: "Word Classes", explainer: WordClassDefinitions });
@@ -408,7 +410,7 @@ function NewWordForm() {
       )}
       {modal && (
         <div className={styles.modalOverlay} onClick={() => setModal(null)}>
-          <div onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalBox} onClick={(e) => e.stopPropagation()}>
             <TerminologyModal
               title={modal.title}
               explainer={modal.explainer}

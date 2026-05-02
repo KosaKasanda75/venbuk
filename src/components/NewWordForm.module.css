@@ -107,3 +107,21 @@
   justify-content: center;
   z-index: 100;
 }
+
+.modalBox {
+  max-width: var(--max-width);
+}
+
+/* tablets and smaller */
+@media (max-width: 768px) {
+  .modalBox {
+    max-width: 90%;
+  }
+}
+
+/* phones */
+@media (max-width: 480px) {
+  .modalBox {
+    max-width: 100%;
+  }
+}

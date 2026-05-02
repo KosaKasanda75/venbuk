@@ -63,12 +63,16 @@ function AddNounClass({ nounInfo, onCreate, onUpdate, onCancel, onDelete }) {
           Cancel
         </Button>
         {nounInfo && (
-          <Button onClick={() => onUpdate(nounInfo.id, { name, description })}>
+          <Button
+            onClick={() =>
+              onUpdate(nounInfo.id, { name, concord, description })
+            }
+          >
             Save Update
           </Button>
         )}
         {!nounInfo && (
-          <Button onClick={() => onCreate({ name, description })}>
+          <Button onClick={() => onCreate({ name, concord, description })}>
             Create
           </Button>
         )}

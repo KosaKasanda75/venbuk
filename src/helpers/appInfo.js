@@ -70,13 +70,13 @@ const WordClassDefinitions = [
     note: "In some languages, adverbs are less distinct and overlap with adjectives",
   },
   {
-    name: "Articles / Determiners",
+    name: "Articles",
     meaning: "Specify nouns",
     examples: "the, a, this, some",
-    note: "They are not universal. Many languages (like Russian or Chinese) do not use articles like the or a",
+    note: "They are also known as 'Determiners' and are not universal. Many languages (like Russian or Chinese) do not use articles like the or a",
   },
   {
-    name: "Prepositions / Postpositions",
+    name: "Prepositions",
     meaning: "Show relationships (location, time, direction)",
     examples: "in, on, under (are prepositions)",
     note: "Postpositions come after the noun, e.g., in Hindi or Japanese",
