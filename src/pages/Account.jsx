@@ -34,9 +34,11 @@ function Account() {
         <Button type="logout" onClick={logout}>
           Logout
         </Button>
-        <Button type="delete" onClick={() => setShowConfirm(true)}>
-          Delete Account
-        </Button>
+        <div className={styles.deleteAccount}>
+          <Button type="delete" onClick={() => setShowConfirm(true)}>
+            Delete Account
+          </Button>
+        </div>
       </div>
       {showConfirm && (
         <Confirm
