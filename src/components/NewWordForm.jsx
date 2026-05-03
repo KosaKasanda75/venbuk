@@ -1,5 +1,6 @@
 import { RxCross2 } from "react-icons/rx";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { PiArrowFatLineDown, PiArrowFatLineDownFill } from "react-icons/pi";
 import styles from "./NewWordForm.module.css";
 import Button from "./Button";
 import Confirm from "./Confirm";
@@ -25,6 +26,7 @@ function NewWordForm() {
   const { dictionary, nounClasses, genders, tags } = useDictionary();
   const { wordClasses } = useEnum();
   const [spelling, setSpelling] = useState(existingWord.spelling || "");
+  const [lower, setLower] = useState(true);
   const [pronunciation, setPronunciation] = useState(
     existingWord.pronunciation || "",
   );
@@ -62,6 +64,11 @@ function NewWordForm() {
 
   function addExample() {
     setExamples((prev) => [...prev, ""]);
+  }
+
+  function spellingCase(userInput) {
+    const input = lower ? userInput.toLowerCase() : userInput;
+    setSpelling(input);
   }
 
   function handleWordClassInfo() {
@@ -127,7 +134,9 @@ function NewWordForm() {
       if (isEditing) {
         const originalTagIds = existingWord.tags?.map((t) => t.id) ?? [];
         const tagsToAdd = tagIds.filter((id) => !originalTagIds.includes(id));
-        const tagsToRemove = originalTagIds.filter((id) => !tagIds.includes(id));
+        const tagsToRemove = originalTagIds.filter(
+          (id) => !tagIds.includes(id),
+        );
 
         await Promise.all([
           ...tagsToAdd.map((tagId) =>
@@ -201,13 +210,26 @@ function NewWordForm() {
       <form className={styles.formBox} onSubmit={handleSubmit}>
         <div className={styles.oneLineField}>
           <label htmlFor="wordTextInput">Word</label>
-          <input
-            className={styles.oneLineTextBox}
-            type="text"
-            id="wordTextInput"
-            value={spelling}
-            onChange={(e) => setSpelling(e.target.value)}
-          />
+          <div className={styles.spellingInputWrapper}>
+            <input
+              className={styles.spellingInput}
+              type="text"
+              id="wordTextInput"
+              value={spelling}
+              onChange={(e) => spellingCase(e.target.value)}
+            />
+            {lower ? (
+              <PiArrowFatLineDownFill
+                className={styles.caseToggleIcon}
+                onClick={() => setLower(false)}
+              />
+            ) : (
+              <PiArrowFatLineDown
+                className={styles.caseToggleIcon}
+                onClick={() => setLower(true)}
+              />
+            )}
+          </div>
         </div>
 
         <div className={styles.oneLineField}>

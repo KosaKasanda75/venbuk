@@ -21,6 +21,26 @@
   flex: 1;
 }
 
+.spellingInputWrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.spellingInput {
+  width: 100%;
+  padding-right: 2rem;
+}
+
+.caseToggleIcon {
+  position: absolute;
+  right: 0.4rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  cursor: pointer;
+}
+
 .smallerTextBox {
   width: 95%;
   height: 2rem;
