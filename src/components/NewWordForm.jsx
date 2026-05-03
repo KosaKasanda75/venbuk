@@ -91,11 +91,9 @@ function NewWordForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(tagIds);
 
     if (!spelling || !wordClass || !definition) return;
 
-    // Need to add example sentences
     const word = {
       spelling: spelling.toLowerCase(),
       word_class: wordClass,
@@ -104,7 +102,7 @@ function NewWordForm() {
       ...(wordClass === "noun" &&
         nounClassId && { noun_class_id: nounClassId }),
       ...(genderId && { gender_id: genderId }),
-      ...(tagIds && { tag_ids: tagIds }),
+      ...(!isEditing && tagIds.length > 0 && { tag_ids: tagIds }),
     };
 
     const url = isEditing
@@ -125,6 +123,27 @@ function NewWordForm() {
 
       const data = await res.json();
       const wordId = isEditing ? existingWord.id : data.id;
+
+      if (isEditing) {
+        const originalTagIds = existingWord.tags?.map((t) => t.id) ?? [];
+        const tagsToAdd = tagIds.filter((id) => !originalTagIds.includes(id));
+        const tagsToRemove = originalTagIds.filter((id) => !tagIds.includes(id));
+
+        await Promise.all([
+          ...tagsToAdd.map((tagId) =>
+            apiFetch(
+              `/dictionaries/${dictionary.id}/words/${wordId}/tags/${tagId}`,
+              PostOptions,
+            ),
+          ),
+          ...tagsToRemove.map((tagId) =>
+            apiFetch(
+              `/dictionaries/${dictionary.id}/words/${wordId}/tags/${tagId}`,
+              DeleteOptions,
+            ),
+          ),
+        ]);
+      }
 
       if (isEditing && existingWord.examples?.length > 0) {
         await Promise.all(
@@ -231,13 +250,9 @@ function NewWordForm() {
               />
             </div>
           ))}
-          <button
-            type="button"
-            className={styles.addExampleBtn}
-            onClick={addExample}
-          >
+          <Button type="transparent" onClick={addExample}>
             + Add Example
-          </button>
+          </Button>
         </div>
 
         <div className={styles.oneLineField}>
@@ -393,14 +408,16 @@ function NewWordForm() {
           </li> */}
         </ul>
       </form>
-      <Button type="central" onClick={handleSubmit}>
-        {isEditing ? "Update" : "Create"}
-      </Button>
-      {isEditing && (
-        <Button type="central" onClick={() => setShowConfirm(true)}>
-          Delete
+      <div className={styles.submitBtns}>
+        <Button type="central" onClick={handleSubmit}>
+          {isEditing ? "Update" : "Create"}
         </Button>
-      )}
+        {isEditing && (
+          <Button type="central" onClick={() => setShowConfirm(true)}>
+            Delete
+          </Button>
+        )}
+      </div>
       {showConfirm && (
         <Confirm
           message="Are you sure you want to delete this word?"

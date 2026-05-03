@@ -26,7 +26,7 @@
   height: 2rem;
 }
 
-.largerTextBox {
+.largeTextBox {
   width: 95%;
   height: 4rem;
 }
@@ -38,7 +38,7 @@
 
 .autocompleteOptions {
   list-style: none;
-  background-color: #eee;
+  background-color: var(--bg);
   width: 100%;
   max-height: 10rem;
   /* height: 10rem; */
@@ -57,13 +57,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  margin-bottom: 1.6rem;
 }
 
 .selectedTags li {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(139, 0, 139, 0.521);
+  background-color: var(--blue-faded);
+  padding: 0 0.8rem;
 }
 
 .tagText {
@@ -74,6 +76,11 @@
   height: 1.4rem;
   width: 1.4rem;
   cursor: pointer;
+}
+
+.submitBtns {
+  display: flex;
+  justify-content: space-between;
 }
 
 .exampleRow {
@@ -87,10 +94,10 @@
   flex: 1;
 }
 
-.addExampleBtn {
+/* .addExampleBtn {
   margin-top: 0.4rem;
   cursor: pointer;
-}
+} */
 
 .infoIcon {
   cursor: pointer;

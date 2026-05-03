@@ -15,9 +15,13 @@ function WordInfo({ word }) {
         {word.word_class !== "unsure" && (
           <h2>
             {word.word_class}{" "}
-            {word.noun_class_id
-              ? `- ${nounClasses.find((n) => n.id === word.noun_class_id)?.name}`
-              : ""}
+            {word.noun_class_id ? (
+              <span className={styles.nounClassText}>
+                - {nounClasses.find((n) => n.id === word.noun_class_id)?.name}
+              </span>
+            ) : (
+              ""
+            )}
           </h2>
         )}
         {memberRole !== "viewer" && (

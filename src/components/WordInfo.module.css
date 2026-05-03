@@ -8,6 +8,10 @@
   align-items: flex-end;
 }
 
+.nounClassText {
+  font-weight: 400;
+}
+
 .editIcon {
   height: 2.4rem;
   width: 2.4rem;

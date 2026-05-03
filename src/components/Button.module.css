@@ -41,7 +41,8 @@
   justify-self: center;
 }
 
-.logout {
+.logout,
+.transparent {
   color: var(--text-primary);
   border: 0.2rem solid var(--text-primary);
   background-color: transparent;
