@@ -63,6 +63,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<FullPageLoading />}>
         <Routes>
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route element={<ProtectApp />}>
             <Route index element={<Navigate replace to="search" />} />
             <Route
@@ -197,7 +198,6 @@ function App() {
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
