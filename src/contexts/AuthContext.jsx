@@ -156,16 +156,11 @@ function AuthProvider({ children }) {
         dispatch({ type: "login", payload: userData });
         return userData;
       }
-      // const userData = userRes.json();
-      // console.log(userData);
-
-      // const loggedInUser = { email, password };
-      // if (email === FAKE_USER.email && password === FAKE_USER.password)
-
-      // dispatch({ type: "login", payload: userData });
     } catch (fetchError) {
       console.log(fetchError);
       return null;
+    } finally {
+      dispatch({ type: "completed" });
     }
   }
 
@@ -203,14 +198,9 @@ function AuthProvider({ children }) {
         );
         dispatch({ type: "register", payload: userData });
       }
-
-      // const userRes = getUser();
-      // const userData = userRes.json();
-      // console.log(userData);
-
-      // dispatch({ type: "register", payload: userData });
     } catch (fetchError) {
       console.log(fetchError);
+    } finally {
       dispatch({ type: "completed" });
     }
   }
