@@ -51,6 +51,7 @@ function reducer(state, action) {
         user: null,
         isAuthenticated: false,
         authVerifying: false,
+        authLoading: false,
       };
     case "delete":
       return {
