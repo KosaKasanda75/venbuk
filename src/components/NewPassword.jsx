@@ -4,11 +4,12 @@ import NamedLogo from "./NamedLogo";
 import { PostOptions } from "../helpers/fetchOptions";
 import LoadingContent from "./LoadingContent";
 import useAuth from "../hooks/useAuth";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import InputField from "./InputField";
 import Button from "./Button";
 
 function NewPassword() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const { resetPassword, authLoading } = useAuth();
@@ -60,9 +61,14 @@ function NewPassword() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!validPassword()) return;
+    if (!validPassword(password)) return;
     checkSamePassword();
-    if (password && confirmPassword && token) await resetPassword(password);
+    if (password && confirmPassword && token) {
+      await resetPassword(password, token);
+      setPassword("");
+      setConfirmPassword("");
+      navigate("/login");
+    }
   }
 
   return (
@@ -102,7 +108,7 @@ function NewPassword() {
               />
 
               <InputField
-                name="confirm_password"
+                name="confirm password"
                 type="password"
                 state={confirmPassword}
                 setState={setConfirmPassword}

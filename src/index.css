@@ -236,6 +236,7 @@ code {
 h1 {
   font-family: "M PLUS 1 Code", "Beiruti", "Asap Condensed", sans-serif;
   text-align: center;
+  line-height: 1.5;
   margin-bottom: 2.4rem;
 }
 

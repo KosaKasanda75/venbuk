@@ -29,7 +29,7 @@ function InputField({
         <input
           type={resolvedType}
           className={styles.inputField}
-          id={name}
+          id={name.replaceAll(" ", "_").toLowerCase()}
           value={state}
           onChange={(e) => handleChange(e)}
         />
