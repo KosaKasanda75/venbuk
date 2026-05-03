@@ -42,7 +42,9 @@ function NewWordForm() {
     existingWord.gender_id || genders?.at(0)?.id || null,
   );
   const [tagQuery, setTagQuery] = useState("");
-  const [tagIds, setTagIds] = useState(existingWord.tag_ids || []);
+  const [tagIds, setTagIds] = useState(
+    existingWord.tag_ids || existingWord.tags?.map((t) => t.id) || [],
+  );
   const [showConfirm, setShowConfirm] = useState(false);
   const [modal, setModal] = useState(null);
 
@@ -89,6 +91,7 @@ function NewWordForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(tagIds);
 
     if (!spelling || !wordClass || !definition) return;
 
@@ -195,7 +198,7 @@ function NewWordForm() {
             type="text"
             id="wordPronunciation"
             value={pronunciation}
-            onChange={(e) => setPronunciation(e.target.value)}
+            onChange={(e) => setPronunciation(e.target.value.toLowerCase())}
           />
         </div>
 

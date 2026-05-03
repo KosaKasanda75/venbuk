@@ -54,6 +54,8 @@ import {
   WordClassDefinitions,
 } from "./helpers/appInfo";
 import AppInfo from "./components/AppInfo";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const { nounClasses, genders, tags, tenses } = useDictionary();
@@ -195,7 +197,8 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Route>
           <Route path="login" element={<Login />} />
-          {/* <Route path="register" element={<Register />} /> */}
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

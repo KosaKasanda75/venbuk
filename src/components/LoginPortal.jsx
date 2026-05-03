@@ -52,7 +52,9 @@ function LoginPortal({ toSignUp, from }) {
             </p>
           )}
           <div className={styles.registerBox}>
-            <Button type="lowkey">{/* Forgot Password */}</Button>
+            <Button type="lowkey" onClick={() => navigate("/forgot-password")}>
+              Forgot Password
+            </Button>
             <Button type="lowkey" onClick={toSignUp}>
               Sign Up?
             </Button>

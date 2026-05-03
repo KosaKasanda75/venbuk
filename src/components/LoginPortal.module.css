@@ -37,6 +37,16 @@
   /* background-color: skyblue; */
 }
 
+.newPasswordBox {
+  display: flex;
+  flex-direction: column;
+  border: 0.1rem solid var(--grey-medium);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.2rem;
+  margin: 0.4rem auto 4rem auto;
+  overflow: hidden;
+}
+
 .formBox {
   display: flex;
   flex-direction: column;

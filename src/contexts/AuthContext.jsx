@@ -58,6 +58,15 @@ function reducer(state, action) {
         user: null,
         isAuthenticated: false,
         authVerifying: false,
+        authLoading: false,
+      };
+    case "reset-password":
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        authVerifying: false,
+        authLoading: false,
       };
     case "verifyDone":
       return {
@@ -202,6 +211,7 @@ function AuthProvider({ children }) {
       // dispatch({ type: "register", payload: userData });
     } catch (fetchError) {
       console.log(fetchError);
+      dispatch({ type: "completed" });
     }
   }
 
@@ -251,6 +261,56 @@ function AuthProvider({ children }) {
     dispatch({ type: "delete" });
   }
 
+  async function forgotPassword(email) {
+    dispatch({ type: "loading" });
+    // Fetch request
+    try {
+      const body = JSON.stringify({ email });
+
+      const res = await apiFetch(`/auth/forgot-password`, {
+        ...PostOptions,
+        body,
+      });
+
+      if (!res.ok) {
+        const { detail } = await res.json();
+        console.log(detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return null;
+      }
+      dispatch({ type: "completed" });
+      return "An email has been to the provided, given it currently has a Venbuk account";
+    } catch (fetchError) {
+      console.log(fetchError);
+      dispatch({ type: "completed" });
+      return null;
+    }
+  }
+
+  async function resetPassword(new_password, token) {
+    dispatch({ type: "loading" });
+    // Fetch request
+    try {
+      const body = JSON.stringify({ new_password, token });
+
+      const res = await apiFetch(`/auth/reset-password`, {
+        ...PostOptions,
+        body,
+      });
+
+      if (!res.ok) {
+        const { detail } = await res.json();
+        console.log(detail); // string, or array for validation errors (422)
+        dispatch({ type: "completed" });
+        return;
+      }
+      dispatch({ type: "reset-password" });
+    } catch (fetchError) {
+      console.log(fetchError);
+      dispatch({ type: "completed" });
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -262,6 +322,8 @@ function AuthProvider({ children }) {
         register,
         logout,
         deleteAccount,
+        forgotPassword,
+        resetPassword,
       }}
     >
       {children}
