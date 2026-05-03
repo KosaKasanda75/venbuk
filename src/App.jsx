@@ -194,11 +194,11 @@ function App() {
             <Route path="account" element={<Account />} />
             <Route path="new-dictionary" element={<NewDictionary />} />
             <Route path="dictionaries/:id" element={<Dictionary />} />
-            <Route path="*" element={<PageNotFound />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
