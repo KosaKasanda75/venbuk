@@ -27,7 +27,7 @@ function SettingsDictionaries() {
     dictionaryList,
     dictionaryLoading,
     createDictionary,
-    getDictionaryList,
+    // getDictionaryList,
     inviteMembers,
   } = useDictionary();
 
@@ -50,7 +50,7 @@ function SettingsDictionaries() {
     <>
       {viewMode && (
         <>
-          <IoMdRefresh className={styles.icon} onClick={getDictionaryList} />
+          {/* <IoMdRefresh className={styles.icon} onClick={getDictionaryList} /> */}
           <SettingsList
             title={settingsOptions.title}
             previousPage="Settings & Help"
@@ -59,20 +59,14 @@ function SettingsDictionaries() {
           >
             <ul className={styles.settingsItemList}>
               {dictionaryList?.sort().map((item) => (
-                <SettingsItemDictionary
-                  key={item.id}
-                  item={item}
-                />
+                <SettingsItemDictionary key={item.id} item={item} />
               ))}
             </ul>
           </SettingsList>
         </>
       )}
       {!viewMode && (
-        <AddDictionary
-          onCreate={handleCreate}
-          onCancel={handleCancel}
-        />
+        <AddDictionary onCreate={handleCreate} onCancel={handleCancel} />
       )}
       {dictionaryLoading && <LoadingContent />}
     </>
