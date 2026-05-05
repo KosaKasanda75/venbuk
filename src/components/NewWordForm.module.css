@@ -119,6 +119,11 @@
   cursor: pointer;
 } */
 
+.dropdown {
+  padding: 0.2rem 0.4rem;
+  background-color: var(--purple-faded);
+}
+
 .infoIcon {
   cursor: pointer;
   vertical-align: middle;

@@ -287,6 +287,7 @@ function NewWordForm() {
           </label>
           <select
             id="wordClassSelect"
+            className={styles.dropdown}
             value={wordClass}
             onChange={(e) => setWordClass(e.target.value)}
           >
