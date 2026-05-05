@@ -2,6 +2,7 @@
   /* position: absolute;
   bottom: 0; */
   width: 100%;
+  border-top: 0.1rem solid var(--purple-contrast);
   background-color: var(--purple-faded);
 }
 
