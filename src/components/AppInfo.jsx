@@ -11,14 +11,16 @@ function AppInfo() {
     <div className={styles.terminologyBox}>
       <BackButton title="Settings & Help" path="/settings" />
 
-      <h1 className={`${styles.terminologyTitle}`}>"App Info"</h1>
+      <h1 className={`${styles.terminologyTitle}`}>App Info</h1>
 
-      <h2>App Description</h2>
-      <p>{AppDescription}</p>
+      <div className={styles.appDescriptionBox}>
+        <h2>App Description</h2>
+        <p>{AppDescription}</p>
+      </div>
 
       <h2>Features</h2>
       {AppFeatures.map((feature, index) => (
-        <div key={index}>
+        <div className={styles.featureDescriptionBox} key={index}>
           <h3
             className={styles.featureName}
             onClick={() => setOpenIndex(openIndex === index ? null : index)}

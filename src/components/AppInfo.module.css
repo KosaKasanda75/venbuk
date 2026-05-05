@@ -1,5 +1,20 @@
+.appDescriptionBox {
+  margin-bottom: 2.4rem;
+}
+
+.appDescriptionBox h2 {
+  margin-bottom: 0.8rem;
+}
+
+.featureDescriptionBox {
+  margin-bottom: 0.8rem;
+}
+
 .featureName {
   font-weight: 600;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
 }
 
 .wrapper {

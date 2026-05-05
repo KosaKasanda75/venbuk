@@ -35,6 +35,7 @@ SPACING
   --text-contrast: #ffffff;
 
   --bg: #ffffff;
+  --bg-faded: #ffffff80;
   --red: #f03e3e;
 
   --font-size: 1.28rem;
@@ -107,6 +108,7 @@ SPACING
     --text-contrast: #08060d;
 
     --bg: #16171d;
+    --bg-faded: #16171d80;
     --red: #fa5252;
 
     /* ======================================== */
