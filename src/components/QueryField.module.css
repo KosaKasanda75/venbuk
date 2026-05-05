@@ -14,10 +14,10 @@
   margin-left: auto;
   font-weight: 600;
   font-size: 1.6rem;
-  color: inherit;
+  color: var(--text-primary);
   border-radius: 0.4rem;
   background-color: var(--purple-medium);
-  padding: 0.4rem 0.2rem;
+  padding: 0.4rem 0.8rem;
   text-decoration: none;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .randomResult {
-  border: 0.1rem solid var(--purple-medium);
+  border: 0.1rem solid var(--purple-accent);
   border-bottom: none;
   padding: 0.4rem 1.6rem;
 

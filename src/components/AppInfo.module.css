@@ -2,7 +2,8 @@
   margin-bottom: 2.4rem;
 }
 
-.appDescriptionBox h2 {
+.appDescriptionBox h2,
+.featuresTitle {
   margin-bottom: 0.8rem;
 }
 
@@ -15,6 +16,10 @@
   position: relative;
   display: flex;
   align-items: flex-end;
+}
+
+.arrIcon {
+  padding: 0.4rem;
 }
 
 .wrapper {

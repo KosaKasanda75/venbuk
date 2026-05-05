@@ -18,7 +18,7 @@ function AppInfo() {
         <p>{AppDescription}</p>
       </div>
 
-      <h2>Features</h2>
+      <h2 className={styles.featuresTitle}>Features</h2>
       {AppFeatures.map((feature, index) => (
         <div className={styles.featureDescriptionBox} key={index}>
           <h3
@@ -26,7 +26,11 @@ function AppInfo() {
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
           >
             {feature.name}{" "}
-            {openIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            {openIndex === index ? (
+              <IoIosArrowUp className={styles.arrIcon} />
+            ) : (
+              <IoIosArrowDown className={styles.arrIcon} />
+            )}
           </h3>
           <div
             className={`${styles.wrapper} ${openIndex === index ? styles.open : ""}`}

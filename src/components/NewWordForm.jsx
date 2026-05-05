@@ -322,6 +322,7 @@ function NewWordForm() {
             </label>
             <select
               id="nounClassSelect"
+              className={styles.dropdown}
               value={nounClassId}
               onChange={(e) => setNounClassId(e.target.value)}
             >
@@ -359,6 +360,7 @@ function NewWordForm() {
             <label htmlFor="genderSelect">Gender</label>
             <select
               id="genderSelect"
+              className={styles.dropdown}
               value={genderId}
               onChange={(e) => setGenderId(e.target.value)}
             >
@@ -436,7 +438,7 @@ function NewWordForm() {
           {isEditing ? "Update" : "Create"}
         </Button>
         {isEditing && (
-          <Button type="central" onClick={() => setShowConfirm(true)}>
+          <Button type="delete" onClick={() => setShowConfirm(true)}>
             Delete
           </Button>
         )}
