@@ -30,15 +30,20 @@
 .settingsItemList:last-child {
   border-bottom: 0.1rem solid var(--text-primary);
 }
-.settingsLinks:link,
-.settingsLinks:visited {
-  color: var(--text-primary);
-}
 
 .settingsLinks:hover,
 .settingsLinks:active {
-  color: var(--text-contrast);
   background-color: var(--purple-medium);
+}
+
+.settingsLinks:link a,
+.settingsLinks:visited a {
+  color: var(--text-primary);
+}
+
+.settingsLinks:hover a,
+.settingsLinks:active a {
+  color: var(--text-contrast);
 }
 
 .settingsItemName {
