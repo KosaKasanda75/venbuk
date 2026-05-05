@@ -14,7 +14,7 @@
   margin-left: auto;
   font-weight: 600;
   font-size: 1.6rem;
-  color: var(--text-primary);
+  color: var(--text-contrast);
   border-radius: 0.4rem;
   background-color: var(--purple-medium);
   padding: 0.4rem 0.8rem;
@@ -45,6 +45,14 @@
   padding: 0.4rem 1.6rem;
 
   /* cursor: pointer; */
+}
+
+.randomWord {
+  color: var(--pruple-medium);
+}
+
+.randomDefinition {
+  color: var(--pruple-accent);
 }
 
 .queryBox {
@@ -80,7 +88,7 @@
 } */
 
 .suggestedResult {
-  border: 0.1rem solid #000;
+  border: 0.1rem solid var(--blue-contrast);
   border-bottom: none;
   padding: 0.4rem 0.8rem;
 
@@ -89,7 +97,7 @@
 
 .randomResults li:last-child,
 .suggestedResults li:last-child {
-  border-bottom: 0.1rem solid #000;
+  border-bottom: 0.1rem solid var(--blue-contrast);
 }
 
 .suggestedWord {
@@ -97,5 +105,5 @@
 }
 
 .suggestedDefinition {
-  color: #777;
+  color: var(--text-primary);
 }

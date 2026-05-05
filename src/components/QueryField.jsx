@@ -87,10 +87,10 @@ function QueryField() {
         <ul className={styles.randomResults}>
           {randomWords.map((word) => (
             <li className={styles.randomResult} key={word.id}>
-              <p className={styles.suggestedWord}>
+              <p className={styles.randomWord}>
                 <em>{word.spelling}</em>
               </p>
-              <p className={styles.suggestedDefinition}>
+              <p className={styles.randomDefinition}>
                 <strong>{word.word_class}: </strong>
                 {word.definition}
               </p>
