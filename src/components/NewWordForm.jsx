@@ -443,6 +443,11 @@ function NewWordForm() {
           </Button>
         )}
       </div>
+      {isEditing && (
+        <Button type="transparent" onClick={() => navigate(-1)}>
+          Cancel
+        </Button>
+      )}
       {showConfirm && (
         <Confirm
           message="Are you sure you want to delete this word?"

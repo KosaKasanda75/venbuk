@@ -79,7 +79,10 @@ function Dictionary() {
           <div className={styles.topButtonBox}>
             <BackButton title="Dictionary List" path="/settings/dictionaries" />
             {memberRole !== "viewer" && (
-              <TbPencilMinus onClick={() => setIsEditing(true)} />
+              <TbPencilMinus
+                className={styles.icon}
+                onClick={() => setIsEditing(true)}
+              />
             )}
           </div>
           <DictionaryDetails dictionaryInfo={dictionaryInfo} />

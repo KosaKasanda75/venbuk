@@ -15,15 +15,15 @@
 
 .menuItem {
   max-width: 20%;
-  padding: 0.8rem;
+  padding: 0.4rem;
   /* background-color: greenyellow; */
 }
 
 .icon,
 .selectedIcon {
   color: var(--purple-contrast);
-  height: 3.125rem;
-  width: 3.125rem;
+  height: var(--font-size-h2);
+  width: var(--font-size-h2);
   transition: all 0.3s;
   stroke-width: 1.5; /* default is 1.5, try 1 or 2 */
 }
