@@ -30,10 +30,15 @@
 .settingsItemList:last-child {
   border-bottom: 0.1rem solid var(--text-primary);
 }
+.settingsLinks:link,
+.settingsLinks:visited {
+  color: var(--text-primary);
+}
 
 .settingsLinks:hover,
 .settingsLinks:active {
-  background-color: var(--text-secondary);
+  color: var(--text-contrast);
+  background-color: var(--purple-medium);
 }
 
 .settingsItemName {
@@ -45,7 +50,7 @@
 }
 
 .settingsItemLink:hover {
-  color: var(--purple-faded); /* Change Colour */
+  color: var(--purple-accent); /* Change Colour */
 }
 
 .navlink:link,
