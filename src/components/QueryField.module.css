@@ -10,9 +10,10 @@
 
 .dictionaryName {
   display: block;
+  width: fit-content;
+  margin-left: auto;
   font-weight: 600;
   font-size: 1.6rem;
-  text-align: right;
   color: inherit;
   border-radius: 0.4rem;
   background-color: var(--purple-medium);
