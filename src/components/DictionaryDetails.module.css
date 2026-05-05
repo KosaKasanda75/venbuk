@@ -47,8 +47,8 @@
 .role {
   font-size: var(--font-size-small);
   color: var(--text-secondary);
-  background-color: var(--accent-bg); /* Change Colour */
-  border: 1px solid var(--accent-border); /* Change Colour */
+  background-color: var(--purple-faded); /* Change Colour */
+  border: 1px solid var(--purple-medium); /* Change Colour */
   padding: 0.1rem 0.5rem;
   border-radius: 0.3rem;
 }

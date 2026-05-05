@@ -10,12 +10,12 @@
   list-style: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .menuItem {
   max-width: 20%;
-  padding: 1rem;
+  padding: 0.8rem;
   /* background-color: greenyellow; */
 }
 

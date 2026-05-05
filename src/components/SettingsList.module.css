@@ -45,7 +45,7 @@
 }
 
 .settingsItemLink:hover {
-  color: var(--accent); /* Change Colour */
+  color: var(--purple-faded); /* Change Colour */
 }
 
 .navlink:link,

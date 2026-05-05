@@ -1,7 +1,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* Change Colour */
+  background: var(--bg-faded); /* Change Colour */
   z-index: 100;
   display: flex;
   align-items: center;
@@ -12,7 +12,7 @@
   background: var(--bg);
   border-radius: 0.8rem;
   padding: 1.6rem;
-  box-shadow: var(--shadow); /* Change Colour */
+  box-shadow: var(--black); /* Change Colour */
   min-width: 18rem;
   max-width: 28rem;
 }
