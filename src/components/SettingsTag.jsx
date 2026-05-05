@@ -59,7 +59,10 @@ function SettingsTag() {
       {viewMode && (
         <SettingsList
           title={settingsOptions.title}
-          previousPage="Settings & Help"
+          previousPage={{
+            title: "Settings & Help",
+            path: "/settings",
+          }}
           options={settingsOptions.options}
           editMode={editMode}
           setEditMode={setEditMode}

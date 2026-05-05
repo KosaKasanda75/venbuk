@@ -34,7 +34,7 @@ function ForgotPassword() {
     <PageContent>
       <NamedLogo />
       <div className={styles.contentBox}>
-        <BackButton />
+        <BackButton title="Login" path="/login" />
         <div className={styles.formBox}>
           <form onSubmit={handleSubmit}>
             <InputField

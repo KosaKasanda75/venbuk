@@ -59,7 +59,10 @@ function SettingsNounClasses() {
       {viewMode && (
         <SettingsList
           title={settingsOptions.title}
-          previousPage="Conjugation"
+          previousPage={{
+            title: "Conjugation",
+            path: "/settings/conjugation",
+          }}
           options={settingsOptions.options}
           editMode={editMode}
           setEditMode={setEditMode}

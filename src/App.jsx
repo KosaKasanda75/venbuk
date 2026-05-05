@@ -32,10 +32,10 @@ import NewConjugationForm from "./components/NewConjugationForm";
 import QueryField from "./components/QueryField";
 import WordResult from "./components/WordResult";
 import SettingsHome from "./components/SettingsHome";
-import SettingsTag from "./components/SettingsTag";
+// import SettingsTag from "./components/SettingsTag";
 import SettingsDictionaries from "./components/SettingsDictionaries";
 import SettingsConjugation from "./components/SettingsConjugation";
-import SettingsNounClasses from "./components/SettingsNounClasses";
+// import SettingsNounClasses from "./components/SettingsNounClasses";
 // import { AuthProvider } from "./contexts/AuthContext";
 // import { DictionaryProvider } from "./contexts/DictionaryContext";
 import FullPageLoading from "./pages/FullPageLoading";
@@ -118,7 +118,10 @@ function App() {
                     <SettingsMetadata
                       metadataTitle="tags"
                       metaList={tags}
-                      previousPage="Settings & Help"
+                      previousPage={{
+                        title: "Settings & Help",
+                        path: "/settings",
+                      }}
                     />
                   }
                 />
@@ -130,7 +133,10 @@ function App() {
                       <SettingsMetadata
                         metadataTitle="tenses"
                         metaList={tenses}
-                        previousPage="Conjugation"
+                        previousPage={{
+                          title: "Conjugation",
+                          path: "/settings/conjugation",
+                        }}
                       />
                     }
                   />
@@ -140,7 +146,10 @@ function App() {
                       <SettingsMetadata
                         metadataTitle="nounClasses"
                         metaList={nounClasses}
-                        previousPage="Conjugation"
+                        previousPage={{
+                          title: "Conjugation",
+                          path: "/settings/conjugation",
+                        }}
                       />
                     }
                   />
@@ -150,7 +159,10 @@ function App() {
                       <SettingsMetadata
                         metadataTitle="genders"
                         metaList={genders}
-                        previousPage="Conjugation"
+                        previousPage={{
+                          title: "Conjugation",
+                          path: "/settings/conjugation",
+                        }}
                       />
                     }
                   />
@@ -164,7 +176,10 @@ function App() {
                     <TerminologyDisplay
                       title="Word Classes"
                       explainer={WordClassDefinitions}
-                      previousPage="Terminology"
+                      previousPage={{
+                        title: "Terminology",
+                        path: "/settings/terminology",
+                      }}
                     />
                   }
                 />
@@ -174,7 +189,10 @@ function App() {
                     <TerminologyDisplay
                       title="Noun Classes"
                       explainer={NounClassDefinition}
-                      previousPage="Terminology"
+                      previousPage={{
+                        title: "Terminology",
+                        path: "/settings/terminology",
+                      }}
                     />
                   }
                 />
@@ -184,7 +202,10 @@ function App() {
                     <TerminologyDisplay
                       title="Tenses"
                       explainer={TensesDefintion}
-                      previousPage="Terminology"
+                      previousPage={{
+                        title: "Terminology",
+                        path: "/settings/terminology",
+                      }}
                     />
                   }
                 />

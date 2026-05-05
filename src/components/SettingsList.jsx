@@ -19,26 +19,11 @@ function SettingsList({
   toAddPage,
   children,
 }) {
-  const referrer = document.referrer;
-  if (referrer) {
-    const referrerHostname = new URL(referrer).hostname;
-    const currentHostname = window.location.hostname;
-    console.log(referrerHostname);
-    console.log(currentHostname);
-
-    if (referrerHostname === currentHostname) {
-      console.log("The user came from another page on this website.");
-    } else {
-      console.log("The user came from an external site: " + referrerHostname);
-    }
-  } else {
-    console.log(
-      "No referrer found (e.g., direct visit, typed URL, or privacy settings).",
-    );
-  }
   return (
     <div className={styles.settingsBox}>
-      {previousPage && <BackButton />}
+      {previousPage && (
+        <BackButton title={previousPage.title} path={previousPage.path} />
+      )}
 
       <h1 className={`${styles.settingsTitle}`}>{title}</h1>
 

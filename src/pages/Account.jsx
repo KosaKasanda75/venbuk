@@ -17,7 +17,7 @@ function Account() {
 
   return (
     <PageContent>
-      <BackButton />
+      <BackButton title="Settings & Help" path="/settings" />
       <h1>Account</h1>
       <div className={styles.articleBox}>
         <div className={styles.infoBox}>

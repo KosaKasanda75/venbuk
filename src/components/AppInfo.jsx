@@ -9,7 +9,7 @@ function AppInfo() {
 
   return (
     <div className={styles.terminologyBox}>
-      <BackButton />
+      <BackButton title="Settings & Help" path="/settings" />
 
       <h1 className={`${styles.terminologyTitle}`}>"App Info"</h1>
 

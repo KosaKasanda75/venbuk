@@ -77,7 +77,7 @@ function Dictionary() {
       {dictionaryInfo && !isEditing && (
         <>
           <div className={styles.topButtonBox}>
-            <BackButton />
+            <BackButton title="Dictionary List" path="/settings/dictionaries" />
             {memberRole !== "viewer" && (
               <TbPencilMinus onClick={() => setIsEditing(true)} />
             )}

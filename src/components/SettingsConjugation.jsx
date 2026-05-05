@@ -16,7 +16,10 @@ function SettingsConjugation() {
   return (
     <SettingsList
       title={settingsOptions.title}
-      previousPage="Settings & Help"
+      previousPage={{
+        title: "Settings & Help",
+        path: "/settings",
+      }}
       settingsList={settingsOptions.settingsList}
       options={settingsOptions.options}
     >

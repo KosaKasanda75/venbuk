@@ -43,7 +43,7 @@ function WordResult() {
 
   return (
     <div className={styles.container}>
-      <BackButton />
+      <BackButton title="Search" path="/search" />
       {data && !loading && (
         <>
           <h1>{searchWord}</h1>

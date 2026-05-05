@@ -53,7 +53,10 @@ function SettingsDictionaries() {
           {/* <IoMdRefresh className={styles.icon} onClick={getDictionaryList} /> */}
           <SettingsList
             title={settingsOptions.title}
-            previousPage="Settings & Help"
+            previousPage={{
+              title: "Settings & Help",
+              path: "/settings",
+            }}
             options={settingsOptions.options}
             toAddPage={handleAdd}
           >
