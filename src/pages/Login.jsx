@@ -3,7 +3,7 @@ import LoginPortal from "../components/LoginPortal";
 import MainMenu from "../components/MainMenu";
 import PageContent from "../components/PageContent";
 import { useState } from "react";
-import ResgisterPortal from "../components/ResgisterPortal";
+import RegisterPortal from "../components/RegisterPortal";
 import { useLocation } from "react-router-dom";
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
     <PageContent type="login">
       <div className={styles.portalBox}>
         {!isNewUser && <LoginPortal toSignUp={toSignUpPage} from={from} />}
-        {isNewUser && <ResgisterPortal toLogin={toLoginPage} from={from} />}
+        {isNewUser && <RegisterPortal toLogin={toLoginPage} from={from} />}
       </div>
     </PageContent>
   );

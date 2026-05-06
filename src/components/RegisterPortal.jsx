@@ -11,7 +11,7 @@ import { GetOptions } from "../helpers/fetchOptions";
 import NamedLogo from "./NamedLogo";
 // import { RxCross2 } from "react-icons/rx";
 
-function ResgisterPortal({ toLogin, from }) {
+function RegisterPortal({ toLogin, from }) {
   // const [email, setEmail] = useState("jack@mail.com");
   const [email, setEmail] = useState("");
   const [wrongEmail, setWrongEmail] = useState(false);
@@ -63,14 +63,13 @@ function ResgisterPortal({ toLogin, from }) {
   //   [username],
   // );
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!validateEmail()) return;
-    if (!validUsername()) return;
-    if (!validPassword()) return;
-    checkSamePassword();
-    if (email && username && password)
-      register(email.toLowerCase(), username.toLowerCase(), password);
+    if (!(await validUsername(username))) return;
+    if (!validPassword(password)) return;
+    if (!checkSamePassword()) return;
+    register(email.toLowerCase(), username.toLowerCase(), password);
   }
 
   function validateEmail() {
@@ -164,7 +163,10 @@ function ResgisterPortal({ toLogin, from }) {
       setPassword("");
       setConfirmPassword("");
       setNotSamePassword(true);
-    } else setNotSamePassword(false);
+      return false;
+    }
+    setNotSamePassword(false);
+    return true;
   }
 
   return (
@@ -247,4 +249,4 @@ function ResgisterPortal({ toLogin, from }) {
   );
 }
 
-export default ResgisterPortal;
+export default RegisterPortal;
