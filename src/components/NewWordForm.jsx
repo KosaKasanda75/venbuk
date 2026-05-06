@@ -49,6 +49,8 @@ function NewWordForm() {
   );
   const [showConfirm, setShowConfirm] = useState(false);
   const [modal, setModal] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successFading, setSuccessFading] = useState(false);
 
   function clearForm() {
     setSpelling("");
@@ -180,11 +182,24 @@ function NewWordForm() {
         navigate(-1);
         return;
       }
+
+      setShowSuccess(true);
+      setTimeout(() => {
+        clearForm();
+        document
+          .querySelector(".activeBox")
+          ?.scrollTo({ top: 0, behavior: "smooth" });
+      }, 300);
+      setTimeout(() => {
+        setSuccessFading(true);
+      }, 2000);
+      setTimeout(() => {
+        setShowSuccess(false);
+        setSuccessFading(false);
+      }, 2500);
     } catch (fetchError) {
       console.log(fetchError);
     }
-
-    clearForm();
   }
 
   async function handleDelete() {
@@ -463,6 +478,15 @@ function NewWordForm() {
               explainer={modal.explainer}
               onClose={() => setModal(null)}
             />
+          </div>
+        </div>
+      )}
+      {showSuccess && (
+        <div
+          className={`${styles.modalOverlay} ${successFading ? styles.fadeOut : ""}`}
+        >
+          <div className={styles.successBox}>
+            <p>Word Created</p>
           </div>
         </div>
       )}

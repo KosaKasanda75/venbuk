@@ -1,5 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL ?? "";
-// const API_URL = `/api`;
+// const API_URL = import.meta.env.VITE_API_URL ?? "";
+const API_URL = `/api`;
 
 let refreshPromise = null;
 
@@ -22,7 +22,8 @@ async function apiFetch(path, options = {}) {
       const refreshRes = await refreshPromise;
 
       if (!refreshRes.ok) {
-        if (window.location.pathname !== "/login") {
+        const publicPaths = ["/login", "/reset-password", "/forgot-password"];
+        if (!publicPaths.includes(window.location.pathname)) {
           window.location.href = "/login";
         }
         // Return the original 401, not the refresh endpoint's response
