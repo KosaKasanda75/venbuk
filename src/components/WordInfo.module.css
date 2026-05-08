@@ -1,6 +1,7 @@
 .wordBox {
   width: 90%;
-  margin: 0 1.2rem 2.4rem 1.2rem;
+  border-bottom: 0.1rem solid var(--grey-medium);
+  margin: 0.8rem 1.2rem 2.4rem 1.2rem;
 }
 
 .wordTopSection {
@@ -13,9 +14,14 @@
 }
 
 .editIcon {
-  height: 2.4rem;
-  width: 2.4rem;
+  height: 1.6rem;
+  width: 1.6rem;
+  stroke: var(--grey-medium);
   margin-left: auto;
+}
+
+.pronunciation {
+  margin-bottom: 1.2rem;
 }
 
 .defintion {
@@ -43,8 +49,9 @@
 }
 
 .tagList li {
+  /* color: var(--text-contrast); */
   display: inline;
   padding: 0.2rem;
-  background-color: #aaa;
+  background-color: var(--blue-faded);
   white-space: nowrap;
 }

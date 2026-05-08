@@ -33,7 +33,9 @@ function WordInfo({ word }) {
           />
         )}
       </div>
-      {word.pronunciation && <p>{word.pronunciation}</p>}
+      {word.pronunciation && (
+        <p className={styles.pronunciation}>{word.pronunciation}</p>
+      )}
       {word.gender_id && (
         <h3>{genders.find((g) => g.id === word.gender_id)?.name}</h3>
       )}
