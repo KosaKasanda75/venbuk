@@ -4,7 +4,7 @@ function Button({ onClick, type, children }) {
   return (
     <button
       className={`${styles.btn} ${styles[type]}`}
-      type="type"
+      type="button"
       onClick={onClick}
     >
       {children}
