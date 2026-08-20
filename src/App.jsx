@@ -78,9 +78,9 @@ function App() {
             >
               <Route index element={<Navigate replace to="word" />} />
               <Route path="word" element={<NewWordForm />} />
-              {/* <Route path="honorific" element={<NewHonorificForm />} />
+              <Route path="honorific" element={<NewHonorificForm />} />
               <Route path="expression" element={<NewExpressionForm />} />
-              <Route path="conjugation" element={<NewConjugationForm />} /> */}
+              {/* <Route path="conjugation" element={<NewConjugationForm />} /> */}
             </Route>
 
             <Route
