@@ -64,7 +64,7 @@ function QueryField() {
 
     try {
       const res = await apiFetch(
-        `/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(currentQuery)}`,
+        `/dictionaries/${dictionary.id}/search?q=${encodeURIComponent(currentQuery)}`,
         GetOptions,
       );
       if (!res.ok) {
@@ -127,11 +127,14 @@ function QueryField() {
                 <li
                   className={styles.suggestedResult}
                   key={word.id}
-                  onClick={() =>
-                    navigate(
-                      `/search/results?word=${encodeURIComponent(word.spelling)}`,
-                    )
-                  }
+                  onClick={() => {
+                    const params = new URLSearchParams({
+                      id: word.id,
+                      type: word.type,
+                    });
+                    if (word.spelling) params.set("word", word.spelling);
+                    navigate(`/search/results?${params.toString()}`);
+                  }}
                 >
                   <p className={styles.suggestedWord}>
                     <em>{word.spelling}</em>
