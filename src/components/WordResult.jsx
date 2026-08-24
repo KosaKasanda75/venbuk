@@ -66,9 +66,9 @@ function WordResult() {
       <BackButton title="Search" path="/search" />
       {data && !loading && (
         <>
-          {data.type === "word" && <h1>{searchWord}</h1>}
-          {/* {data.type === "expression" && <h1>{data.sentence}</h1>} */}
-          {data.type === "honorific" && (
+          {searchWordType === "word" && <h1>{searchWord}</h1>}
+          {/* {searchWordType === "expression" && <h1>{data.sentence}</h1>} */}
+          {searchWordType === "honorific" && (
             <h1>
               {data.placement === "prefix" ? `${data.word}-` : `-${data.word}`}
             </h1>
