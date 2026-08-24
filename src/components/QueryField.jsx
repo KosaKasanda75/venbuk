@@ -73,8 +73,10 @@ function QueryField() {
         return;
       }
 
-      const data = await res.json(); // array of words, sorted alphabetically
-      const unique = [...new Map(data.map((w) => [w.spelling, w])).values()];
+      const { items: data } = await res.json(); // array of words, sorted alphabetically
+      const unique = [
+        ...new Map(data.map((w) => [`${w.type}-${w.id}`, w])).values(),
+      ];
       setSuggestedWords(unique);
     } catch (fetchError) {
       console.log(fetchError);
@@ -137,7 +139,15 @@ function QueryField() {
                   }}
                 >
                   <p className={styles.suggestedWord}>
-                    <em>{word.spelling}</em>
+                    {word.type === "word" && <em>{word.spelling}</em>}
+                    {word.type === "expression" && <em>{word.sentence}</em>}
+                    {word.type === "honorific" && (
+                      <em>
+                        {word.placement === "prefix"
+                          ? `${word.word}-`
+                          : `-${word.word}`}
+                      </em>
+                    )}
                   </p>
                   {/* <p className={styles.suggestedDefinition}>
                   <strong>{word.word_class}: </strong>

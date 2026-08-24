@@ -26,7 +26,7 @@ const Dictionary = lazy(() => import("./pages/Dictionary"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 import NewWordForm from "./components/NewWordForm";
-import NewHonorificForm from "./components/NewHonourificForm";
+import NewHonorificForm from "./components/NewHonorificForm";
 import NewExpressionForm from "./components/NewExpressionForm";
 import NewConjugationForm from "./components/NewConjugationForm";
 import QueryField from "./components/QueryField";

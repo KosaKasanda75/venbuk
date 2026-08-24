@@ -9,6 +9,8 @@ import {
 } from "../helpers/fetchOptions";
 import useDictionary from "../hooks/useDictionary";
 import apiFetch from "../helpers/fetchWrapper";
+import Button from "./Button";
+import Confirm from "./Confirm";
 
 function NewExpressionForm() {
   const { dictionary } = useDictionary();
@@ -17,9 +19,13 @@ function NewExpressionForm() {
   const existingExpression = state?.existingExpression ?? {};
   const isEditing = Boolean(existingExpression.id);
 
-  const [expression, setExpression] = useState("");
-  const [literal, setLiteral] = useState("");
-  const [meaning, setMeaning] = useState("");
+  const [expression, setExpression] = useState(
+    existingExpression.sentence || "",
+  );
+  const [literal, setLiteral] = useState(
+    existingExpression.literal_translation || "",
+  );
+  const [meaning, setMeaning] = useState(existingExpression.real_meaning || "");
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successFading, setSuccessFading] = useState(false);
@@ -44,7 +50,7 @@ function NewExpressionForm() {
 
     const url = isEditing
       ? `/dictionaries/${dictionary.id}/expressions/${existingExpression.id}`
-      : `/dictionaries/${dictionary.id}/expressions/`;
+      : `/dictionaries/${dictionary.id}/expressions`;
     const fetchOptions = isEditing ? PutOptions : PostOptions;
 
     try {

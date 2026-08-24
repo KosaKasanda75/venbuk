@@ -42,6 +42,7 @@ function WordResult() {
           return;
         }
         const data = await res.json();
+
         setData(data);
         setLoading(false);
       }
@@ -65,7 +66,13 @@ function WordResult() {
       <BackButton title="Search" path="/search" />
       {data && !loading && (
         <>
-          {searchWord && <h1>{searchWord}</h1>}
+          {data.type === "word" && <h1>{searchWord}</h1>}
+          {data.type === "expression" && <h1>{data.word}</h1>}
+          {data.type === "honorific" && (
+            <h1>
+              {data.placement === "prefix" ? `${data.word}-` : `-${data.word}-`}
+            </h1>
+          )}
           {!Array.isArray(data) && renderResult(data)}
           {Array.isArray(data) && data.map((item) => renderResult(item))}
         </>

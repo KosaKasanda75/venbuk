@@ -68,7 +68,7 @@ function NewHonorificForm() {
 
     const url = isEditing
       ? `/dictionaries/${dictionary.id}/honorifics/${existingHonorific.id}`
-      : `/dictionaries/${dictionary.id}/honorifics/`;
+      : `/dictionaries/${dictionary.id}/honorifics`;
     const fetchOptions = isEditing ? PutOptions : PostOptions;
 
     try {
@@ -241,7 +241,7 @@ function NewHonorificForm() {
           className={`${styles.modalOverlay} ${successFading ? styles.fadeOut : ""}`}
         >
           <div className={styles.successBox}>
-            <p>New Expression Added</p>
+            <p>New Honorific Added</p>
           </div>
         </div>
       )}
