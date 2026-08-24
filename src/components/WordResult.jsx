@@ -21,8 +21,6 @@ function WordResult() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(`Type: ${searchWordType}`);
-
   useEffect(
     function () {
       async function lookUpWord() {
@@ -68,7 +66,6 @@ function WordResult() {
       <BackButton title="Search" path="/search" />
       {data && !loading && (
         <>
-          <p>{searchWordType || `hello`}</p>
           {searchWordType === "word" && <h1>{searchWord}</h1>}
           {/* {searchWordType === "expression" && <h1>{data.sentence}</h1>} */}
           {searchWordType === "honorific" && (

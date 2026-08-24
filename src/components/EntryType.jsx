@@ -3,7 +3,6 @@ import styles from "./EntryType.module.css";
 
 function EntryType({ entryTypes, selected }) {
   const navigate = useNavigate();
-  console.log(selected);
 
   return (
     <select
@@ -13,7 +12,7 @@ function EntryType({ entryTypes, selected }) {
     >
       {entryTypes.map((type) => (
         <option key={type} value={type}>
-          {type.charAt(0).toUpperCase() + type.slice(1)} -- {selected}
+          {type.charAt(0).toUpperCase() + type.slice(1)}
         </option>
       ))}
     </select>
