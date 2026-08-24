@@ -18,6 +18,7 @@
   width: 1.6rem;
   stroke: var(--grey-medium);
   margin-left: auto;
+  cursor: pointer;
 }
 
 .pronunciation {

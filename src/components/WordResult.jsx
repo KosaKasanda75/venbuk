@@ -1,6 +1,8 @@
 import styles from "./WordResult.module.css";
 import BackButton from "./BackButton";
 import WordInfo from "./WordInfo";
+import ExpressionInfo from "./ExpressionInfo";
+import HonorificInfo from "./HonorificInfo";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiFetch from "../helpers/fetchWrapper";
@@ -13,6 +15,8 @@ function WordResult() {
   // console.log(data);
   const [searchParams] = useSearchParams();
   const searchWord = searchParams.get("word");
+  const searchWordId = searchParams.get("id");
+  const searchWordType = searchParams.get("type");
   const { dictionary } = useDictionary();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,10 +26,15 @@ function WordResult() {
       async function lookUpWord() {
         setLoading(true);
 
-        const res = await apiFetch(
-          `/dictionaries/${dictionary.id}/words/spelling?q=${searchWord}`,
-          GetOptions,
-        );
+        const res = searchWord
+          ? await apiFetch(
+              `/dictionaries/${dictionary.id}/${searchWordType}s/spelling?q=${searchWord}`,
+              GetOptions,
+            )
+          : await apiFetch(
+              `/dictionaries/${dictionary.id}/${searchWordType}s/${searchWordId}`,
+              GetOptions,
+            );
         if (!res.ok) {
           const err = await res.json();
           setLoading(false);
@@ -33,27 +42,45 @@ function WordResult() {
           return;
         }
         const data = await res.json();
+
         setData(data);
         setLoading(false);
       }
       lookUpWord();
     },
-    [searchWord, dictionary],
+    [searchWord, dictionary, searchWordType, searchWordId],
   ); // important: refetch if word changes
+
+  function renderResult(item) {
+    if (searchWordType === "expression") {
+      return <ExpressionInfo key={item.id} expression={item} />;
+    }
+    if (searchWordType === "honorific") {
+      return <HonorificInfo key={item.id} honorific={item} />;
+    }
+    return <WordInfo key={item.id} word={item} />;
+  }
 
   return (
     <div className={styles.container}>
       <BackButton title="Search" path="/search" />
       {data && !loading && (
         <>
-          <h1>{searchWord}</h1>
-          {!Array.isArray(data) && <WordInfo word={data} />}
-          {Array.isArray(data) &&
-            data.map((word) => <WordInfo key={word.id} word={word} />)}
+          {data.type === "word" && <h1>{searchWord}</h1>}
+          {data.type === "expression" && <h1>{data.word}</h1>}
+          {data.type === "honorific" && (
+            <h1>
+              {data.placement === "prefix" ? `${data.word}-` : `-${data.word}-`}
+            </h1>
+          )}
+          {!Array.isArray(data) && renderResult(data)}
+          {Array.isArray(data) && data.map((item) => renderResult(item))}
         </>
       )}
       {loading && <LoadingContent />}
-      {!data && !loading && <p>{searchWord} not found</p>}
+      {!data && !loading && (
+        <p>{searchWord ? `${searchWord} not found` : "Not found"}</p>
+      )}
     </div>
   );
 }

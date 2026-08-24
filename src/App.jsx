@@ -26,7 +26,7 @@ const Dictionary = lazy(() => import("./pages/Dictionary"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
 import NewWordForm from "./components/NewWordForm";
-import NewHonorificForm from "./components/NewHonourificForm";
+import NewHonorificForm from "./components/NewHonorificForm";
 import NewExpressionForm from "./components/NewExpressionForm";
 import NewConjugationForm from "./components/NewConjugationForm";
 import QueryField from "./components/QueryField";
@@ -78,9 +78,9 @@ function App() {
             >
               <Route index element={<Navigate replace to="word" />} />
               <Route path="word" element={<NewWordForm />} />
-              {/* <Route path="honorific" element={<NewHonorificForm />} />
+              <Route path="honorific" element={<NewHonorificForm />} />
               <Route path="expression" element={<NewExpressionForm />} />
-              <Route path="conjugation" element={<NewConjugationForm />} /> */}
+              {/* <Route path="conjugation" element={<NewConjugationForm />} /> */}
             </Route>
 
             <Route

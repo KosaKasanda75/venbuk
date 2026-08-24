@@ -5,11 +5,12 @@ import PageContent from "../components/PageContent";
 import { Outlet } from "react-router-dom";
 
 // const entryTypes = ["word", "honorific", "expression", "conjugation"];
+const entryTypes = ["word", "honorific", "expression"];
 
 function NewEntry() {
   return (
     <PageContent menu={<MainMenu />}>
-      {/* <EntryType entryTypes={entryTypes} /> */}
+      <EntryType entryTypes={entryTypes} />
       <Outlet />
     </PageContent>
   );

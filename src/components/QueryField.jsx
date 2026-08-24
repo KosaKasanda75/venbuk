@@ -64,7 +64,7 @@ function QueryField() {
 
     try {
       const res = await apiFetch(
-        `/dictionaries/${dictionary.id}/words/search?q=${encodeURIComponent(currentQuery)}`,
+        `/dictionaries/${dictionary.id}/search?q=${encodeURIComponent(currentQuery)}`,
         GetOptions,
       );
       if (!res.ok) {
@@ -73,8 +73,10 @@ function QueryField() {
         return;
       }
 
-      const data = await res.json(); // array of words, sorted alphabetically
-      const unique = [...new Map(data.map((w) => [w.spelling, w])).values()];
+      const { items: data } = await res.json(); // array of words, sorted alphabetically
+      const unique = [
+        ...new Map(data.map((w) => [`${w.type}-${w.id}`, w])).values(),
+      ];
       setSuggestedWords(unique);
     } catch (fetchError) {
       console.log(fetchError);
@@ -127,14 +129,25 @@ function QueryField() {
                 <li
                   className={styles.suggestedResult}
                   key={word.id}
-                  onClick={() =>
-                    navigate(
-                      `/search/results?word=${encodeURIComponent(word.spelling)}`,
-                    )
-                  }
+                  onClick={() => {
+                    const params = new URLSearchParams({
+                      id: word.id,
+                      type: word.type,
+                    });
+                    if (word.spelling) params.set("word", word.spelling);
+                    navigate(`/search/results?${params.toString()}`);
+                  }}
                 >
                   <p className={styles.suggestedWord}>
-                    <em>{word.spelling}</em>
+                    {word.type === "word" && <em>{word.spelling}</em>}
+                    {word.type === "expression" && <em>{word.sentence}</em>}
+                    {word.type === "honorific" && (
+                      <em>
+                        {word.placement === "prefix"
+                          ? `${word.word}-`
+                          : `-${word.word}`}
+                      </em>
+                    )}
                   </p>
                   {/* <p className={styles.suggestedDefinition}>
                   <strong>{word.word_class}: </strong>
