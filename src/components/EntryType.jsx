@@ -13,7 +13,7 @@ function EntryType({ entryTypes, selected }) {
     >
       {entryTypes.map((type) => (
         <option key={type} value={type}>
-          {type.charAt(0).toUpperCase() + type.slice(1)}
+          {type.charAt(0).toUpperCase() + type.slice(1)} -- {selected}
         </option>
       ))}
     </select>
