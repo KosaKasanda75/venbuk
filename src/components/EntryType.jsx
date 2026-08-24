@@ -3,6 +3,7 @@ import styles from "./EntryType.module.css";
 
 function EntryType({ entryTypes, selected }) {
   const navigate = useNavigate();
+  console.log(selected);
 
   return (
     <select

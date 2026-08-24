@@ -10,6 +10,8 @@ const entryTypes = ["word", "honorific", "expression"];
 function NewEntry() {
   const { pathname } = useLocation();
   const type = pathname.split("/").pop();
+  console.log(type);
+
   return (
     <PageContent menu={<MainMenu />}>
       <EntryType entryTypes={entryTypes} selected={type} />

@@ -21,6 +21,8 @@ function WordResult() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  console.log(`Type: ${searchWordType}`);
+
   useEffect(
     function () {
       async function lookUpWord() {
