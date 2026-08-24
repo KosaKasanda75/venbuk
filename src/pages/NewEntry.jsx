@@ -2,15 +2,16 @@ import EntryType from "../components/EntryType";
 import MainMenu from "../components/MainMenu";
 import NewWordForm from "../components/NewWordForm";
 import PageContent from "../components/PageContent";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 
 // const entryTypes = ["word", "honorific", "expression", "conjugation"];
 const entryTypes = ["word", "honorific", "expression"];
 
 function NewEntry() {
+  const { type } = useParams();
   return (
     <PageContent menu={<MainMenu />}>
-      <EntryType entryTypes={entryTypes} />
+      <EntryType entryTypes={entryTypes} selected={type} />
       <Outlet />
     </PageContent>
   );

@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./EntryType.module.css";
 
-function EntryType({ entryTypes }) {
+function EntryType({ entryTypes, selected }) {
   const navigate = useNavigate();
+
   return (
     <select
       className={styles.dropdown}
+      value={selected}
       onChange={(e) => navigate(e.target.value)}
     >
       {entryTypes.map((type) => (
