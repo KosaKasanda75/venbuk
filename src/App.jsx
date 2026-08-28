@@ -56,6 +56,11 @@ import {
 import AppInfo from "./components/AppInfo";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import MeaningGuesserPage from "./pages/MeaningGuesserPage";
+import MeaningGuesser from "./components/MeaningGuesser";
+import PageContent from "./components/PageContent";
+import GamesOverview from "./components/GamesOverview";
+import MainMenu from "./components/MainMenu";
 
 function App() {
   const { nounClasses, genders, tags, tenses } = useDictionary();
@@ -105,7 +110,20 @@ function App() {
               {/* <Route path="results/:id" element={<WordResult />} /> */}
             </Route>
 
-            <Route path="games" element={<Games />} />
+            <Route path="games" element={<Games />}>
+              <Route
+                index
+                element={
+                  <PageContent>
+                    <GamesOverview />
+                    <MainMenu />
+                  </PageContent>
+                }
+              />
+              <Route path="meaning-guesser" element={<MeaningGuesserPage />}>
+                <Route index element={<MeaningGuesser />} />
+              </Route>
+            </Route>
 
             <Route path="settings" element={<Settings />}>
               <Route index element={<SettingsHome />} />
