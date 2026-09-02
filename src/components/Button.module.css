@@ -9,6 +9,11 @@
   cursor: pointer;
 }
 
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .addMore {
   margin-left: auto;
   margin-bottom: 0.8rem;

@@ -58,6 +58,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import MeaningGuesserPage from "./pages/MeaningGuesserPage";
 import MeaningGuesser from "./components/MeaningGuesser";
+const MeaningGuesserPastQuizzes = lazy(
+  () => import("./pages/MeaningGuesserPastQuizzes"),
+);
 import PageContent from "./components/PageContent";
 import GamesOverview from "./components/GamesOverview";
 import MainMenu from "./components/MainMenu";
@@ -114,14 +117,17 @@ function App() {
               <Route
                 index
                 element={
-                  <PageContent>
+                  <PageContent menu={<MainMenu />}>
                     <GamesOverview />
-                    <MainMenu />
                   </PageContent>
                 }
               />
               <Route path="meaning-guesser" element={<MeaningGuesserPage />}>
                 <Route index element={<MeaningGuesser />} />
+                <Route
+                  path="past-quizzes"
+                  element={<MeaningGuesserPastQuizzes />}
+                />
               </Route>
             </Route>
 
