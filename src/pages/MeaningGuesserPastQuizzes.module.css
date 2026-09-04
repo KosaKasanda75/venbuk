@@ -1,0 +1,100 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.backRow {
+  align-self: flex-start;
+}
+
+.empty,
+.error {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.error {
+  color: var(--red);
+}
+
+.modeRow {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.modePill {
+  font-size: var(--font-size-small);
+  padding: 0.4rem 0.9rem;
+  border: none;
+  background-color: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.modePillActive {
+  background-color: var(--purple-primary);
+  color: var(--text-contrast);
+}
+
+.quizList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.card {
+  border: 0.2rem solid var(--purple-accent);
+}
+
+.cardHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.cardTitle {
+  font-weight: 700;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+}
+
+.status {
+  padding: 0.1rem 0.5rem;
+  color: var(--text-contrast);
+  font-weight: 600;
+}
+
+.statusDone {
+  background-color: #2f9e44;
+}
+
+.statusOpen {
+  background-color: var(--grey-medium);
+}
+
+.chevron {
+  color: var(--purple-primary);
+}
+
+.cardBody {
+  padding: 0.8rem 1rem 1.2rem;
+  border-top: 0.1rem solid var(--border);
+}

@@ -1,12 +1,7 @@
-import MainMenu from "../components/MainMenu";
+import { Outlet } from "react-router-dom";
 
 function Games() {
-  return (
-    <div>
-      <p>Games</p>
-      <MainMenu />
-    </div>
-  );
+  return <Outlet />;
 }
 
 export default Games;

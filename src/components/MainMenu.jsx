@@ -52,7 +52,7 @@ function MainMenu() {
             }
           </NavLink>
         </li>
-        {/* <li className={styles.menuItem}>
+        <li className={styles.menuItem}>
           <NavLink to="/games">
             {({ isActive }) =>
               isActive ? (
@@ -62,7 +62,7 @@ function MainMenu() {
               )
             }
           </NavLink>
-        </li> */}
+        </li>
         <li className={styles.menuItem}>
           <NavLink to="/settings">
             {({ isActive }) =>

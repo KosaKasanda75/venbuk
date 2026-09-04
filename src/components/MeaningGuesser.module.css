@@ -1,0 +1,238 @@
+.wrapper {
+  --correct: #2f9e44;
+  --wrong: var(--red);
+  display: flex;
+  flex-direction: column;
+}
+
+.backRow {
+  align-self: flex-start;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  width: 100%;
+}
+
+.description {
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ---------- Setup ---------- */
+
+.setupField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.setupLabel {
+  font-weight: 600;
+}
+
+.typeRow {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.typePill {
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border: 0.2rem solid var(--purple-accent);
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.typePillActive {
+  background-color: var(--purple-primary);
+  border-color: var(--purple-primary);
+  color: var(--text-contrast);
+}
+
+.counterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.stepBtn {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.6rem;
+  border: 0.2rem solid var(--purple-accent);
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.stepBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.countInput {
+  width: 4.5rem;
+  text-align: center;
+  padding: 0.4rem;
+  border: 0.2rem solid var(--purple-accent);
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+.hint {
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+}
+
+.error {
+  color: var(--red);
+  text-align: center;
+}
+
+/* ---------- Quiz ---------- */
+
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+}
+
+.timeLow {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.questionCard {
+  width: 100%;
+  border: 0.2rem solid var(--text-primary);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.questionPrompt {
+  font-size: var(--font-size-h4);
+  font-weight: 700;
+  text-align: center;
+  color: var(--purple-primary);
+}
+
+.optionList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.option {
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-size: 1.1rem;
+  border: 0.2rem solid var(--purple-accent);
+  background-color: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.optionSelected {
+  border-color: var(--purple-primary);
+  background-color: var(--purple-faded);
+  font-weight: 600;
+}
+
+.navRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.8rem;
+}
+
+/* ---------- Results ---------- */
+
+.results {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.score {
+  text-align: center;
+  font-size: var(--font-size-h3);
+  font-weight: 700;
+  color: var(--purple-primary);
+}
+
+.resultList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.resultItem {
+  border: 0.1rem solid var(--border);
+  border-left: 0.4rem solid var(--border);
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.resultTerm {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.resultNumber {
+  color: var(--text-secondary);
+}
+
+.resultBadge {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  padding: 0.1rem 0.6rem;
+  margin-left: auto;
+  color: var(--text-contrast);
+}
+
+.badgeCorrect {
+  background-color: var(--correct);
+}
+
+.badgeWrong {
+  background-color: var(--wrong);
+}
+
+.badgeSkipped {
+  background-color: var(--grey-medium);
+}
+
+.resultLabel {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.resultCorrect {
+  color: var(--correct);
+}
+
+.resultChosen {
+  color: var(--wrong);
+}
