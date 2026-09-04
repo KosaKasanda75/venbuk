@@ -7,9 +7,37 @@ export const QUIZ_TYPES = [
 // Which way round a question is asked. "meaning": show the term, pick its
 // meaning. "name": show the meaning, pick the term.
 export const QUIZ_MODES = [
-  { value: "meaning", label: "Guess the meaning", hint: "See the term, choose its meaning" },
-  { value: "name", label: "Guess the name", hint: "See the meaning, choose the term" },
+  {
+    value: "meaning",
+    label: "Guess the meaning",
+    hint: "See the term, choose its meaning",
+  },
+  {
+    value: "name",
+    label: "Guess the name",
+    hint: "See the meaning, choose the term",
+  },
 ];
+
+// Time pace options. `secondsPerQuestion` combines with the question count to
+// give the quiz's total countdown (seconds = secondsPerQuestion * count).
+export const QUIZ_SPEEDS = [
+  { value: "relaxed", label: "Relaxed", secondsPerQuestion: 10 },
+  { value: "regular", label: "Regular", secondsPerQuestion: 7 },
+  { value: "rapid", label: "Rapid", secondsPerQuestion: 5 },
+];
+
+export function secondsForQuiz(speed, count) {
+  const pace = QUIZ_SPEEDS.find((s) => s.value === speed) ?? QUIZ_SPEEDS[1];
+  return pace.secondsPerQuestion * count;
+}
+
+export function formatDuration(totalSeconds) {
+  const seconds = Math.max(0, Math.ceil(totalSeconds));
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${minutes}:${String(remainder).padStart(2, "0")}`;
+}
 
 // The short text shown as the question prompt for a term.
 export function termLabel(term) {
@@ -18,9 +46,7 @@ export function termLabel(term) {
     case "expression":
       return term.sentence ?? "";
     case "honorific":
-      return term.placement === "prefix"
-        ? `${term.word}-`
-        : `-${term.word}`;
+      return term.placement === "prefix" ? `${term.word}-` : `-${term.word}`;
     default:
       return term.spelling ?? "";
   }

@@ -108,6 +108,11 @@
   color: var(--text-secondary);
 }
 
+.timeLow {
+  color: var(--red);
+  font-weight: 700;
+}
+
 .questionCard {
   width: 100%;
   border: 0.2rem solid var(--text-primary);

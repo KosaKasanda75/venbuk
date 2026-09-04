@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MeaningGuesser.module.css";
 import BackButton from "./BackButton";
@@ -12,9 +12,12 @@ import { PostOptions } from "../helpers/fetchOptions";
 import {
   QUIZ_TYPES,
   QUIZ_MODES,
+  QUIZ_SPEEDS,
   promptText,
   answerText,
   scoreRows,
+  secondsForQuiz,
+  formatDuration,
 } from "../helpers/meaningGuess";
 
 const MIN_QUESTIONS = 1;
@@ -27,10 +30,12 @@ function MeaningGuesser() {
   const [selections, setSelections] = useState({});
   const [current, setCurrent] = useState(0);
   const [mode, setMode] = useState("meaning");
+  const [speed, setSpeed] = useState("regular");
 
-  function startQuiz(loadedGroup, quizMode) {
+  function startQuiz(loadedGroup, quizMode, quizSpeed) {
     setGroup(loadedGroup);
     setMode(quizMode);
+    setSpeed(quizSpeed);
     setSelections({});
     setCurrent(0);
     setStage("quiz");
@@ -56,6 +61,7 @@ function MeaningGuesser() {
         <MGQuiz
           group={group}
           mode={mode}
+          speed={speed}
           selections={selections}
           setSelections={setSelections}
           current={current}
@@ -88,6 +94,7 @@ function MGSetup({ onReady }) {
   const { dictionary } = useDictionary();
   const [type, setType] = useState("word");
   const [mode, setMode] = useState("meaning");
+  const [speed, setSpeed] = useState("regular");
   const [count, setCount] = useState(10);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -122,7 +129,7 @@ function MGSetup({ onReady }) {
         return;
       }
 
-      onReady(data, mode);
+      onReady(data, mode, speed);
     } catch (fetchError) {
       console.log(fetchError);
       setMessage("Something went wrong starting the quiz. Please try again.");
@@ -178,6 +185,28 @@ function MGSetup({ onReady }) {
       </div>
 
       <div className={styles.setupField}>
+        <span className={styles.setupLabel}>Timer</span>
+        <div className={styles.typeRow}>
+          {QUIZ_SPEEDS.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              className={`${styles.typePill} ${
+                speed === s.value ? styles.typePillActive : ""
+              }`}
+              onClick={() => setSpeed(s.value)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+        <span className={styles.hint}>
+          {QUIZ_SPEEDS.find((s) => s.value === speed)?.secondsPerQuestion}{" "}
+          seconds per question
+        </span>
+      </div>
+
+      <div className={styles.setupField}>
         <label className={styles.setupLabel} htmlFor="questionCount">
           Number of questions
         </label>
@@ -226,6 +255,7 @@ function MGSetup({ onReady }) {
 function MGQuiz({
   group,
   mode,
+  speed,
   selections,
   setSelections,
   current,
@@ -235,8 +265,11 @@ function MGQuiz({
 }) {
   const { dictionary } = useDictionary();
   const [showConfirm, setShowConfirm] = useState(false);
-
   const rows = group.rows;
+  const [remaining, setRemaining] = useState(() =>
+    secondsForQuiz(speed, rows.length),
+  );
+
   const row = rows[current];
   const isLast = current === rows.length - 1;
   const { answered, total } = scoreRows(rows, selections);
@@ -272,6 +305,19 @@ function MGQuiz({
     onDone();
   }
 
+  useEffect(() => {
+    if (remaining <= 0) {
+      submit();
+      return;
+    }
+    const timer = setTimeout(() => setRemaining((r) => r - 1), 1000);
+    return () => clearTimeout(timer);
+    // submit is intentionally omitted: re-running this effect on every render
+    // would reset the tick interval, and the effect already re-fires each
+    // second, so it always calls the latest submit closure when time runs out.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remaining]);
+
   function handleSubmitClick() {
     if (answered < total) {
       setShowConfirm(true);
@@ -285,6 +331,11 @@ function MGQuiz({
       <div className={styles.progressRow}>
         <span>
           Question {current + 1} of {total}
+        </span>
+        <span
+          className={remaining <= 10 ? styles.timeLow : undefined}
+        >
+          {formatDuration(remaining)}
         </span>
         <span>{answered} answered</span>
       </div>
